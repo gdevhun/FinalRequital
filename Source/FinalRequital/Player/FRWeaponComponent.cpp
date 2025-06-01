@@ -1,24 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Player/FRWeaponComponent.h"
 #include "Player/FRGASCharacterPlayer.h"
 #include "AbilitySystemComponent.h"
-#include "GameFramework/Character.h"
-#include "Components/SkeletalMeshComponent.h"
 #include "Player/FRPlayerController.h"
 #include "UI/FRHUDWidget.h"
+#include "Actor/FRWeaponBase.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameFramework/Character.h"
 
 UFRWeaponComponent::UFRWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-	WeaponMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMeshComponent"));
-	WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	WeaponMeshComponent->SetOnlyOwnerSee(false);
-	WeaponMeshComponent->bCastDynamicShadow = false;
-	WeaponMeshComponent->CastShadow = false;
 }
 
 void UFRWeaponComponent::BeginPlay()
@@ -34,15 +27,6 @@ void UFRWeaponComponent::BeginPlay()
 		{
 			HUD = PC->GetHUDWidget();
 		}
-
-		if (WeaponMeshComponent && OwnerCharacter->GetMesh())
-		{
-			WeaponMeshComponent->RegisterComponent();
-			WeaponMeshComponent->AttachToComponent(
-				OwnerCharacter->GetMesh(),
-				FAttachmentTransformRules::SnapToTargetIncludingScale,
-				TEXT("hand_rSocket"));
-		}
 	}
 }
 
@@ -55,12 +39,40 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 	}
 
 	const FWeaponData* WeaponData = WeaponSlots.Find(WeaponType);
-	if (!WeaponData)
+	if (!WeaponData || !WeaponData->WeaponActorClass)
 		return;
 
 	ClearWeapon();
 
-	AttachWeaponMesh(WeaponData->WeaponMesh, WeaponData->AttachSocketName);
+	AFRWeaponBase* Weapon = nullptr;
+
+	if (WeaponActorCache.Contains(WeaponType))
+	{
+		Weapon = WeaponActorCache[WeaponType];
+	}
+	else
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = OwnerCharacter;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		Weapon = GetWorld()->SpawnActor<AFRWeaponBase>(WeaponData->WeaponActorClass, SpawnParams);
+		if (Weapon)
+		{
+			WeaponActorCache.Add(WeaponType, Weapon);
+		}
+	}
+
+	if (Weapon)
+	{
+		Weapon->AttachToComponent(
+			OwnerCharacter->GetMesh(),
+			FAttachmentTransformRules::SnapToTargetIncludingScale,
+			WeaponData->AttachSocketName);
+
+		Weapon->SetVisible(true);
+		CurrentWeaponActor = Weapon;
+	}
 
 	if (WeaponData->AttackAbility)
 		GiveAbility(WeaponData->AttackAbility, 1, AttackAbilityHandle);
@@ -70,7 +82,6 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 
 	CurrentWeaponType = WeaponType;
 
-	// 무기 타입에 따라 애니메이션 레이어 조정
 	switch (WeaponType)
 	{
 	case EWeaponType::Sword:
@@ -87,7 +98,6 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 		break;
 	}
 
-	// 활 장착 시 크로스헤어 표시
 	if (HUD)
 	{
 		const bool bShowCrosshair = (WeaponType == EWeaponType::Bow);
@@ -95,11 +105,14 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 	}
 }
 
-
 void UFRWeaponComponent::ClearWeapon()
 {
-	WeaponMeshComponent->SetSkeletalMesh(nullptr);
-	WeaponMeshComponent->SetVisibility(false);
+	if (CurrentWeaponActor)
+	{
+		CurrentWeaponActor->SetVisible(false);
+		CurrentWeaponActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		CurrentWeaponActor = nullptr;
+	}
 
 	ClearAbility(AttackAbilityHandle);
 	ClearAbility(SubAttackAbilityHandle);
@@ -115,16 +128,6 @@ void UFRWeaponComponent::ClearWeapon()
 	{
 		HUD->ShowCrosshair(false);
 	}
-}
-
-void UFRWeaponComponent::AttachWeaponMesh(USkeletalMesh* Mesh, FName SocketName)
-{
-	if (!WeaponMeshComponent || !Mesh || !OwnerCharacter)
-		return;
-
-	WeaponMeshComponent->SetSkeletalMesh(Mesh);
-	WeaponMeshComponent->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketName);
-	WeaponMeshComponent->SetVisibility(true);
 }
 
 void UFRWeaponComponent::GiveAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 InputID, FGameplayAbilitySpecHandle& OutHandle)

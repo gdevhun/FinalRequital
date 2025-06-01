@@ -12,8 +12,8 @@ enum class EWeaponType : uint8
 {
 	None			UMETA(DisplayName = "Unarmed"),
 	Sword		    UMETA(DisplayName = "Sword"),
-	IronMace	    UMETA(DisplayName = "IronMace"),
 	Bow             UMETA(DisplayName = "Bow"),
+	IronMace	    UMETA(DisplayName = "IronMace"),
 	BronzeBell      UMETA(DisplayName = "BronzeBell")
 };
 
@@ -26,9 +26,8 @@ struct FWeaponData
 	EWeaponType WeaponType;
 
 	UPROPERTY(EditAnywhere)
-	USkeletalMesh* WeaponMesh;
+	TSubclassOf<class AFRWeaponBase> WeaponActorClass;
 
-	//hand_rSocket
 	UPROPERTY(EditAnywhere)
 	FName AttachSocketName;
 
@@ -64,6 +63,12 @@ protected:
 
 	UPROPERTY()
 	EWeaponType CurrentWeaponType = EWeaponType::None;
+
+	UPROPERTY()
+	TMap<EWeaponType, AFRWeaponBase*> WeaponActorCache;
+
+	UPROPERTY()
+	TObjectPtr<AFRWeaponBase> CurrentWeaponActor;
 
 	UPROPERTY()
 	FGameplayAbilitySpecHandle AttackAbilityHandle;
