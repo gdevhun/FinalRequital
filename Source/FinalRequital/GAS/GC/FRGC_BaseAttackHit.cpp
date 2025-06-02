@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GAS/GC/FRGC_MeleeAttackHit.h"
+#include "GAS/GC/FRGC_BaseAttackHit.h"
 #include "Particles/ParticleSystem.h"
 #include "kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
 
-UFRGC_MeleeAttackHit::UFRGC_MeleeAttackHit()
+UFRGC_BaseAttackHit::UFRGC_BaseAttackHit()
 {
 }
 
-bool UFRGC_MeleeAttackHit::OnExecute_Implementation(AActor* Target, const FGameplayCueParameters& Parameters) const
+bool UFRGC_BaseAttackHit::OnExecute_Implementation(AActor* Target, const FGameplayCueParameters& Parameters) const
 {
 	const FHitResult* HitResult = Parameters.EffectContext.GetHitResult();
 

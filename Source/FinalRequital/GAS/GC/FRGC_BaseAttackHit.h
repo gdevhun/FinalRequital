@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameplayCueNotify_Static.h"
-#include "FRGC_MeleeAttackHit.generated.h"
+#include "FRGC_BaseAttackHit.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRGC_MeleeAttackHit : public UGameplayCueNotify_Static
+class FINALREQUITAL_API UFRGC_BaseAttackHit : public UGameplayCueNotify_Static
 {
 	GENERATED_BODY()
 
 public:
-	UFRGC_MeleeAttackHit();
+	UFRGC_BaseAttackHit();
 
 	virtual bool OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
 

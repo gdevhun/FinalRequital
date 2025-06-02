@@ -100,7 +100,7 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 
 	if (HUD)
 	{
-		const bool bShowCrosshair = (WeaponType == EWeaponType::Bow);
+		const bool bShowCrosshair = (WeaponType == EWeaponType::Bow) || (WeaponType == EWeaponType::BronzeBell);
 		HUD->ShowCrosshair(bShowCrosshair);
 	}
 }

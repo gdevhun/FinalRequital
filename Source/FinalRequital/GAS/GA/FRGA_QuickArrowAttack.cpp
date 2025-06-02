@@ -6,8 +6,6 @@
 #include "FRDebugHelper.h"
 #include "Character/FRCharacterBase.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
-#include "Actor/FRArrowProjectile.h"
-#include "Camera/CameraComponent.h"
 
 UFRGA_QuickArrowAttack::UFRGA_QuickArrowAttack()
 {
