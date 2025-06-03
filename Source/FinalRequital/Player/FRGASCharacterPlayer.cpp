@@ -8,7 +8,7 @@
 #include "FRDebugHelper.h"
 #include "FRWeaponComponent.h"
 #include "UI/FRWidgetComponent.h"
-#include "UI/FRUserWidget.h"
+#include "FRMaskSkillComponent.h"
 
 AFRGASCharacterPlayer::AFRGASCharacterPlayer()
 {
@@ -17,6 +17,7 @@ AFRGASCharacterPlayer::AFRGASCharacterPlayer()
 
 	HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
 	WeaponComponent = CreateDefaultSubobject<UFRWeaponComponent>(TEXT("WeaponComponent"));
+	MaskSkillComponent = CreateDefaultSubobject<UFRMaskSkillComponent>(TEXT("MaskSkillComponent"));
 }
 
 void AFRGASCharacterPlayer::PossessedBy(AController* NewController)

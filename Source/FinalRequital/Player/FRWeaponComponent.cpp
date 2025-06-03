@@ -6,9 +6,8 @@
 #include "Player/FRPlayerController.h"
 #include "UI/FRHUDWidget.h"
 #include "Actor/FRWeaponBase.h"
-#include "AbilitySystemBlueprintLibrary.h"
+#include "FRPlayerState.h"
 #include "GameFramework/Character.h"
-#include "System/FRGameInstance.h"
 
 UFRWeaponComponent::UFRWeaponComponent()
 {
@@ -39,15 +38,12 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 		return;
 	}
 
-	// 획득 여부 검사
-	if (const UFRGameInstance* GI = Cast<UFRGameInstance>(GetWorld()->GetGameInstance()))
+	// 획득 여부 검사 PlayerState 기반
+	AFRPlayerState* FRPlayerState = OwnerCharacter->GetPlayerState<AFRPlayerState>();
+	if (!FRPlayerState || !FRPlayerState->HasWeapon(WeaponType))
 	{
-		if (!GI->HasWeapon(WeaponType))
-		{
-			// 무기를 획득하지 않았다면 장착 불가
-			UE_LOG(LogTemp, Warning, TEXT("Weapon type %d has not been acquired yet."), static_cast<int32>(WeaponType));
-			return;
-		}
+		UE_LOG(LogTemp, Warning, TEXT("Weapon type %d has not been acquired yet."), static_cast<int32>(WeaponType));
+		return;
 	}
 
 	const FWeaponData* WeaponData = WeaponSlots.Find(WeaponType);

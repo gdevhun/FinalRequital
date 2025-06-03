@@ -51,6 +51,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Component)
 	TObjectPtr<class UFRWeaponComponent> WeaponComponent;
 
+	UPROPERTY(EditAnywhere, Category = Component)
+	TObjectPtr<class UFRMaskSkillComponent> MaskSkillComponent;
+
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UFRWidgetComponent> HpBar;
 

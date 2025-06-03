@@ -53,7 +53,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	void AttachWeaponMesh(USkeletalMesh* Mesh, FName SocketName);
 	void GiveAbility(TSubclassOf<class UGameplayAbility> AbilityClass, int32 InputID, FGameplayAbilitySpecHandle& OutHandle);
 	void ClearAbility(FGameplayAbilitySpecHandle& Handle);
 
