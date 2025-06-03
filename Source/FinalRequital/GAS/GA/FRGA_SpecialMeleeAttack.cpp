@@ -26,7 +26,7 @@ void UFRGA_SpecialMeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 	TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
-	(this, TEXT("PlaySpecialMeleeAttack"), SpecialAttackActionMontage, 1.8f);
+	(this, TEXT("PlaySpecialMeleeAttack"), SpecialAttackActionMontage, 1.0f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_SpecialMeleeAttack::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_SpecialMeleeAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
