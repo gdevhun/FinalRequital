@@ -63,11 +63,8 @@ FGameplayAbilityTargetDataHandle AFRTA_Trace::MakeTargetData() const
 	const FVector End = Start + Forward * AttackRange;*/
 
 	const FVector Forward = Character->GetActorForwardVector();
-	const FVector Right = Character->GetActorRightVector();
-	const FVector DiagonalDirection = (Forward + Right).GetSafeNormal();
-
-	const FVector Start = Character->GetActorLocation() + DiagonalDirection * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
-	const FVector End = Start + DiagonalDirection * AttackRange;
+	const FVector Start = Character->GetActorLocation() + Forward * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const FVector End = Start + Forward * AttackRange;
 
 	bool HitDetected = GetWorld()->SweepSingleByChannel
 	(OutHitResult, Start, End, FQuat::Identity, CCHANNEL_FRACTION, FCollisionShape::MakeSphere(AttackRadius), Params);
