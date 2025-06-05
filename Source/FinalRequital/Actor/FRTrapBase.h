@@ -23,10 +23,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
 	TObjectPtr<class UStaticMeshComponent> TrapMesh;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
 	TObjectPtr<class UBoxComponent> CollisionBox;
 
 	UPROPERTY(EditAnywhere, Category = "Trap")
@@ -37,6 +37,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Trap")
 	float DamageInterval = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Trap")
+	bool bIsOnlyPlayerEffective;
 
 	UFUNCTION()
 	virtual void OnTrapTriggered(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -55,7 +58,6 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ActivateTrap();
-	
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DeactivateTrap();

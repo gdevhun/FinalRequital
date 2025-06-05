@@ -6,20 +6,26 @@
 #include "Components/StaticMeshComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "Player/FRGASCharacterPlayer.h"
 
 AFRTrapBase::AFRTrapBase()
 {
-    TrapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TrapMesh"));
-    RootComponent = TrapMesh;
-
-    ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-
+    // 콜리전을 루트로 지정
     CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
-    CollisionBox->SetupAttachment(TrapMesh);
+    RootComponent = CollisionBox;
     CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionBox->SetCollisionResponseToAllChannels(ECR_Overlap);
     CollisionBox->SetGenerateOverlapEvents(true);
 
+    // TrapMesh는 자식 컴포넌트 (움직일 대상)
+    TrapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TrapMesh"));
+    TrapMesh->SetupAttachment(RootComponent);  // 콜리전 자식
+    TrapMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);  // 메시 충돌 X
+
+    // ASC (트랩 자체에 연결)
+    ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+
+    // 오버랩 바인딩
     CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFRTrapBase::OnTrapTriggered);
     CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFRTrapBase::OnTrapEndOverlap);
 }
@@ -71,6 +77,14 @@ void AFRTrapBase::ApplyTrapEffectToActor(AActor* TargetActor)
     if (!DamageEffectClass || !TargetActor || !ASC) return;
 
     ActivateTrap();
+
+    if (bIsOnlyPlayerEffective)
+    {
+        if (!TargetActor->IsA(AFRGASCharacterPlayer::StaticClass()))
+        {
+            return; // 플레이어가 아니면 리턴
+        }
+    }
 
     UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
     if (!TargetASC) return;
