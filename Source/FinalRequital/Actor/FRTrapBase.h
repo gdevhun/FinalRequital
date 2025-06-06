@@ -29,37 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
 	TObjectPtr<class UBoxComponent> CollisionBox;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	TSubclassOf<class UGameplayEffect> DamageEffectClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsTrapActive = true;
-
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	float DamageInterval = 1.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	bool bIsOnlyPlayerEffective;
-
-	UFUNCTION()
-	virtual void OnTrapTriggered(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnTrapEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	void ApplyTrapEffectToActor(AActor* TargetActor);
-	void DealDamageToOverlappingActors();
-
-	FTimerHandle DamageTickTimer;
-	TSet<AActor*> OverlappingActors;
-
-public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void ActivateTrap();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void DeactivateTrap();
+	/*UPROPERTY(EditAnywhere, Category = "Trap")
+	TSubclassOf<class UGameplayEffect> DamageEffectClass;*/
 
 };
