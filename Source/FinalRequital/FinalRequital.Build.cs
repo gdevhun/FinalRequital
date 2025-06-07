@@ -23,7 +23,8 @@ public class FinalRequital : ModuleRules
 			"UMG",
 			"GameplayAbilities",
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

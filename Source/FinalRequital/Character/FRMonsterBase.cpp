@@ -10,6 +10,8 @@
 #include "Physics/FRCollision.h"
 #include "UI/FRWidgetComponent.h"
 #include "UI/FRUserWidget.h"
+#include "AIController.h"
+#include "BrainComponent.h"
 
 AFRMonsterBase::AFRMonsterBase()
 {
@@ -78,7 +80,16 @@ void AFRMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	ASC->InitAbilityActorInfo(this, this);
+
+	if (HitReactAbilityClass)
+	{
+		FGameplayAbilitySpec Spec(HitReactAbilityClass, 1, INDEX_NONE, this);
+		HitReactAbilityHandle = ASC->GiveAbility(Spec);
+	}
+
+	// 체력 관련 DELEGATE 연결 처리
 	AttributeSet->OnOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
+	AttributeSet->OnTakeDamage.AddDynamic(this, &ThisClass::HitReact);
 
 	// [게임플레이 이펙트 생성 과정]
 	// 게임플레이 이펙트 컨텍스트와 게임플레이 이펙트 스펙을 통해 생성 가능
@@ -107,8 +118,16 @@ void AFRMonsterBase::OnOutOfHealth()
 void AFRMonsterBase::SetDead()
 {
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
-	PlayDeadAnimation();
+	PlayAnimMontage(DeadMontage);
 	SetActorEnableCollision(false);
+
+	if (AAIController* AIController = Cast<AAIController>(GetController()))
+	{
+		if (AIController->BrainComponent)
+		{
+			AIController->BrainComponent->StopLogic(TEXT("Monster Died"));
+		}
+	}
 
 	FTimerHandle DeadTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(DeadTimerHandle, FTimerDelegate::CreateLambda(
@@ -119,10 +138,18 @@ void AFRMonsterBase::SetDead()
 	), DeadEventDelayTime, false);
 }
 
-void AFRMonsterBase::PlayDeadAnimation() const
+void AFRMonsterBase::HitReact()
+{
+	if (ASC && HitReactAbilityHandle.IsValid())
+	{
+		ASC->TryActivateAbility(HitReactAbilityHandle);
+	}
+}
+
+void AFRMonsterBase::PlayAnimMontage(UAnimMontage* Montage) const
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	AnimInstance->StopAllMontages(0.0f);
-	AnimInstance->Montage_Play(DeadMontage, 1.0f);
+	AnimInstance->Montage_Play(Montage, 1.0f);
 }
 

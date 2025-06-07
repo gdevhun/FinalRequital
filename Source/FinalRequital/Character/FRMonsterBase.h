@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "GameFramework/Character.h"
 #include "FRMonsterBase.generated.h"
+
 
 UCLASS()
 class FINALREQUITAL_API AFRMonsterBase : public ACharacter , public IAbilitySystemInterface
@@ -35,6 +37,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = GAS)
 	float Level;
 
+	UPROPERTY(EditAnywhere, Category = GAS)
+	TSubclassOf<class UGameplayAbility> HitReactAbilityClass;
+
 	//UPROPERTY(EditAnywhere, Category = HP)
 	//TSubclassOf<class UUserWidget> HpWidgetClassRef;
 
@@ -47,10 +52,19 @@ public:
 	UPROPERTY(EditAnywhere, Category = Stat)
 	float WalkMaxSpeed = 200.0f;
 
-	//Dead Section
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
+	//Anim Section
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Anim, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> DeadMontage;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Anim, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> HitMontage;*/
+	UFUNCTION()
+	void HitReact();
+
+private:
+	FGameplayAbilitySpecHandle HitReactAbilityHandle;
+	void PlayAnimMontage(UAnimMontage* Montage) const;
+
 	void SetDead();
-	void PlayDeadAnimation() const;
 	float DeadEventDelayTime = 5.0f;
 };

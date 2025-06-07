@@ -69,13 +69,17 @@ void UFRCharacterAttributeSet::PostGameplayEffectExecute(const struct FGameplayE
 
 	if(Data.EvaluatedData.Attribute==GetHealthAttribute())
 	{
-		FR_LOG(FRLOG, Warning, TEXT("Direct HEALTH Access: %f "), GetHealth());
+		//FR_LOG(FRLOG, Warning, TEXT("Direct HEALTH Access: %f "), GetHealth());
 		SetHealth(FMath::Clamp(GetHealth(), MinimumHealth, GetMaxHealth()));
 	}
-	else if(Data.EvaluatedData.Attribute==GetDamageAttribute())
+	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
-		FR_LOG(FRLOG, Log, TEXT("Damage: %f "), GetDamage());
-		SetHealth(FMath::Clamp(GetHealth()- GetDamage(),MinimumHealth, GetMaxHealth()));
+		//FR_LOG(FRLOG, Log, TEXT("Damage: %f "), GetDamage());
+
+		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));
+
+		OnTakeDamage.Broadcast();
+
 		SetDamage(0.0f);
 	}
 

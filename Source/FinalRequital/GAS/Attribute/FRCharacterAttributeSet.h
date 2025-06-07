@@ -23,6 +23,7 @@
  	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutOfHealthDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTakeDamageDelegate);
 
 UCLASS()
 class FINALREQUITAL_API UFRCharacterAttributeSet : public UAttributeSet
@@ -56,6 +57,7 @@ public:
 	// 사용하는 ASC에서 특정 어트리뷰트를 접근할 때 가져오는 GetSet함수는 const로 선언되있음.
 	// 이 Delegate를 연동하려하면 const를 위반하기 때문에 const cast 대신 mutable 키워드로 const에서 열외시킴.
 	mutable FOutOfHealthDelegate OnOutOfHealth;
+	mutable FOnTakeDamageDelegate OnTakeDamage;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="Attack", Meta = (AllowPrivateAccess = true))
