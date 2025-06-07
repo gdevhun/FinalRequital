@@ -40,7 +40,7 @@ void UFRGA_SpawnArrow::SpawnAndFireArrow(float InFirePower, float InProjectileGr
 
 	FVector CameraLocation = CameraComp->GetComponentLocation();
 	FVector CameraDirection = CameraComp->GetForwardVector();
-	FVector TraceEnd = CameraLocation + CameraDirection * 10000.0f;
+	FVector TraceEnd = CameraLocation + CameraDirection * 3000.0f;
 
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
