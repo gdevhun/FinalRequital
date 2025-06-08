@@ -77,7 +77,7 @@ FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 		DataHandle.Add(TargetData);
 	}
 
-#if ENABLE_DRAW_DEBUG
+/*#if ENABLE_DRAW_DEBUG
 	if (bShowDebug)
 	{
 		FVector CapsuleOrigin = Start + (End - Start) * 0.5f;
@@ -96,6 +96,6 @@ FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 		);
 	}
 #endif
-
+*/
 	return DataHandle;
 }

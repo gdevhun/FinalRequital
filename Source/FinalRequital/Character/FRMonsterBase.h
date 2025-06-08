@@ -66,5 +66,5 @@ private:
 	void PlayAnimMontage(UAnimMontage* Montage) const;
 
 	void SetDead();
-	float DeadEventDelayTime = 5.0f;
+	float DeadEventDelayTime = 3.0f;
 };
