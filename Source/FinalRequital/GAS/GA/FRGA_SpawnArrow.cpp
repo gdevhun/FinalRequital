@@ -64,6 +64,6 @@ void UFRGA_SpawnArrow::SpawnAndFireArrow(float InFirePower, float InProjectileGr
 		Arrow->InitVelocity(FireDirection, InFirePower, InProjectileGravityPower);
 		Arrow->GetCollisionComponent()->IgnoreActorWhenMoving(AvatarActor, true);
 	}
-	DrawDebugLine(GetWorld(), CameraLocation, TraceEnd, FColor::Red, false, 2.0f);
-	DrawDebugLine(GetWorld(), MuzzleLocation, TargetPoint, FColor::Green, false, 2.0f);
+	/*DrawDebugLine(GetWorld(), CameraLocation, TraceEnd, FColor::Red, false, 2.0f);
+	DrawDebugLine(GetWorld(), MuzzleLocation, TargetPoint, FColor::Green, false, 2.0f);*/
 }
