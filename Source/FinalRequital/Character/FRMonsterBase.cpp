@@ -18,7 +18,7 @@ AFRMonsterBase::AFRMonsterBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Capsule
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->InitCapsuleSize(28.f, 60.0f);
 	GetCapsuleComponent()->SetCollisionProfileName(CPROFILE_FRCAPSULE);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
@@ -33,7 +33,7 @@ AFRMonsterBase::AFRMonsterBase()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	// Mesh
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -100.0f), FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -55.0f), FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
 
