@@ -13,6 +13,8 @@ void AFRPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	this->ConsoleCommand(TEXT("showdebug abilitysystem"));
+
 	// HUD 위젯을 화면에 추가 -> 에셋정보는 블루프린트에서 캐시
 	if (FRHUDWidgetClass) // RXHUDWidgetClass가 유효한지 확인
 	{

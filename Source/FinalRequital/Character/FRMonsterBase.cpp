@@ -2,7 +2,7 @@
 
 
 #include "Character/FRMonsterBase.h"
-#include "GAS/Attribute/FRCharacterAttributeSet.h"
+#include "GAS/Attribute/FRMonsterAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystemComponent.h"
@@ -39,7 +39,7 @@ AFRMonsterBase::AFRMonsterBase()
 
 	// ASC
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
-	AttributeSet = CreateDefaultSubobject<UFRCharacterAttributeSet>(TEXT("AttributeSet"));
+	AttributeSet = CreateDefaultSubobject<UFRMonsterAttributeSet>(TEXT("MonsterAttributeSet"));
 
 	// HP UI
 	HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
@@ -79,6 +79,7 @@ class UAbilitySystemComponent* AFRMonsterBase::GetAbilitySystemComponent() const
 void AFRMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
 	ASC->InitAbilityActorInfo(this, this);
 
 	if (HitReactAbilityClass)
@@ -87,9 +88,15 @@ void AFRMonsterBase::PossessedBy(AController* NewController)
 		HitReactAbilityHandle = ASC->GiveAbility(Spec);
 	}
 
-	// 체력 관련 DELEGATE 연결 처리
-	AttributeSet->OnOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
-	AttributeSet->OnTakeDamage.AddDynamic(this, &ThisClass::HitReact);
+	// 몬스터 체력 관련 DELEGATE 연결 처리
+	if (AttributeSet)
+	{
+		AttributeSet->OnMonsterOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
+		AttributeSet->OnMonsterTakeDamage.AddDynamic(this, &ThisClass::HitReact);
+	}
+	
+	//AttributeSet->OnMonsterOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
+	//AttributeSet->OnMonsterTakeDamage.AddDynamic(this, &ThisClass::HitReact);
 
 	// [게임플레이 이펙트 생성 과정]
 	// 게임플레이 이펙트 컨텍스트와 게임플레이 이펙트 스펙을 통해 생성 가능

@@ -2,10 +2,10 @@
 
 #include "UI/FRHpBarUserWidget.h"
 #include "AbilitySystemComponent.h"
-#include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "FRDebugHelper.h"
+#include "GAS/Attribute/FRMonsterAttributeSet.h"
 
 void UFRHpBarUserWidget::SetAbilitySystemComponent(AActor* InOwner)
 {
@@ -14,10 +14,10 @@ void UFRHpBarUserWidget::SetAbilitySystemComponent(AActor* InOwner)
 	if(ASC)
 	{
 		// Hp 감지 변화 UI 어트리뷰트셋으로부터 가져온 후 델리게이트 바인딩
-		ASC->GetGameplayAttributeValueChangeDelegate(UFRCharacterAttributeSet::GetHealthAttribute()).AddUObject(this, &UFRHpBarUserWidget::OnHealthChanged);
-		ASC->GetGameplayAttributeValueChangeDelegate(UFRCharacterAttributeSet::GetMaxHealthAttribute()).AddUObject(this, &UFRHpBarUserWidget::OnMaxHealthChanged);
+		ASC->GetGameplayAttributeValueChangeDelegate(UFRMonsterAttributeSet::GetHealthAttribute()).AddUObject(this, &UFRHpBarUserWidget::OnHealthChanged);
+		ASC->GetGameplayAttributeValueChangeDelegate(UFRMonsterAttributeSet::GetMaxHealthAttribute()).AddUObject(this, &UFRHpBarUserWidget::OnMaxHealthChanged);
 
-		const UFRCharacterAttributeSet* CurrentAttributeSet = ASC->GetSet<UFRCharacterAttributeSet>();
+		const UFRMonsterAttributeSet* CurrentAttributeSet = ASC->GetSet<UFRMonsterAttributeSet>();
 		if(CurrentAttributeSet)
 		{
 			CurrentHealth = CurrentAttributeSet->GetHealth();

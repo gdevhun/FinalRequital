@@ -45,10 +45,6 @@ void AFRGASCharacterPlayer::PossessedBy(AController* NewController)
 
 		SetupGASInputComponent();
 
-		// 게임어빌리티 디버그 콘솔 커맨드
-		//APlayerController* PlayerController = CastChecked<APlayerController>(NewController);
-		//PlayerController->ConsoleCommand(TEXT("showdebug abilitysystem"));
-		//FR_LOG(FRLOG, Warning, TEXT("Rotation: %s"), *GetActorRotation().ToString());
 	}
 }
 

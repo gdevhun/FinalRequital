@@ -28,7 +28,7 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 	UPROPERTY()
-	TObjectPtr<class UFRCharacterAttributeSet> AttributeSet;
+	TObjectPtr<class UFRMonsterAttributeSet> AttributeSet;
 
 public:
 	UPROPERTY(EditAnywhere, Category = GAS)
@@ -39,9 +39,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TSubclassOf<class UGameplayAbility> HitReactAbilityClass;
-
-	//UPROPERTY(EditAnywhere, Category = HP)
-	//TSubclassOf<class UUserWidget> HpWidgetClassRef;
 
 	UFUNCTION()
 	virtual void OnOutOfHealth();
@@ -56,8 +53,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Anim, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> DeadMontage;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Anim, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UAnimMontage> HitMontage;*/
 	UFUNCTION()
 	void HitReact();
 
