@@ -100,6 +100,7 @@ void AFRCharacterBase::Tick(float DeltaTime)
 
 void AFRCharacterBase::Move(const FInputActionValue& Value)
 {
+	if (bIsStunned) return;
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller)

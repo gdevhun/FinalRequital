@@ -81,4 +81,5 @@ public:
 	// 줌 상태 설정 함수
 	void SetZooming(bool bZooming);
 
+	bool bIsStunned = false;
 };

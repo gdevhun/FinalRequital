@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "Character/FRCharacterBase.h"
 #include "FRGASCharacterPlayer.generated.h"
 
+enum class EWeaponType : uint8;
 /**
  * 
  */
@@ -25,14 +27,13 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
-
 	void SetupGASInputComponent();
 	void GASInputPressed(int32 InputId);
 	void GASInputReleased(int32 InputId);
 
 public:
-
 	// Weapon QuickSlot
+	void HandleQuickSlot(EWeaponType WeaponType);
 	void QuickSlot1();
 	void QuickSlot2();
 	void QuickSlot3();
@@ -59,13 +60,18 @@ protected:
 	TObjectPtr<class UFRWidgetComponent> HpBar;
 
 public:
+	// State Delegate
+	void OnStunTagChanged(const FGameplayTag Tag, int32 NewCount);
+
+	UPROPERTY(EditAnywhere, Category = Animation)
+	TObjectPtr<UAnimMontage> StunMontage;
+
+	// LayerAnim Section
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustUnarmedLayerAnim();
 
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustMeleeLayerAnim();
-
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustBowLayerAnim();

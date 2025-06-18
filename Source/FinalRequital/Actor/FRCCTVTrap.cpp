@@ -53,7 +53,7 @@ void AFRCCTVTrap::DetectByLineTrace()
 	const FVector Forward = SpotLight->GetForwardVector();
 	const float MaxDistance = SpotLight->AttenuationRadius;
 	const float ConeAngle = FMath::DegreesToRadians(SpotLight->OuterConeAngle);
-	const int NumRays = 10;
+	const int NumRays = 15;
 
 	for (int i = 0; i < NumRays; ++i)
 	{
