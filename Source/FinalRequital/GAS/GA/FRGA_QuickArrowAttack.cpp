@@ -25,11 +25,15 @@ void UFRGA_QuickArrowAttack::ActivateAbility(const FGameplayAbilitySpecHandle Ha
                                              const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		return;
+	}
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
-	(this, TEXT("PlayArrowAttack"), ArrowAttackMontage, 1.0f);
+	(this, TEXT("PlayArrowAttack"), ArrowAttackMontage, 0.75f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_QuickArrowAttack::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_QuickArrowAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
@@ -65,7 +69,4 @@ void UFRGA_QuickArrowAttack::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-
-	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
