@@ -41,7 +41,7 @@ FGameplayAbilityTargetDataHandle AFRTA_RangeMultiTrace::MakeTargetData() const
 	FGameplayAbilityTargetData_ActorArray* ActorsData = new FGameplayAbilityTargetData_ActorArray();
 	ActorsData->SetActors(HitActors);
 
-/*#if ENABLE_DRAW_DEBUG
+#if ENABLE_DRAW_DEBUG
 
 	if (bShowDebug)
 	{
@@ -50,6 +50,6 @@ FGameplayAbilityTargetDataHandle AFRTA_RangeMultiTrace::MakeTargetData() const
 	}
 
 #endif
-*/
+
 	return FGameplayAbilityTargetDataHandle(ActorsData);
 }

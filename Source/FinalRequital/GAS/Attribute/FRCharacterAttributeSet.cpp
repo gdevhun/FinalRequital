@@ -14,9 +14,12 @@ UFRCharacterAttributeSet::UFRCharacterAttributeSet() :
 	AttackRate(20.0f),
 	MaxAttackRate(100.0f),
 	MaxHealth(100.0f),
+	Mana(0.0f),
+	MaxMana(3.0f),
 	ReceivedPlayerDamage(0.0f)
 {
 	InitHealth(GetMaxHealth());
+	InitMana(GetMana());
 }
 
 void UFRCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

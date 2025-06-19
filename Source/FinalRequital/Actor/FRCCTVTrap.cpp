@@ -85,8 +85,7 @@ void AFRCCTVTrap::DetectByLineTrace()
 
 								FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(DamageEffectClass, 1.0f, EffectContext);
 								if (SpecHandle.IsValid())
-								{
-									ASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+								{									ASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
 									UE_LOG(LogTemp, Warning, TEXT("스턴 이펙트 적용됨: %s"), *HitActor->GetName());
 								}
 							}

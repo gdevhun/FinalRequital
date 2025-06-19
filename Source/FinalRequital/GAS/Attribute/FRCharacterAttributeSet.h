@@ -42,6 +42,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, MaxAttackRate);
 	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, Health);
 	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, MaxHealth);
+	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, MaxMana);
+	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, Mana);
 	ATTRIBUTE_ACCESSORS(UFRCharacterAttributeSet, ReceivedPlayerDamage);
 
 	// PreAttributeChange -> 값이 실제로 적용되기 직전에 호출됨
@@ -79,6 +81,11 @@ protected:
 	FGameplayAttributeData Health;
 	UPROPERTY(BlueprintReadOnly, Category = "Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Mana", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData Mana;
+	UPROPERTY(BlueprintReadOnly, Category = "Mana", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData MaxMana;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData ReceivedPlayerDamage;

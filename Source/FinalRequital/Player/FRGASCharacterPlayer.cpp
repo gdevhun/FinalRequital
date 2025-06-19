@@ -120,7 +120,7 @@ void AFRGASCharacterPlayer::OnStunTagChanged(const FGameplayTag Tag, int32 NewCo
 	if (NewCount > 0)
 	{
 		GetCharacterMovement()->DisableMovement();
-		bUseControllerRotationYaw = false;
+		//bUseControllerRotationYaw = false;
 		bIsStunned = true;
 
 		if (StunMontage)

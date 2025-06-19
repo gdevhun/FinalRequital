@@ -7,6 +7,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
+#include "Character/FRMonsterBase.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 
 UFRGA_MeleeAttackHitCheck::UFRGA_MeleeAttackHitCheck()
@@ -28,15 +29,24 @@ void UFRGA_MeleeAttackHitCheck::ActivateAbility(const FGameplayAbilitySpecHandle
 	AttackTraceTask->ReadyForActivation();
 
 }
-
 void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
 {
 	// 단일 대상 감지 Trace 기반, SweepSingle 등의 HitResult 사용
-	if(UAbilitySystemBlueprintLibrary::TargetDataHasHitResult(TargetDataHandle,0))
+	if (UAbilitySystemBlueprintLibrary::TargetDataHasHitResult(TargetDataHandle, 0))
 	{
 		// 타겟데이터 0번째 배열에 결과값이 존재하는지
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
-		//D(FString::Printf(TEXT("Target: %s Detected"), *(HitResult.GetActor()->GetName())));
+
+		// 몬스터 클래스인지 확인
+		AFRMonsterBase* TargetMonster = Cast<AFRMonsterBase>(HitResult.GetActor());
+		if (!TargetMonster)
+		{
+			// 몬스터가 아니면 처리하지 않음
+			bool bReplicatedEndAbility = true;
+			bool bWasCancelled = false;
+			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+			return;
+		}
 
 		if (CameraShakeClass)
 		{   // 피격시 카메라 쉐이크적용
@@ -54,56 +64,67 @@ void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTarg
 
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
 		const UFRCharacterAttributeSet* SourceAttribute = SourceASC->GetSet<UFRCharacterAttributeSet>();
-
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
-		if(!SourceASC||!TargetASC)
+		if (!SourceASC || !TargetASC)
 		{
 			// 감지한 액터의 ASC(타겟ASC)가 없고 나의 ASC(소스ASC)의 액터중 하나라도 없으면 에러
 			FR_LOG(FRLOG, Error, TEXT("ASC Not Found!"));
 			return;
 		}
 
-		/*
-		//소스는 데미지를 불러오고 타겟은 값을 변경해줘야함.
-		const UFRCharacterAttributeSet* SourceAttribute = SourceASC->GetSet<UFRCharacterAttributeSet>();
-		// const UFRCharacterAttributeSet* TargetAttribute = SourceASC->GetSet<UFRCharacterAttributeSet>();
-		// 값을 변경해야하는데 const 이기 때문에 C++로우레벨 const 케스팅 진행
-		UFRCharacterAttributeSet* TargetAttribute = const_cast<UFRCharacterAttributeSet*>(TargetASC->GetSet<UFRCharacterAttributeSet>());
-		if(!SourceAttribute||!TargetAttribute)
-		{
-			FR_LOG(FRLOG, Error, TEXT("Attribute Not Found!"));
-			return;
-		}
-
-		const float AttackDamage = SourceAttribute->GetAttackRate();
-		TargetAttribute->SetHealth(TargetAttribute->GetHealth() - AttackDamage);
-		*/
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, CurrentLevel);
-		if(EffectSpecHandle.IsValid())
+		if (EffectSpecHandle.IsValid())
 		{
 			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetDataHandle);
-
 			FGameplayEffectContextHandle CueContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(EffectSpecHandle);
 			CueContextHandle.AddHitResult(HitResult);
 			FGameplayCueParameters CueParameters;
 			CueParameters.EffectContext = CueContextHandle;
-
 			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT, CueParameters);
 		}
 	}
-
 	// 다수 대상 감지 - OverlapMulti 의 Actor 배열 사용
 	else if (UAbilitySystemBlueprintLibrary::TargetDataHasActor(TargetDataHandle, 0))
 	{
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
 
+		// 몬스터만 필터링
+		TArray<TWeakObjectPtr<AActor>> FilteredActors;
+		TArray<TWeakObjectPtr<AActor>> AllActors = TargetDataHandle.Data[0].Get()->GetActors();
+
+		for (const TWeakObjectPtr<AActor>& ActorPtr : AllActors)
+		{
+			if (ActorPtr.IsValid())
+			{
+				AFRMonsterBase* Monster = Cast<AFRMonsterBase>(ActorPtr.Get());
+				if (Monster)
+				{
+					FilteredActors.Add(ActorPtr);
+				}
+			}
+		}
+
+		// 몬스터가 하나도 없으면 처리하지 않음
+		if (FilteredActors.Num() == 0)
+		{
+			bool bReplicatedEndAbility = true;
+			bool bWasCancelled = false;
+			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+			return;
+		}
+
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, CurrentLevel);
 		if (EffectSpecHandle.IsValid())
 		{
-			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetDataHandle);
+			// 필터링된 몬스터들에게만 이펙트 적용
+			FGameplayAbilityTargetData_ActorArray* FilteredTargetData = new FGameplayAbilityTargetData_ActorArray();
+			FilteredTargetData->SetActors(FilteredActors);
+			FGameplayAbilityTargetDataHandle FilteredTargetDataHandle(FilteredTargetData);
+
+			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, FilteredTargetDataHandle);
 
 			FGameplayEffectContextHandle CueContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(EffectSpecHandle);
-			CueContextHandle.AddActors(TargetDataHandle.Data[0].Get()->GetActors(), false);
+			CueContextHandle.AddActors(FilteredActors, false);
 			FGameplayCueParameters CueParameters;
 			CueParameters.EffectContext = CueContextHandle;
 

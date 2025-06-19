@@ -9,6 +9,15 @@
 
 enum class EMaskSkillType : uint8;
 enum class EWeaponType : uint8;
+
+UENUM(BlueprintType)
+enum class EFRCharacterStatType : uint8
+{
+	H UMETA(DisplayName = "기력"),
+	D UMETA(DisplayName = "결심"),
+	P UMETA(DisplayName = "의념")
+};
+
 /**
  * 
  */
@@ -34,6 +43,13 @@ public:
 
 	EMaskSkillType GetSelectedMaskSkill() const;
 
+	// 스탯 관리
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void IncreaseStat(EFRCharacterStatType StatType, int32 Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void ApplyStatsToAttributes();
+
 protected:
 	UPROPERTY(EditAnywhere, Category="GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
@@ -46,4 +62,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Replicated, Category = "GAS")
 	EMaskSkillType SelectedMaskSkill;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	int32 Stat_H;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	int32 Stat_D;
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	int32 Stat_P;
 };

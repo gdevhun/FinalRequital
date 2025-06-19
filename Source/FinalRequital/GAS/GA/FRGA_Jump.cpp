@@ -27,6 +27,12 @@ void UFRGA_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, false, true);
+		return;
+	}
+
 	UFRAT_JumpAndWaitForLanding* JumpAndWaitForLandingTask = UFRAT_JumpAndWaitForLanding::CreateTask(this);
 	JumpAndWaitForLandingTask->OnComplete.AddDynamic(this, &UFRGA_Jump::OnLandedCallback);
 	JumpAndWaitForLandingTask->ReadyForActivation();

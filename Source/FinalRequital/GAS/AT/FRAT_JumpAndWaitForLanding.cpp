@@ -26,9 +26,9 @@ void UFRAT_JumpAndWaitForLanding::Activate()
 
 void UFRAT_JumpAndWaitForLanding::OnDestroy(bool AbilityEnded)
 {
+	Super::OnDestroy(AbilityEnded);
 	ACharacter* Character = CastChecked<ACharacter>(GetAvatarActor());
 	Character->LandedDelegate.RemoveDynamic(this, &UFRAT_JumpAndWaitForLanding::OnLandedCallback);
-	Super::OnDestroy(AbilityEnded);
 }
 
 void UFRAT_JumpAndWaitForLanding::OnLandedCallback(const FHitResult& Hit)
