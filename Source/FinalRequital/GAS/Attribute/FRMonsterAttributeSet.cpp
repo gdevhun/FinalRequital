@@ -13,14 +13,14 @@ UFRMonsterAttributeSet::UFRMonsterAttributeSet() :
 	AttackRate(20.0f),
 	MaxAttackRate(100.0f),
 	MaxHealth(100.0f),
-	Damage(0.0f)
+	ReceivedMonsterDamage(0.0f)
 {
 	InitHealth(GetMaxHealth());
 }
 
 void UFRMonsterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
-	if (Attribute == GetDamageAttribute())
+	if (Attribute == GetReceivedMonsterDamageAttribute())
 	{
 		NewValue = NewValue < 0.0f ? 0.0f : NewValue;
 	}
@@ -34,7 +34,7 @@ bool UFRMonsterAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectModC
 		return false;
 	}
 
-	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	if (Data.EvaluatedData.Attribute == GetReceivedMonsterDamageAttribute())
 	{
 		if (Data.EvaluatedData.Magnitude > 0.0f)
 		{
@@ -59,11 +59,11 @@ void UFRMonsterAttributeSet::PostGameplayEffectExecute(const struct FGameplayEff
 	{
 		SetHealth(FMath::Clamp(GetHealth(), MinimumHealth, GetMaxHealth()));
 	}
-	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	else if (Data.EvaluatedData.Attribute == GetReceivedMonsterDamageAttribute())
 	{
-		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));
+		SetHealth(FMath::Clamp(GetHealth() - GetReceivedMonsterDamage(), MinimumHealth, GetMaxHealth()));
 		OnMonsterTakeDamage.Broadcast();
-		SetDamage(0.0f);
+		SetReceivedMonsterDamage(0.0f);
 	}
 	// 죽는 기능 구현
 	if (GetHealth() <= 0.0f && !bOutOfHealth)

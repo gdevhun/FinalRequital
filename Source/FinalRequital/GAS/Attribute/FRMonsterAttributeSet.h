@@ -31,7 +31,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UFRMonsterAttributeSet, MaxAttackRate);
 	ATTRIBUTE_ACCESSORS(UFRMonsterAttributeSet, Health);
 	ATTRIBUTE_ACCESSORS(UFRMonsterAttributeSet, MaxHealth);
-	ATTRIBUTE_ACCESSORS(UFRMonsterAttributeSet, Damage);
+	ATTRIBUTE_ACCESSORS(UFRMonsterAttributeSet, ReceivedMonsterDamage);
 
 	// PreAttributeChange -> 값이 실제로 적용되기 직전에 호출됨
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
@@ -70,7 +70,7 @@ protected:
 	FGameplayAttributeData MaxHealth;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData Damage;
+	FGameplayAttributeData ReceivedMonsterDamage;
 
 	bool bOutOfHealth = false;
 };

@@ -14,7 +14,7 @@ UFRCharacterAttributeSet::UFRCharacterAttributeSet() :
 	AttackRate(20.0f),
 	MaxAttackRate(100.0f),
 	MaxHealth(100.0f),
-	Damage(0.0f)
+	ReceivedPlayerDamage(0.0f)
 {
 	InitHealth(GetMaxHealth());
 }
@@ -27,7 +27,7 @@ void UFRCharacterAttributeSet::PreAttributeChange(const FGameplayAttribute& Attr
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
 	}*/
 
-	if(Attribute == GetDamageAttribute())
+	if(Attribute == GetReceivedPlayerDamageAttribute())
 	{
 		NewValue = NewValue < 0.0f ? 0.0f : NewValue;
 	}
@@ -41,7 +41,7 @@ bool UFRCharacterAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectMo
 		return false;
 	}
 
-	if (Data.EvaluatedData.Attribute==GetDamageAttribute())
+	if (Data.EvaluatedData.Attribute==GetReceivedPlayerDamageAttribute())
 	{
 		if (Data.EvaluatedData.Magnitude>0.0f)
 		{
@@ -72,15 +72,15 @@ void UFRCharacterAttributeSet::PostGameplayEffectExecute(const struct FGameplayE
 		//FR_LOG(FRLOG, Warning, TEXT("Direct HEALTH Access: %f "), GetHealth());
 		SetHealth(FMath::Clamp(GetHealth(), MinimumHealth, GetMaxHealth()));
 	}
-	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	else if (Data.EvaluatedData.Attribute == GetReceivedPlayerDamageAttribute())
 	{
 		//FR_LOG(FRLOG, Log, TEXT("Damage: %f "), GetDamage());
 
-		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));
+		SetHealth(FMath::Clamp(GetHealth() - GetReceivedPlayerDamage(), MinimumHealth, GetMaxHealth()));
 
 		OnTakeDamage.Broadcast();
 
-		SetDamage(0.0f);
+		SetReceivedPlayerDamage(0.0f);
 	}
 
 	// 죽는 기능 구현
