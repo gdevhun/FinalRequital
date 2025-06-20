@@ -6,6 +6,8 @@
 #include "FRMaskSkillComponent.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectTypes.h"
+#include "GameplayEffectExtension.h"
 
 AFRPlayerState::AFRPlayerState()
 {
@@ -95,5 +97,7 @@ void AFRPlayerState::ApplyStatsToAttributes()
 	AttributeSet->SetAttackRate(NewAttackRate);
 	AttributeSet->SetMaxHealth(NewMaxHealth);
 	AttributeSet->SetMana(NewMana);
+
+	
 }
 

@@ -9,6 +9,9 @@
 #define FRTAG_CHARACTER_INVISIBLE FGameplayTag::RequestGameplayTag(FName("Character.State.Invisible"))
 #define FRTAG_CHARACTER_STUNNED FGameplayTag::RequestGameplayTag(FName("Character.State.Stunned"))
 
+#define FRTAG_CHARACTER_COOLTIME_SWORD FGameplayTag::RequestGameplayTag(FName("Character.State.IronMaceSpecialAttackCooldown"))
+#define FRTAG_CHARACTER_COOLTIME_IRONMACE FGameplayTag::RequestGameplayTag(FName("Character.State.SwordSpecialAttackCooldown"))
+
 #define GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.MeleeAttackHit"))
 #define GAMEPLAYCUE_CHARACTER_ARROWHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.ArrowHit"))
 #define GAMEPLAYCUE_CHARACTER_BRONZEBELLHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.BronzeBellHit"))

@@ -71,4 +71,7 @@ protected:
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	int32 Stat_P;
+
+	//UPROPERTY(EditDefaultsOnly, Category = "Cooldown")
+	//TArray<TSubclassOf<class UFRGE_Cooldown>> AllCooldownEffectClasses;
 };
