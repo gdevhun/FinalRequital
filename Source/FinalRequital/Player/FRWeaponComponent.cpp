@@ -93,8 +93,10 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 	switch (WeaponType)
 	{
 	case EWeaponType::Sword:
+		OwnerCharacter->AdjustSwordLayerAnim();
+		break;
 	case EWeaponType::IronMace:
-		OwnerCharacter->AdjustMeleeLayerAnim();
+		OwnerCharacter->AdjustIronMaceLayerAnim();
 		break;
 	case EWeaponType::Bow:
 		OwnerCharacter->AdjustBowLayerAnim();

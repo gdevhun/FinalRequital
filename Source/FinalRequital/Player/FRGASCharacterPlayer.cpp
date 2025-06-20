@@ -180,4 +180,6 @@ UAbilitySystemComponent* AFRGASCharacterPlayer::GetAbilitySystemComponent() cons
 void AFRGASCharacterPlayer::AdjustBronzeBellLayerAnim_Implementation() {}
 void AFRGASCharacterPlayer::AdjustBowLayerAnim_Implementation() {}
 void AFRGASCharacterPlayer::AdjustUnarmedLayerAnim_Implementation() {}
-void AFRGASCharacterPlayer::AdjustMeleeLayerAnim_Implementation() {}
+void AFRGASCharacterPlayer::AdjustSwordLayerAnim_Implementation() {}
+void AFRGASCharacterPlayer::AdjustIronMaceLayerAnim_Implementation() {}
+

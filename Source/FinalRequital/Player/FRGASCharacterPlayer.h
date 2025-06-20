@@ -71,7 +71,10 @@ public:
 	void AdjustUnarmedLayerAnim();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void AdjustMeleeLayerAnim();
+	void AdjustSwordLayerAnim();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AdjustIronMaceLayerAnim();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustBowLayerAnim();
