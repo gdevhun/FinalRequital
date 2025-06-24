@@ -13,6 +13,7 @@
 
 AFRTA_Trace::AFRTA_Trace()
 {
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AFRTA_Trace::StartTargeting(UGameplayAbility* Ability)
@@ -58,9 +59,6 @@ FGameplayAbilityTargetDataHandle AFRTA_Trace::MakeTargetData() const
 	const float AttackRadius = AttributeSet->GetAttackRadius();
 
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(UFRTA_Trace), false, Character);
-	/*const FVector Forward = Character->GetActorForwardVector();
-	const FVector Start = Character->GetActorLocation() + Forward * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
-	const FVector End = Start + Forward * AttackRange;*/
 
 	const FVector Forward = Character->GetActorForwardVector();
 	const FVector Start = Character->GetActorLocation() + Forward * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
@@ -76,7 +74,7 @@ FGameplayAbilityTargetDataHandle AFRTA_Trace::MakeTargetData() const
 		DataHandle.Add(TargetData);
 	}
 
-/*#if ENABLE_DRAW_DEBUG
+#if ENABLE_DRAW_DEBUG
 	if(bShowDebug)
 	{
 		FVector CapsuleOrigin = Start + (End - Start) * 0.5f;
@@ -91,6 +89,6 @@ FGameplayAbilityTargetDataHandle AFRTA_Trace::MakeTargetData() const
 			false,
 			4.0f);
 	}
-#endif*/
+#endif
 	return DataHandle;
 }

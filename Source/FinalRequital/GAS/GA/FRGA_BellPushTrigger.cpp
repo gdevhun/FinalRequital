@@ -8,6 +8,7 @@
 
 UFRGA_BellPushTrigger::UFRGA_BellPushTrigger()
 {
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
 void UFRGA_BellPushTrigger::InputPressed(const FGameplayAbilitySpecHandle Handle,
@@ -28,8 +29,8 @@ void UFRGA_BellPushTrigger::ActivateAbility(const FGameplayAbilitySpecHandle Han
 		return;
 	}
 
-	AFRCharacterBase* TargetCharacter = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
-	TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
+	//AFRCharacterBase* TargetCharacter = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
+	//TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
 	(this, TEXT("PlayBellPushTrigger"), BellPushTriggerMontage, 1.0f);
@@ -50,8 +51,8 @@ void UFRGA_BellPushTrigger::EndAbility(const FGameplayAbilitySpecHandle Handle,
                                        const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                        bool bReplicateEndAbility, bool bWasCancelled)
 {
-	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	//AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
+	//FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

@@ -8,6 +8,7 @@
 
 UFRGA_SpecialMeleeAttack::UFRGA_SpecialMeleeAttack()
 {
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
 void UFRGA_SpecialMeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

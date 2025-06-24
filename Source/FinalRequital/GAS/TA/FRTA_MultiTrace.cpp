@@ -3,15 +3,12 @@
 
 #include "GAS/TA/FRTA_MultiTrace.h"
 #include "AbilitySystemBlueprintLibrary.h"
-#include "Abilities/GameplayAbility.h"
 #include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
-#include "AbilitySystemBlueprintLibrary.h"
 #include "FRDebugHelper.h"
 #include "Physics/FRCollision.h"
-#include "Engine/OverlapResult.h"
 
 FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 {
@@ -77,7 +74,7 @@ FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 		DataHandle.Add(TargetData);
 	}
 
-/*#if ENABLE_DRAW_DEBUG
+#if ENABLE_DRAW_DEBUG
 	if (bShowDebug)
 	{
 		FVector CapsuleOrigin = Start + (End - Start) * 0.5f;
@@ -96,6 +93,6 @@ FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 		);
 	}
 #endif
-*/
+
 	return DataHandle;
 }

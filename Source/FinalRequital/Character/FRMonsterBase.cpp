@@ -21,6 +21,7 @@ AFRMonsterBase::AFRMonsterBase()
 	GetCapsuleComponent()->InitCapsuleSize(28.f, 60.0f);
 	GetCapsuleComponent()->SetCollisionProfileName(CPROFILE_FRCAPSULE);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(CCHANNEL_FRACTION, ECR_Block);
 
 	// Movement
 	GetCharacterMovement()->bOrientRotationToMovement = false;

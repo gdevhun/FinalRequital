@@ -10,7 +10,6 @@
 
 AFRCCTVTrap::AFRCCTVTrap()
 {
- 	
 	PrimaryActorTick.bCanEverTick = false;
 
 	RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootSceneComponent"));

@@ -8,6 +8,7 @@
 
 UFRGA_FindSoulPiece::UFRGA_FindSoulPiece()
 {
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
 void UFRGA_FindSoulPiece::InputPressed(const FGameplayAbilitySpecHandle Handle,
