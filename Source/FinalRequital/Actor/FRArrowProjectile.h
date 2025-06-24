@@ -35,9 +35,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<class UGameplayEffect> DamageEffectClass;
 
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Collision")
 	TObjectPtr<class USphereComponent> CollisionComponent;
+
 	// 피격 처리 함수
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,

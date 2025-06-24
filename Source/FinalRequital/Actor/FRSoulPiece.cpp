@@ -14,6 +14,8 @@ AFRSoulPiece::AFRSoulPiece()
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionResponseToChannel(CCHANNEL_FRACTION, ECR_Block);
+	MeshComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetRootComponent(MeshComp);
 
 	FXComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("FXComponent"));
@@ -30,7 +32,7 @@ AFRSoulPiece::AFRSoulPiece()
 void AFRSoulPiece::BeginPlay()
 {
 	Super::BeginPlay();
-	MeshComp->SetVisibility(false); 
+	MeshComp->SetVisibility(false);
 }
 
 class UAbilitySystemComponent* AFRSoulPiece::GetAbilitySystemComponent() const
@@ -45,6 +47,7 @@ void AFRSoulPiece::OnDetectedOnce()
 		bIsDetected = true;
 
 		MeshComp->SetVisibility(true, true);
+		MeshComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 
 		if (FXComponent)
 		{

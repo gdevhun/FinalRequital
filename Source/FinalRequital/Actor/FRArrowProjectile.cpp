@@ -4,19 +4,18 @@
 #include "Actor/FRArrowProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemGlobals.h"
 #include "FRGameplayTag.h"
+#include "Character/FRMonsterBase.h"
 #include "Components/SphereComponent.h"
 
 AFRArrowProjectile::AFRArrowProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// 콜리전 컴포넌트 설정 (루트)
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->InitSphereRadius(5.0f);
 	CollisionComponent->SetCollisionProfileName(TEXT("BlockAllDynamic"));
@@ -25,12 +24,10 @@ AFRArrowProjectile::AFRArrowProjectile()
 	CollisionComponent->OnComponentHit.AddDynamic(this, &AFRArrowProjectile::OnHit);
 	RootComponent = CollisionComponent;
 
-	// 메시 설정
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowMesh"));
 	Mesh->SetupAttachment(RootComponent);
-	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); // 메시 충돌 비활성화
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	// 이동 컴포넌트
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
@@ -59,38 +56,57 @@ void AFRArrowProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherA
 {
 	UE_LOG(LogTemp, Warning, TEXT("화살 OnHit 호출됨!"));
 
-	if (!OtherActor || OtherActor == GetOwner() || !DamageEffectClass)
+	if (!OtherActor || OtherActor == GetOwner())
 	{
 		Destroy();
 		return;
 	}
 
+	// 타격 위치, 방향
+	const FVector HitLocation = Hit.ImpactPoint;
+	const FRotator HitRotation = Hit.Normal.Rotation();
+
+	// ASC 가져오기
 	UAbilitySystemComponent* SourceASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
-	if (!SourceASC || !TargetASC)
+	AFRMonsterBase* Monster = Cast<AFRMonsterBase>(OtherActor);
+	if (Monster && SourceASC && TargetASC && DamageEffectClass)
 	{
+		// 몬스터 전용 처리 (GE + GC + 즉시 파괴)
+		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
+		EffectContext.AddHitResult(Hit);
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
+		if (SpecHandle.IsValid())
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+
+			FGameplayCueParameters CueParameters;
+			CueParameters.EffectContext = SpecHandle.Data->GetEffectContext();
+			CueParameters.Location = Hit.ImpactPoint;
+			CueParameters.Normal = Hit.Normal;
+
+			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_ARROWHIT, CueParameters);
+		}
+
 		Destroy();
 		return;
 	}
 
-	FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
-	EffectContext.AddHitResult(Hit);
-	EffectContext.AddSourceObject(this);
+	// ASC 없는 대상: 화살을 박아두고 일정 시간 후 제거
 
-	FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
-	if (SpecHandle.IsValid())
-	{
-		// GameplayEffect 적용
-		TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	// 충돌 및 이동 중지
+	ProjectileMovement->StopMovementImmediately();
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-		FGameplayCueParameters CueParameters;
-		CueParameters.EffectContext = SpecHandle.Data->GetEffectContext();
-		CueParameters.Location = Hit.ImpactPoint;
-		CueParameters.Normal = Hit.ImpactNormal;
+	// 메시를 충돌 대상에 붙여서 박히는 효과
+	Mesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	Mesh->AttachToComponent(HitComponent, FAttachmentTransformRules::KeepWorldTransform);
+	Mesh->SetSimulatePhysics(false);
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-		TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_ARROWHIT, CueParameters);
-	}
-
-	Destroy();
+	// 3초 후 제거
+	SetLifeSpan(3.0f);
 }
