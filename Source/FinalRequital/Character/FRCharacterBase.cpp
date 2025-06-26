@@ -131,3 +131,11 @@ void AFRCharacterBase::SetZooming(bool bZooming)
 {
 	bWantsToZoom = bZooming;
 }
+
+void AFRCharacterBase::SetMovementSpeed(float InSpeed) const
+{
+	if (UCharacterMovementComponent* MovementComp = GetCharacterMovement())
+	{
+		MovementComp->MaxWalkSpeed = InSpeed;
+	}
+}

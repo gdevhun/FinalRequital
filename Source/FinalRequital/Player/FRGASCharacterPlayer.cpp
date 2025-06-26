@@ -75,6 +75,7 @@ void AFRGASCharacterPlayer::SetupGASInputComponent()
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AFRGASCharacterPlayer::GASInputReleased, 0);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::GASInputPressed, 1);
 		EnhancedInputComponent->BindAction(SpecialAttackAction, ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::GASInputPressed, 2);
+		EnhancedInputComponent->BindAction(SkillAttackAction, ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::GASInputPressed, 3);
 		EnhancedInputComponent->BindAction(QuickSlotActions[0], ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::QuickSlot1);
 		EnhancedInputComponent->BindAction(QuickSlotActions[1], ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::QuickSlot2);
 		EnhancedInputComponent->BindAction(QuickSlotActions[2], ETriggerEvent::Triggered, this, &AFRGASCharacterPlayer::QuickSlot3);
@@ -177,9 +178,9 @@ UAbilitySystemComponent* AFRGASCharacterPlayer::GetAbilitySystemComponent() cons
 	return ASC;
 }
 
-void AFRGASCharacterPlayer::AdjustBronzeBellLayerAnim_Implementation() {}
-void AFRGASCharacterPlayer::AdjustBowLayerAnim_Implementation() {}
-void AFRGASCharacterPlayer::AdjustUnarmedLayerAnim_Implementation() {}
-void AFRGASCharacterPlayer::AdjustSwordLayerAnim_Implementation() {}
-void AFRGASCharacterPlayer::AdjustIronMaceLayerAnim_Implementation() {}
+void AFRGASCharacterPlayer::AdjustUnarmedLayerAnim_Implementation() { SetMovementSpeed(500.0f); }
+void AFRGASCharacterPlayer::AdjustBronzeBellLayerAnim_Implementation()  { SetMovementSpeed(350.0f); }
+void AFRGASCharacterPlayer::AdjustBowLayerAnim_Implementation() { SetMovementSpeed(350.0f); }
+void AFRGASCharacterPlayer::AdjustSwordLayerAnim_Implementation() { SetMovementSpeed(350.0f); }
+void AFRGASCharacterPlayer::AdjustIronMaceLayerAnim_Implementation() { SetMovementSpeed(350.0f); }
 

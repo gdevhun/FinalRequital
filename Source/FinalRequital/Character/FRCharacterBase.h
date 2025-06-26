@@ -23,6 +23,7 @@ public:
 	FORCEINLINE class UFRMeleeComboData* GetComboActionData() const { return ComboActionData; }
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -57,13 +58,16 @@ protected:
 	TObjectPtr<UInputAction> SpecialAttackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> SkillAttackAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TArray<TObjectPtr<UInputAction>> QuickSlotActions;
 
-	//Data Section
+	// Data Section
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UFRMeleeComboData> ComboActionData;
 
-	// 카메라 줌 관련
+	// Camera Zoom Section
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	float DefaultFOV = 90.0f;
@@ -78,8 +82,8 @@ protected:
 	bool bWantsToZoom = false;
 
 public:
-	// 줌 상태 설정 함수
 	void SetZooming(bool bZooming);
-
 	bool bIsStunned = false;
+
+	void SetMovementSpeed(float InSpeed) const;
 };

@@ -40,19 +40,19 @@ public:
 	void QuickSlot4();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = GAS)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
-	UPROPERTY(EditAnywhere, Category = GAS)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
 
-	UPROPERTY(EditAnywhere, Category = GAS)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TMap<int32, TSubclassOf<class UGameplayAbility>> StartInputAbilities;
 
-	UPROPERTY(EditAnywhere, Category = Component)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<class UFRWeaponComponent> WeaponComponent;
 
-	UPROPERTY(EditAnywhere, Category = Component)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<class UFRMaskSkillComponent> MaskSkillComponent;
 
 

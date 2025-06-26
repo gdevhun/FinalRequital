@@ -57,10 +57,10 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UFRCharacterAttributeSet> AttributeSet;
 
-	UPROPERTY(EditAnywhere, Replicated, Category = "GAS")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "GAS")
 	TArray<EWeaponType> AcquiredWeapons;
 
-	UPROPERTY(EditAnywhere, Replicated, Category = "GAS")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "GAS")
 	EMaskSkillType SelectedMaskSkill;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
@@ -72,6 +72,4 @@ protected:
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	int32 Stat_P;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "Cooldown")
-	//TArray<TSubclassOf<class UFRGE_Cooldown>> AllCooldownEffectClasses;
 };

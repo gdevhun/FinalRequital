@@ -50,7 +50,7 @@ void UFRMaskSkillComponent::ActivateSelectedMaskSkill() const
 
 	if (SkillAbility)
 	{
-		ASC->GiveAbility(FGameplayAbilitySpec(SkillAbility, 1, 0));
+		ASC->GiveAbility(FGameplayAbilitySpec(SkillAbility, 1, 3));
 		UE_LOG(LogTemp, Log, TEXT("Mask skill ability granted: %s"), *SkillAbility->GetName());
 	}
 }
