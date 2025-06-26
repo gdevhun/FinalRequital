@@ -33,7 +33,7 @@ void UFRGA_SkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
-	(this, TEXT("PlayMeleeAttack"), SkillActionMontage, 1.0f);
+	(this, TEXT("PlaySkillAction"), SkillActionMontage, 1.0f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_SkillBase::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_SkillBase::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
