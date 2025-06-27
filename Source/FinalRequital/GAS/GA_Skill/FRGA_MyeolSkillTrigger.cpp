@@ -3,6 +3,8 @@
 
 #include "GAS/GA_Skill/FRGA_MyeolSkillTrigger.h"
 
+#include "AbilitySystemComponent.h"
+
 UFRGA_MyeolSkillTrigger::UFRGA_MyeolSkillTrigger()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -13,4 +15,20 @@ void UFRGA_MyeolSkillTrigger::ActivateAbility(const FGameplayAbilitySpecHandle H
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo_Checked();
+	if (SelfApplyEffectClass)
+	{
+		FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(SelfApplyEffectClass, 1.0f, EffectContext);
+		if (SpecHandle.IsValid())
+		{
+			ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+		}
+	}
+	
+
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }

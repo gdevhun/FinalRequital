@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UAnimMontage> SkillActionMontage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameplayCue")
+	FGameplayTag GameplayCueToTrigger;
+
 	UFUNCTION()
 	void OnCompleteCallback();
 

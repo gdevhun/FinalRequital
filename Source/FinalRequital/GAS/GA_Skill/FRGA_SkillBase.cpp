@@ -2,6 +2,7 @@
 
 
 #include "GAS/GA_Skill/FRGA_SkillBase.h"
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "FRDebugHelper.h"
 #include "Character/FRCharacterBase.h"
@@ -29,8 +30,23 @@ void UFRGA_SkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		return;
 	}
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
 	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
 	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	// GameplayCue Execute
+	if (GameplayCueToTrigger.IsValid())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = FRCharacterBase->GetActorLocation();
+		CueParams.SourceObject = this;
+
+		UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+		if (ASC)
+		{
+			ASC->AddGameplayCue(GameplayCueToTrigger, CueParams); 
+		}
+	}
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
 	(this, TEXT("PlaySkillAction"), SkillActionMontage, 1.0f);
@@ -53,6 +69,13 @@ void UFRGA_SkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
 	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
+	if (GameplayCueToTrigger.IsValid())
+	{
+		if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+		{
+			ASC->RemoveGameplayCue(GameplayCueToTrigger);
+		}
+	}
 	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }
 
