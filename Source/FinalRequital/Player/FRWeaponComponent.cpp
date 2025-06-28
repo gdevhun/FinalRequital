@@ -86,7 +86,7 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 		GiveAbility(WeaponData->AttackAbility, 1, AttackAbilityHandle);
 
 	if (WeaponData->SpecialAttackAbility)
-		GiveAbility(WeaponData->SpecialAttackAbility, 2, SubAttackAbilityHandle);
+		GiveAbility(WeaponData->SpecialAttackAbility, 2, SpecialAttackAbilityHandle);
 
 	CurrentWeaponType = WeaponType;
 
@@ -125,7 +125,7 @@ void UFRWeaponComponent::ClearWeapon()
 	}
 
 	ClearAbility(AttackAbilityHandle);
-	ClearAbility(SubAttackAbilityHandle);
+	ClearAbility(SpecialAttackAbilityHandle);
 
 	CurrentWeaponType = EWeaponType::None;
 

@@ -10,11 +10,11 @@
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	None			UMETA(DisplayName = "Unarmed"),
-	Sword		    UMETA(DisplayName = "Sword"),
-	Bow             UMETA(DisplayName = "Bow"),
-	IronMace	    UMETA(DisplayName = "IronMace"),
-	BronzeBell      UMETA(DisplayName = "BronzeBell")
+	None			UMETA(DisplayName = "맨손"),
+	Sword		    UMETA(DisplayName = "검"),
+	Bow             UMETA(DisplayName = "활"),
+	IronMace	    UMETA(DisplayName = "철퇴"),
+	BronzeBell      UMETA(DisplayName = "청동방울")
 };
 
 USTRUCT(BlueprintType)
@@ -73,7 +73,7 @@ protected:
 	FGameplayAbilitySpecHandle AttackAbilityHandle;
 
 	UPROPERTY()
-	FGameplayAbilitySpecHandle SubAttackAbilityHandle;
+	FGameplayAbilitySpecHandle SpecialAttackAbilityHandle;
 
 	UPROPERTY()
 	TObjectPtr<class AFRGASCharacterPlayer> OwnerCharacter;

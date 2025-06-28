@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameplayCue")
 	FGameplayTag GameplayCueToTrigger;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsDisableMovementSkill = true;
+
 	UFUNCTION()
 	void OnCompleteCallback();
 

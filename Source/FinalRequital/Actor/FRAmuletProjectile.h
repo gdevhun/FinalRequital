@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FRArrowProjectile.generated.h"
+#include "FRAmuletProjectile.generated.h"
 
 UCLASS()
-class FINALREQUITAL_API AFRArrowProjectile : public AActor
+class FINALREQUITAL_API AFRAmuletProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AFRArrowProjectile();
+	AFRAmuletProjectile();
 
 public:
-	void InitVelocity(const FVector& Direction, float Speed, float ProjectileGravity);
+	void InitVelocity(const FVector& Direction, float Speed);
 	class USphereComponent* GetCollisionComponent() const { return CollisionComponent; }
 
 protected:
@@ -41,4 +41,12 @@ protected:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	void ActiveEffect() const;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TObjectPtr<class UParticleSystem> ImpactParticleEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TObjectPtr<class USoundBase> ImpactSound;
 };

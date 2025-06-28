@@ -28,7 +28,7 @@ bool UFRGC_BaseAttackHit::OnExecute_Implementation(AActor* Target, const FGamepl
 			UGameplayStatics::PlaySoundAtLocation(Target, HitSound, SpawnLocation);
 		}
 	}
-	else
+	else if (Parameters.EffectContext.IsValid() && Parameters.EffectContext.Get())
 	{
 		TArray<TWeakObjectPtr<AActor>> TargetActors = Parameters.EffectContext.Get()->GetActors();
 

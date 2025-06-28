@@ -63,13 +63,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "GAS")
 	EMaskSkillType SelectedMaskSkill;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	int32 Stat_H;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	int32 Stat_D;
 
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	int32 Stat_P;
 
 };

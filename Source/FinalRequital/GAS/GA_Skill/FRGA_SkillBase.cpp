@@ -7,6 +7,8 @@
 #include "FRDebugHelper.h"
 #include "Character/FRCharacterBase.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "Player/FRPlayerController.h"
+#include "UI/FRHUDWidget.h"
 
 void UFRGA_SkillBase::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo)
@@ -32,7 +34,18 @@ void UFRGA_SkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	AFRCharacterBase* FRCharacterBase = CastChecked<AFRCharacterBase>(ActorInfo->AvatarActor.Get());
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	if (bIsDisableMovementSkill) FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
+	else
+	{
+		if (AFRPlayerController* PC = Cast<AFRPlayerController>(FRCharacterBase->GetController()))
+		{
+			if (UFRHUDWidget* HUD = PC->GetHUDWidget())
+			{
+				HUD->ShowCrosshair(true);
+			}
+		}
+	}
 
 	// GameplayCue Execute
 	if (GameplayCueToTrigger.IsValid())
@@ -76,7 +89,18 @@ void UFRGA_SkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 			ASC->RemoveGameplayCue(GameplayCueToTrigger);
 		}
 	}
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+
+	if (bIsDisableMovementSkill) FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	else
+	{
+		if (AFRPlayerController* PC = Cast<AFRPlayerController>(FRCharacterBase->GetController()))
+		{
+			if (UFRHUDWidget* HUD = PC->GetHUDWidget())
+			{
+				HUD->ShowCrosshair(false);
+			}
+		}
+	}
 }
 
 void UFRGA_SkillBase::OnCompleteCallback()

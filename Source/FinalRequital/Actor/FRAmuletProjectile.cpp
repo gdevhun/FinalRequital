@@ -1,33 +1,34 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/FRArrowProjectile.h"
-#include "GameFramework/ProjectileMovementComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "AbilitySystemComponent.h"
-#include "GameplayEffect.h"
-#include "GameplayEffectTypes.h"
+#include "Actor/FRAmuletProjectile.h"
 #include "AbilitySystemGlobals.h"
+#include "AbilitySystemComponent.h"
 #include "FRGameplayTag.h"
 #include "Character/FRMonsterBase.h"
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "GameplayCueManager.h" 
+#include "Kismet/GameplayStatics.h"
 
-AFRArrowProjectile::AFRArrowProjectile()
+AFRAmuletProjectile::AFRAmuletProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->InitSphereRadius(5.0f);
+	CollisionComponent->InitSphereRadius(15.0f);
 	CollisionComponent->SetCollisionProfileName(TEXT("BlockAllDynamic"));
 	CollisionComponent->SetNotifyRigidBodyCollision(true);
 	CollisionComponent->SetGenerateOverlapEvents(false);
-	CollisionComponent->OnComponentHit.AddDynamic(this, &AFRArrowProjectile::OnHit);
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AFRAmuletProjectile::OnHit);
 	RootComponent = CollisionComponent;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowMesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AmuletMesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Mesh->SetRelativeLocation(FVector(15.f, 0.f, 0.f)); 
+	Mesh->SetRelativeRotation(FRotator(-90.f, 90.f, 90.f));
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
 	ArrowComponent->SetupAttachment(RootComponent);
@@ -38,47 +39,43 @@ AFRArrowProjectile::AFRArrowProjectile()
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->ProjectileGravityScale = 0.5f;
+	ProjectileMovement->ProjectileGravityScale = 0.f;
 	ProjectileMovement->bInitialVelocityInLocalSpace = false;
 
 }
 
-void AFRArrowProjectile::BeginPlay()
+void AFRAmuletProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AFRArrowProjectile::InitVelocity(const FVector& Direction, float Speed, float ProjectileGravity)
+
+void AFRAmuletProjectile::InitVelocity(const FVector& Direction, float Speed)
 {
 	if (ProjectileMovement)
 	{
 		ProjectileMovement->Velocity = Direction * Speed;
-		ProjectileMovement->ProjectileGravityScale = ProjectileGravity;
 	}
 }
 
-void AFRArrowProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-
 	if (!OtherActor || OtherActor == GetOwner())
 	{
 		Destroy();
 		return;
 	}
 
-	// 타격 위치, 방향
 	const FVector HitLocation = Hit.ImpactPoint;
-	const FRotator HitRotation = Hit.Normal.Rotation();
+	const FVector HitNormal = Hit.Normal;
 
-	// ASC 가져오기
 	UAbilitySystemComponent* SourceASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
 	AFRMonsterBase* Monster = Cast<AFRMonsterBase>(OtherActor);
 	if (Monster && SourceASC && TargetASC && DamageEffectClass)
 	{
-		// 몬스터 전용 처리 (GE + GC + 즉시 파괴)
 		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 		EffectContext.AddHitResult(Hit);
 		EffectContext.AddSourceObject(this);
@@ -88,30 +85,31 @@ void AFRArrowProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherA
 		{
 			TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
 
-			FGameplayCueParameters CueParameters;
-			CueParameters.EffectContext = SpecHandle.Data->GetEffectContext();
-			CueParameters.Location = Hit.ImpactPoint;
-			CueParameters.Normal = Hit.Normal;
+			FGameplayCueParameters CueParams;
+			CueParams.EffectContext = SpecHandle.Data->GetEffectContext();
+			CueParams.Location = HitLocation;
+			CueParams.Normal = HitNormal;
 
-			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_ARROWHIT, CueParameters);
+			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
 		}
 
 		Destroy();
 		return;
 	}
 
-	// ASC 없는 대상: 화살을 박아두고 일정 시간 후 제거
+	// ASC가 없거나 몬스터가 아닌 경우
+	ActiveEffect();
+	Destroy();
+}
 
-	// 충돌 및 이동 중지
-	ProjectileMovement->StopMovementImmediately();
-	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	// 메시를 충돌 대상에 붙여서 박히는 효과
-	Mesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	Mesh->AttachToComponent(HitComponent, FAttachmentTransformRules::KeepWorldTransform);
-	Mesh->SetSimulatePhysics(false);
-	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	// 3초 후 제거
-	SetLifeSpan(3.0f);
+void AFRAmuletProjectile::ActiveEffect() const
+{
+	if (ImpactParticleEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticleEffect, GetActorLocation(), GetActorRotation());
+	}
+	if (ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
+	}
 }

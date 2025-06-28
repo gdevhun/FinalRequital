@@ -85,9 +85,14 @@ void AFRGASCharacterPlayer::SetupGASInputComponent()
 
 void AFRGASCharacterPlayer::HandleQuickSlot(EWeaponType WeaponType)
 {
+	// WEAPON SWAP EXCEPTION
 	if (ASC && ASC->HasMatchingGameplayTag(FRTAG_CHARACTER_STUNNED))
 	{
 		return;
+	}
+	if (ASC && ASC->HasMatchingGameplayTag(FRTAG_CHARACTER_ISSKILLING)) 
+	{
+		return; 
 	}
 
 	if (WeaponComponent)
@@ -96,25 +101,11 @@ void AFRGASCharacterPlayer::HandleQuickSlot(EWeaponType WeaponType)
 	}
 }
 
-void AFRGASCharacterPlayer::QuickSlot1()
-{
-	HandleQuickSlot(EWeaponType::Sword);
-}
+void AFRGASCharacterPlayer::QuickSlot1() { HandleQuickSlot(EWeaponType::Sword); }
+void AFRGASCharacterPlayer::QuickSlot2() { HandleQuickSlot(EWeaponType::Bow); }
+void AFRGASCharacterPlayer::QuickSlot3() { HandleQuickSlot(EWeaponType::IronMace); }
+void AFRGASCharacterPlayer::QuickSlot4() { HandleQuickSlot(EWeaponType::BronzeBell); }
 
-void AFRGASCharacterPlayer::QuickSlot2()
-{
-	HandleQuickSlot(EWeaponType::Bow);
-}
-
-void AFRGASCharacterPlayer::QuickSlot3()
-{
-	HandleQuickSlot(EWeaponType::IronMace);
-}
-
-void AFRGASCharacterPlayer::QuickSlot4()
-{
-	HandleQuickSlot(EWeaponType::BronzeBell);
-}
 
 void AFRGASCharacterPlayer::OnStunTagChanged(const FGameplayTag Tag, int32 NewCount)
 {

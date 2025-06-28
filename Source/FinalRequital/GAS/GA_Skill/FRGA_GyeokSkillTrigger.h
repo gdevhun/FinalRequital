@@ -22,5 +22,12 @@ public:
 		const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData) override;
+public:
+	void SpawnAmulet(float InAmuletSpeed);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Amulet")
+	TSubclassOf<class AFRAmuletProjectile> AmuletClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Amulet")
+	float FireSpeedPower = 1000.f;
 };
