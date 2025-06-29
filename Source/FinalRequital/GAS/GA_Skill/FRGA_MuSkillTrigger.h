@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "FRGA_JeongSkillTrigger.generated.h"
+#include "FRGA_MuSkillTrigger.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRGA_JeongSkillTrigger : public UGameplayAbility
+class FINALREQUITAL_API UFRGA_MuSkillTrigger : public UGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UFRGA_JeongSkillTrigger();
+	UFRGA_MuSkillTrigger();
 
 	virtual void ActivateAbility(
 		const FGameplayAbilitySpecHandle Handle,

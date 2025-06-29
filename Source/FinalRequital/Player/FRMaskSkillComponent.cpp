@@ -41,8 +41,8 @@ void UFRMaskSkillComponent::ActivateSelectedMaskSkill() const
 	case EMaskSkillType::Myeol:
 		SkillAbility = MyeolAbility;
 		break;
-	case EMaskSkillType::Jeong:
-		SkillAbility = JeongAbility;
+	case EMaskSkillType::Mu:
+		SkillAbility = MuAbility;
 		break;
 	default:
 		break;

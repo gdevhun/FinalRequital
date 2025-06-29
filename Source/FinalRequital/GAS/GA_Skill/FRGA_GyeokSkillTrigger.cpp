@@ -46,7 +46,9 @@ void UFRGA_GyeokSkillTrigger::SpawnAmulet(float InAmuletSpeed)
 	GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, TraceEnd, ECC_Visibility, Params);
 
 	FVector TargetPoint = HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd;
-	FVector MuzzleLocation = Mesh->GetSocketLocation("bow_socket");
+	//FVector MuzzleLocation = Mesh->GetSocketLocation("bow_socket");
+	FTransform MuzzleTransform = Mesh->GetSocketTransform("bow_socket", RTS_World);
+	FVector MuzzleLocation = MuzzleTransform.GetLocation();
 	FVector FireDirection = (TargetPoint - MuzzleLocation).GetSafeNormal();
 	FRotator FireRotation = FireDirection.Rotation();
 

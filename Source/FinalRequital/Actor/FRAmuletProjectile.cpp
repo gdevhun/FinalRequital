@@ -47,6 +47,7 @@ AFRAmuletProjectile::AFRAmuletProjectile()
 void AFRAmuletProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	//CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 }
 
 
@@ -89,8 +90,9 @@ void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other
 			CueParams.EffectContext = SpecHandle.Data->GetEffectContext();
 			CueParams.Location = HitLocation;
 			CueParams.Normal = HitNormal;
-
-			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
+			ActiveEffect();
+			//TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
+			TargetASC->AddGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
 		}
 
 		Destroy();

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -11,10 +11,10 @@ UENUM(BlueprintType)
 enum class EMaskSkillType : uint8
 {
 	None		UMETA(DisplayName = "None"),
-	Gyeok		UMETA(DisplayName = "Gyeok"),
-	Yu			UMETA(DisplayName = "Yu"),
-	Myeol		UMETA(DisplayName = "Myeol"),
-	Jeong		UMETA(DisplayName = "Jeong")
+	Gyeok		UMETA(DisplayName = "격"),
+	Yu			UMETA(DisplayName = "유"),
+	Myeol		UMETA(DisplayName = "멸"),
+	Mu		UMETA(DisplayName = "무")
 };
 
 UCLASS(ClassGroup = (Custom), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
@@ -42,5 +42,5 @@ public:
 	TSubclassOf<UGameplayAbility> MyeolAbility;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Skill")
-	TSubclassOf<UGameplayAbility> JeongAbility;
+	TSubclassOf<UGameplayAbility> MuAbility;
 };

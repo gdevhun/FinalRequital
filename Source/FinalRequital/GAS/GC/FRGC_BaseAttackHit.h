@@ -7,7 +7,7 @@
 #include "FRGC_BaseAttackHit.generated.h"
 
 /**
- * 
+ *  GameplayCueNotify_Static 기반 - 일회성 이펙트 처리용
  */
 UCLASS()
 class FINALREQUITAL_API UFRGC_BaseAttackHit : public UGameplayCueNotify_Static
@@ -17,15 +17,14 @@ class FINALREQUITAL_API UFRGC_BaseAttackHit : public UGameplayCueNotify_Static
 public:
 	UFRGC_BaseAttackHit();
 
+	// 단발성 GameplayCue가 호출될 때 실행됨.
 	virtual bool OnExecute_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) const override;
 
 protected:
 
-	// 할당할 파티클 이펙트
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameplayCue)
 	TObjectPtr<UParticleSystem> ParticleEffect;
 
-	// 타격 사운드
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameplayCue)
 	TObjectPtr<USoundBase> HitSound;
 };

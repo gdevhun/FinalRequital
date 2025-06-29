@@ -43,6 +43,11 @@ bool UFRMonsterAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectModC
 				Data.EvaluatedData.Magnitude = 0.0f;
 				return false;
 			}
+			if (bOutOfHealth || Data.Target.HasMatchingGameplayTag(FRTAG_CHARACTER_ISDEAD))
+			{
+				Data.EvaluatedData.Magnitude = 0.0f;
+				return false;
+			}
 		}
 	}
 	return true;
