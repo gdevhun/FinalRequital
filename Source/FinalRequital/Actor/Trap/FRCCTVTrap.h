@@ -38,5 +38,5 @@ protected:
 	FTimerHandle TraceTimerHandle;
 
 	UPROPERTY(EditAnywhere, Category = "GAS")
-	TSubclassOf<class UGameplayEffect> DamageEffectClass; 
+	TSubclassOf<class UGameplayEffect> StunEffectClass; 
 };

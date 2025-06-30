@@ -2,7 +2,6 @@
 
 
 #include "GAS/GA_Skill/FRGA_MyeolSkillTrigger.h"
-
 #include "AbilitySystemComponent.h"
 
 UFRGA_MyeolSkillTrigger::UFRGA_MyeolSkillTrigger()

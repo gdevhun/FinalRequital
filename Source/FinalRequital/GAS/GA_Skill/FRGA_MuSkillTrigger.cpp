@@ -2,6 +2,8 @@
 
 
 #include "GAS/GA_Skill/FRGA_MuSkillTrigger.h"
+#include "AbilitySystemComponent.h"
+
 
 UFRGA_MuSkillTrigger::UFRGA_MuSkillTrigger()
 {
@@ -13,4 +15,21 @@ void UFRGA_MuSkillTrigger::ActivateAbility(const FGameplayAbilitySpecHandle Hand
                                            const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo_Checked();
+	if (SelfApplyEffectClass)
+	{
+		FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(SelfApplyEffectClass, 1.0f, EffectContext);
+		if (SpecHandle.IsValid())
+		{
+			ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+		}
+	}
+
+
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
+
