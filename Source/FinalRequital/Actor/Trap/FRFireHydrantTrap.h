@@ -36,11 +36,20 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Trap")
 	TArray<TObjectPtr<class ACharacter>> OverlappingCharacters;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
+	UPROPERTY(EditAnywhere, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> PlayerDamageEffectClass;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
+	UPROPERTY(EditAnywhere, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> MonsterDamageEffectClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayAbility> PlayerHitAbilityClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayAbility> MonsterHitAbilityClass;
+
+	UPROPERTY(EditAnywhere, Category = "Trap")
+	float TrapCooldownTime = 3.0f;
 
 public:
 	UFUNCTION()
@@ -55,15 +64,9 @@ public:
 	bool bIsTrapActive = false;
 
 	void ToggleTrapActive();
-	void DeactivateTrap();
-	void TriggerTrap();
 	void ApplyDamageEffect();
 
 private:
 	FTimerHandle ToggleActiveTimer;
 	FTimerHandle DamageTickTimer;
-
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	float TrapCooldownTime = 3.0f;
-
 };

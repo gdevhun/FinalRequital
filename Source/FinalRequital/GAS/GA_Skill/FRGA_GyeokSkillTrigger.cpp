@@ -62,6 +62,7 @@ void UFRGA_GyeokSkillTrigger::SpawnAmulet(float InAmuletSpeed)
 	if (Arrow)
 	{
 		Arrow->InitVelocity(FireDirection, FireSpeedPower);
+		Arrow->SetOwner(AvatarActor);
 		Arrow->GetCollisionComponent()->IgnoreActorWhenMoving(AvatarActor, true);
 	}
 

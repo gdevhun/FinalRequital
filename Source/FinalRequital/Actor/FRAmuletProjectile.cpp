@@ -4,6 +4,7 @@
 #include "Actor/FRAmuletProjectile.h"
 #include "AbilitySystemGlobals.h"
 #include "AbilitySystemComponent.h"
+#include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "Character/FRMonsterBase.h"
 #include "Components/ArrowComponent.h"
@@ -47,7 +48,6 @@ AFRAmuletProjectile::AFRAmuletProjectile()
 void AFRAmuletProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	//CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 }
 
 
@@ -64,6 +64,7 @@ void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other
 {
 	if (!OtherActor || OtherActor == GetOwner())
 	{
+		D(FString::Printf(TEXT("TRIGGER2!")));
 		Destroy();
 		return;
 	}

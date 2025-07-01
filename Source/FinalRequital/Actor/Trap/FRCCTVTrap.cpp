@@ -77,7 +77,6 @@ void AFRCCTVTrap::DetectByLineTrace()
 			if (!TargetASC || TargetASC->HasMatchingGameplayTag(FRTAG_CHARACTER_STUNNED)
 				|| TargetASC->HasMatchingGameplayTag(FRTAG_CHARACTER_INVISIBLE))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("이미 스턴 또는 은신 상태: %s"), *HitActor->GetName());
 				continue;
 			}
 
@@ -88,7 +87,6 @@ void AFRCCTVTrap::DetectByLineTrace()
 			if (SpecHandle.IsValid())
 			{
 				ASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
-				UE_LOG(LogTemp, Warning, TEXT("스턴 이펙트 적용됨: %s"), *HitActor->GetName());
 			}
 
 #if WITH_EDITOR

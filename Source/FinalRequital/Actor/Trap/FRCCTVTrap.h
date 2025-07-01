@@ -13,16 +13,15 @@ class FINALREQUITAL_API AFRCCTVTrap : public AActor, public IAbilitySystemInterf
 	GENERATED_BODY()
 	
 public:
-
 	AFRCCTVTrap();
 
 protected:
-
 	virtual void BeginPlay() override;
+
+protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	void DetectByLineTrace();
-
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<class USceneComponent> RootSceneComponent;
 
@@ -35,8 +34,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
+	UPROPERTY(EditAnywhere, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> StunEffectClass;
+
+private:
+	void DetectByLineTrace();
 	FTimerHandle TraceTimerHandle;
 
-	UPROPERTY(EditAnywhere, Category = "GAS")
-	TSubclassOf<class UGameplayEffect> StunEffectClass; 
 };

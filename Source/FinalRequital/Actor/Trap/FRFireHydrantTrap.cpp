@@ -38,6 +38,11 @@ AFRFireHydrantTrap::AFRFireHydrantTrap()
     CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFRFireHydrantTrap::OnOverlapEnd);
 }
 
+class UAbilitySystemComponent* AFRFireHydrantTrap::GetAbilitySystemComponent() const
+{
+    return ASC;
+}
+
 void AFRFireHydrantTrap::BeginPlay()
 {
 	Super::BeginPlay();
@@ -59,7 +64,7 @@ void AFRFireHydrantTrap::BeginPlay()
 void AFRFireHydrantTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if (!OtherActor || !bIsTrapActive) return;
+    if (!OtherActor) return;
 
     if (ACharacter* Character = Cast<ACharacter>(OtherActor))
     {
@@ -73,7 +78,7 @@ void AFRFireHydrantTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAc
 void AFRFireHydrantTrap::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    if (!OtherActor || !bIsTrapActive) return;
+    if (!OtherActor) return;
 
     if (ACharacter* Character = Cast<ACharacter>(OtherActor))
     {
@@ -112,38 +117,45 @@ void AFRFireHydrantTrap::ApplyDamageEffect()
 
         UAbilitySystemComponent* TargetASC = nullptr;
         TSubclassOf<UGameplayEffect> EffectClass = nullptr;
+        TSubclassOf<UGameplayAbility> AbilityClass = nullptr;
 
         // Player Check
         if (AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(Character))
         {
             TargetASC = Player->GetAbilitySystemComponent();
             EffectClass = PlayerDamageEffectClass;
+            AbilityClass = PlayerHitAbilityClass;
         }
         // Monster
         else if (AFRMonsterBase* Monster = Cast<AFRMonsterBase>(Character))
         {
             TargetASC = Monster->GetAbilitySystemComponent();
             EffectClass = MonsterDamageEffectClass;
+            AbilityClass = MonsterHitAbilityClass;
         }
 
-        // Apply GameplayEffect
-        if (TargetASC && EffectClass)
+        if (TargetASC)
         {
-            FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
-            EffectContext.AddSourceObject(this);
-
-            FGameplayEffectSpecHandle EffectSpec = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
-            if (EffectSpec.IsValid())
+            //  Apply Damage Effect
+            if (EffectClass)
             {
-                ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
+                FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+                EffectContext.AddSourceObject(this);
+
+                FGameplayEffectSpecHandle EffectSpec = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
+                if (EffectSpec.IsValid())
+                {
+                    ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
+                }
+            }
+
+            // Trigger Ability
+            if (AbilityClass)
+            {
+                TargetASC->TryActivateAbilityByClass(AbilityClass);
             }
         }
     }
-}
-
-class UAbilitySystemComponent* AFRFireHydrantTrap::GetAbilitySystemComponent() const
-{
-    return ASC;
 }
 
 
