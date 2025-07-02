@@ -51,15 +51,11 @@ public:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-	UFUNCTION()
-	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
 private:
 	void ToggleTrapActive();
 
 private:
 	bool bIsTrapActive = false;
 	FTimerHandle ToggleActiveTimer;
-	FTimerHandle DamageTickTimer;
+
 };
