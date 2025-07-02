@@ -17,6 +17,6 @@
 #define FRTAG_CHARACTER_COOLTIME_IRONMACE FGameplayTag::RequestGameplayTag(FName("Character.State.SwordSpecialAttackCooldown"))
 
 #define GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.MeleeAttackHit"))
-#define GAMEPLAYCUE_CHARACTER_ARROWHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.ArrowHit"))
+#define GAMEPLAYCUE_CHARACTER_ARROWATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.ArrowAttackHit"))
 #define GAMEPLAYCUE_CHARACTER_BRONZEBELLHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.BronzeBellHit"))
 #define GAMEPLAYCUE_CHARACTER_AMULETDOTHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.AmuletDotHit"))

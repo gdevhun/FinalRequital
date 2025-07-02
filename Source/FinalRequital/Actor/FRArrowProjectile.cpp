@@ -8,6 +8,7 @@
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemGlobals.h"
+#include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "Character/FRMonsterBase.h"
 #include "Components/ArrowComponent.h"
@@ -93,7 +94,8 @@ void AFRArrowProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherA
 			CueParameters.Location = Hit.ImpactPoint;
 			CueParameters.Normal = Hit.Normal;
 
-			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_ARROWHIT, CueParameters);
+			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_ARROWATTACKHIT, CueParameters);
+			
 		}
 
 		Destroy();
