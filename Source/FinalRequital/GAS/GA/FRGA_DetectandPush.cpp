@@ -14,7 +14,9 @@
 #include "AIController.h"
 #include "FRDebugHelper.h"
 #include "GameplayEffectTypes.h"
+#include "Actor/FRPushableActor.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
+#include "Character/FRMonsterBase.h"
 
 UFRGA_DetectandPush::UFRGA_DetectandPush()
 {
@@ -48,100 +50,111 @@ void UFRGA_DetectandPush::ActivateAbility(
 
     if (bHit && Hit.GetActor())
     {
-        ACharacter* HitCharacter = Cast<ACharacter>(Hit.GetActor());
+        AActor* HitActor = Hit.GetActor();
 
-        if (HitCharacter && HitCharacter != SourceCharacter)
+        FVector PushDir = Direction.GetSafeNormal();
+        PushDir.Z += 0.5f;
+        PushDir.Normalize();
+
+        // AFRMonsterBase
+        if (AFRMonsterBase* Monster = Cast<AFRMonsterBase>(HitActor))
         {
-            // 넉백 방향 계산
-            FVector PushDir = Direction.GetSafeNormal();
-            PushDir.Z += 0.5f;
-            PushDir.Normalize();
-
-            // 컴포넌트 참조
+            ACharacter* HitCharacter = Monster;
             UCharacterMovementComponent* MoveComp = HitCharacter->GetCharacterMovement();
             UAnimInstance* AnimInstance = HitCharacter->GetMesh()->GetAnimInstance();
             AAIController* AIController = Cast<AAIController>(HitCharacter->GetController());
 
-            // AI 멈춤
             if (AIController)
             {
                 AIController->StopMovement();
-                UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(AIController->BrainComponent);
-                if (BTComp)
+                if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(AIController->BrainComponent))
                 {
                     BTComp->StopTree(EBTStopMode::Safe);
                 }
             }
 
-            // RootMotion 무시 (선택적)
             if (AnimInstance)
             {
                 AnimInstance->SetRootMotionMode(ERootMotionMode::IgnoreRootMotion);
             }
 
-            // MovementMode Walking 보장
             if (MoveComp)
             {
                 MoveComp->SetMovementMode(MOVE_Walking);
             }
 
-            // LaunchCharacter 호출
             HitCharacter->LaunchCharacter(PushDir * PushStrength, true, true);
 
-            // 일정 시간 뒤 AI 재시작
-            float RecoveryDelay = 0.8f;
-            FTimerHandle RecoveryTimerHandle;
-            FTimerDelegate RecoveryDelegate;
+            FTimerHandle TimerHandle;
+            FTimerDelegate Delegate;
 
-            RecoveryDelegate.BindLambda([=]()
+            Delegate.BindLambda([=]()
                 {
-                    // MovementMode 복구
                     if (MoveComp)
                     {
                         MoveComp->SetMovementMode(MOVE_Walking);
                     }
 
-                    // RootMotion 복구
                     if (AnimInstance)
                     {
                         AnimInstance->SetRootMotionMode(ERootMotionMode::RootMotionFromMontagesOnly);
                     }
 
-                    // AI 다시 시작
                     if (AIController)
                     {
-                        UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(AIController->BrainComponent);
-                        if (BTComp)
+                        if (UBehaviorTreeComponent* BTComp = Cast<UBehaviorTreeComponent>(AIController->BrainComponent))
                         {
                             BTComp->RestartTree();
                         }
                     }
-
                 });
 
-            HitCharacter->GetWorldTimerManager().SetTimer(RecoveryTimerHandle, RecoveryDelegate, RecoveryDelay, false);
+            GetWorld()->GetTimerManager().SetTimer(TimerHandle, Delegate, 0.8f, false);
+        }
 
-            // GameplayCue (이펙트) 실행
-            UAbilitySystemComponent* TargetASC = HitCharacter->FindComponentByClass<UAbilitySystemComponent>();
-            if (TargetASC)
+        // AFRPushableActor
+        else if (AFRPushableActor* Pushable = Cast<AFRPushableActor>(HitActor))
+        {
+            if (UStaticMeshComponent* Mesh = Pushable->StaticMesh)
             {
-                FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
-                EffectContext.AddHitResult(Hit);
-                EffectContext.AddSourceObject(this);
+                // 물리 시뮬레이션 일시 활성화
+                Mesh->SetSimulatePhysics(true);
+                Mesh->AddImpulse(PushDir * PushStrength * 0.5f, NAME_None, true);
 
-                FGameplayCueParameters CueParams;
-                CueParams.EffectContext = EffectContext;
-                CueParams.Location = Hit.ImpactPoint;
-                CueParams.Instigator = SourceCharacter;
-                CueParams.EffectCauser = SourceCharacter;
-                CueParams.SourceObject = this;
+                // 일정 시간 후 물리 시뮬레이션 비활성화 (낙하 완료 후)
+                FTimerHandle DisablePhysicsHandle;
+                FTimerDelegate DisablePhysicsDelegate;
 
-                TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_BRONZEBELLHIT, CueParams);
+                DisablePhysicsDelegate.BindLambda([=]()
+                    {
+                        if (Mesh)
+                        {
+                            Mesh->SetSimulatePhysics(false);
+                        }
+                    });
+
+                // 2.5초 뒤 비활성화
+                Mesh->GetWorld()->GetTimerManager().SetTimer(DisablePhysicsHandle, DisablePhysicsDelegate, 2.5f, false);
             }
         }
+
+        // GameplayCue 실행 
+        if (UAbilitySystemComponent* TargetASC = HitActor->FindComponentByClass<UAbilitySystemComponent>())
+        {
+            FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
+            EffectContext.AddHitResult(Hit);
+            EffectContext.AddSourceObject(this);
+
+            FGameplayCueParameters CueParams;
+            CueParams.EffectContext = EffectContext;
+            CueParams.Location = Hit.ImpactPoint;
+            CueParams.Instigator = SourceCharacter;
+            CueParams.EffectCauser = SourceCharacter;
+            CueParams.SourceObject = this;
+
+            TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_BRONZEBELLHIT, CueParams);
+        }
     }
-
-
 
     EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }
