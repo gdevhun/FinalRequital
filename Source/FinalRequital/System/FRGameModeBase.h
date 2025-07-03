@@ -13,5 +13,8 @@ UCLASS()
 class FINALREQUITAL_API AFRGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AFRGameModeBase();
+
 };
