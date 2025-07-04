@@ -40,7 +40,7 @@ void UFRGA_DetectandPush::ActivateAbility(
 
     FVector Start = CameraComp->GetComponentLocation();
     FVector Direction = CameraComp->GetForwardVector();
-    FVector End = Start + Direction * 1000.0f;
+    FVector End = Start + Direction * 700.0f;
 
     FHitResult Hit;
     FCollisionQueryParams Params;
