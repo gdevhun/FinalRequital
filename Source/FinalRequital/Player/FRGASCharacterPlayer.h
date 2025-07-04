@@ -56,8 +56,8 @@ protected:
 	TObjectPtr<class UFRMaskSkillComponent> MaskSkillComponent;
 
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<class UFRWidgetComponent> HpBar;
+	//UPROPERTY(VisibleAnywhere)
+	//TObjectPtr<class UFRWidgetComponent> HpBar;
 
 public:
 	// State Delegate

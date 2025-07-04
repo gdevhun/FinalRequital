@@ -16,7 +16,7 @@ AFRGASCharacterPlayer::AFRGASCharacterPlayer()
 {
 	ASC = nullptr;
 
-	HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
+	//HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
 	WeaponComponent = CreateDefaultSubobject<UFRWeaponComponent>(TEXT("WeaponComponent"));
 	MaskSkillComponent = CreateDefaultSubobject<UFRMaskSkillComponent>(TEXT("MaskSkillComponent"));
 }
