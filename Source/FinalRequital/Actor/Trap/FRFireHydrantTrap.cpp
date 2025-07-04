@@ -56,7 +56,7 @@ void AFRFireHydrantTrap::BeginPlay()
         ToggleActiveTimer,
         this, 
         &AFRFireHydrantTrap::ToggleTrapActive, 
-        TrapCooldownTime,
+        TrapActiveInterval,
         true, 
         StartDelay
     );

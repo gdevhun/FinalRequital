@@ -41,17 +41,16 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Trap")
 	TArray<TObjectPtr<class AFRGASCharacterPlayer>> OverlappingCharacters;
-
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	float TrapCooldownTime = 3.0f;
-
 public:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float TrapActiveInterval = 3.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
 private:

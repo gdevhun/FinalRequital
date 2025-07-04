@@ -53,7 +53,7 @@ void AFRFloorTrap::BeginPlay()
         ToggleActiveTimer,
         this,
         &AFRFloorTrap::ToggleTrapActive,
-        TrapCooldownTime,
+        TrapActiveInterval,
         true,
         StartDelay
     );

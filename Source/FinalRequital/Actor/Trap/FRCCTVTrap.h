@@ -37,7 +37,7 @@ protected:
 	TSubclassOf<class UGameplayEffect> StunEffectClass;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
 private:

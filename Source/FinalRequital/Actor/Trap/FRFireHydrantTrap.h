@@ -48,8 +48,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayAbility> MonsterHitAbilityClass;
 
-	UPROPERTY(EditAnywhere, Category = "Trap")
-	float TrapCooldownTime = 3.0f;
+	UPROPERTY(EditAnywhere, Category = "Setting")
+	float TrapActiveInterval = 3.0f;
 
 public:
 	UFUNCTION()
@@ -61,7 +61,7 @@ public:
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
 	bool bIsTrapActive = false;
