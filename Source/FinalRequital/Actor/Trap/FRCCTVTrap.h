@@ -21,7 +21,6 @@ protected:
 protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<class USceneComponent> RootSceneComponent;
 
@@ -36,6 +35,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> StunEffectClass;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	float StartDelay = 0.0f;
 
 private:
 	void DetectByLineTrace();

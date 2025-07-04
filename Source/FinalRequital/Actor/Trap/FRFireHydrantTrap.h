@@ -61,6 +61,9 @@ public:
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	float StartDelay = 0.0f;
+
 	bool bIsTrapActive = false;
 
 	void ToggleTrapActive();

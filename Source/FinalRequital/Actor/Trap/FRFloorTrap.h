@@ -51,6 +51,9 @@ public:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StartDelay")
+	float StartDelay = 0.0f;
+
 private:
 	void ToggleTrapActive();
 

@@ -187,7 +187,7 @@ void UFRWeaponComponent::CheckPushableTarget()
 
 	FVector Start = Camera->GetComponentLocation();
 	FVector Direction = Camera->GetForwardVector();
-	FVector End = Start + Direction * 650.0f;
+	FVector End = Start + Direction * 700.0f;
 
 	FHitResult Hit;
 	FCollisionQueryParams Params;

@@ -55,7 +55,8 @@ void AFRFloorTrap::BeginPlay()
         &AFRFloorTrap::ToggleTrapActive,
         TrapCooldownTime,
         true,
-        0.0f);
+        StartDelay
+    );
 }
 
 void AFRFloorTrap::ToggleTrapActive()

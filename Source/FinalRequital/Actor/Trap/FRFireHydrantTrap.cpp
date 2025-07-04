@@ -58,7 +58,8 @@ void AFRFireHydrantTrap::BeginPlay()
         &AFRFireHydrantTrap::ToggleTrapActive, 
         TrapCooldownTime,
         true, 
-        0.0f);
+        StartDelay
+    );
 }
 
 void AFRFireHydrantTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

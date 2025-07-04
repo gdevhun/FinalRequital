@@ -39,7 +39,8 @@ void AFRCCTVTrap::BeginPlay()
 		this,
 		&AFRCCTVTrap::DetectByLineTrace,
 		0.2f, 
-		true  
+		true,
+		StartDelay
 	);
 }
 
