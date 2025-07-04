@@ -40,8 +40,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
-	UPROPERTY(EditAnywhere, Category = "Setting")
-	float DetectionConeAngleDegrees = 30.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float DetectionAngleDegrees = 30.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float DetectionRange = 1200.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	int32 NumDetectionRays = 15;
 private:
 	void DetectByLineTrace();
 	FTimerHandle TraceTimerHandle;

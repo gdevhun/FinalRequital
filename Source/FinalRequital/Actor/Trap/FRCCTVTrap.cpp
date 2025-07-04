@@ -47,35 +47,33 @@ class UAbilitySystemComponent* AFRCCTVTrap::GetAbilitySystemComponent() const
 {
 	return ASC;
 }
-
 void AFRCCTVTrap::DetectByLineTrace()
 {
 	const FVector Start = SpotLight->GetComponentLocation();
 	const FVector Forward = SpotLight->GetForwardVector();
-	const float MaxDistance = SpotLight->AttenuationRadius;
-	const float ConeAngleRadians = FMath::DegreesToRadians(DetectionConeAngleDegrees);
-	const int NumRays = 15;
+	const float ConeAngleRadians = FMath::DegreesToRadians(DetectionAngleDegrees);
 
 #if WITH_EDITOR
 	DrawDebugCone(
 		GetWorld(),
 		Start,
 		Forward,
-		MaxDistance,
+		DetectionRange,
 		ConeAngleRadians,
 		ConeAngleRadians,
 		12,
 		FColor::Yellow,
 		false,
-		0.5f,  
+		0.2f,
 		0,
-		1.5f  
+		1.5f
 	);
 #endif
-	for (int i = 0; i < NumRays; ++i)
+
+	for (int i = 0; i < NumDetectionRays; ++i)
 	{
 		const FVector Direction = FMath::VRandCone(Forward, ConeAngleRadians);
-		const FVector End = Start + Direction * MaxDistance;
+		const FVector End = Start + Direction * DetectionRange;
 
 		FHitResult Hit;
 		FCollisionQueryParams Params;
@@ -90,7 +88,8 @@ void AFRCCTVTrap::DetectByLineTrace()
 			if (!Player || !StunEffectClass) continue;
 
 			UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
-			if (!TargetASC || TargetASC->HasMatchingGameplayTag(FRTAG_CHARACTER_STUNNED)
+			if (!TargetASC
+				|| TargetASC->HasMatchingGameplayTag(FRTAG_CHARACTER_STUNNED)
 				|| TargetASC->HasMatchingGameplayTag(FRTAG_CHARACTER_INVISIBLE))
 			{
 				continue;
@@ -106,7 +105,7 @@ void AFRCCTVTrap::DetectByLineTrace()
 			}
 
 #if WITH_EDITOR
-			DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.5f);
+			DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.5f, 0, 1.5f);
 #endif
 		}
 	}
