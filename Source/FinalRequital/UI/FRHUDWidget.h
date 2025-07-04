@@ -21,9 +21,13 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-
-	void ShowCrosshair(bool bShow);
+	void ShowCrossHair(bool bShow);
+	void ChangeCrossHairColor();
+	void ResetCrossHairColor();
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	TObjectPtr<class UImage> Crosshair;
+	TObjectPtr<class UImage> CrossHair;
+
+private:
+
 };

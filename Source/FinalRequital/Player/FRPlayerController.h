@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "FRPlayerController.generated.h"
 
-class UFRHUDWidget;
 /**
  * 
  */
@@ -24,7 +23,7 @@ protected:
 
 	//HUD SECTION
 public:
-	FORCEINLINE UFRHUDWidget* GetHUDWidget() { return AFRHUDWidget; }
+	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return AFRHUDWidget; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // 플레이어에게 보일 HUD UI 위젯 BP

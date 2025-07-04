@@ -87,4 +87,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UFRHUDWidget> HUD;
 
+private:
+	FTimerHandle CrossHairCheckTimer;
+	void CheckPushableTarget();
 };

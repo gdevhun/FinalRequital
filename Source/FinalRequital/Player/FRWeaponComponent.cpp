@@ -7,6 +7,9 @@
 #include "UI/FRHUDWidget.h"
 #include "Actor/FRWeaponBase.h"
 #include "FRPlayerState.h"
+#include "Actor/FRPushableActor.h"
+#include "Camera/CameraComponent.h"
+#include "Character/FRMonsterBase.h"
 #include "GameFramework/Character.h"
 
 UFRWeaponComponent::UFRWeaponComponent()
@@ -111,7 +114,24 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 	if (HUD)
 	{
 		const bool bShowCrosshair = (WeaponType == EWeaponType::Bow) || (WeaponType == EWeaponType::BronzeBell);
-		HUD->ShowCrosshair(bShowCrosshair);
+		HUD->ShowCrossHair(bShowCrosshair);
+	}
+	
+	if (WeaponType == EWeaponType::BronzeBell)
+	{
+		
+		GetWorld()->GetTimerManager().SetTimer(
+			CrossHairCheckTimer,
+			this,
+			&UFRWeaponComponent::CheckPushableTarget,
+			0.25f,
+			true
+		);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().ClearTimer(CrossHairCheckTimer);
+		HUD->ResetCrossHairColor(); 
 	}
 }
 
@@ -136,7 +156,7 @@ void UFRWeaponComponent::ClearWeapon()
 
 	if (HUD)
 	{
-		HUD->ShowCrosshair(false);
+		HUD->ShowCrossHair(false);
 	}
 }
 
@@ -156,4 +176,33 @@ void UFRWeaponComponent::ClearAbility(FGameplayAbilitySpecHandle& Handle)
 		ASC->ClearAbility(Handle);
 		Handle = FGameplayAbilitySpecHandle();
 	}
+}
+
+void UFRWeaponComponent::CheckPushableTarget()
+{
+	if (!OwnerCharacter || !HUD) return;
+
+	UCameraComponent* Camera = OwnerCharacter->FindComponentByClass<UCameraComponent>();
+	if (!Camera) return;
+
+	FVector Start = Camera->GetComponentLocation();
+	FVector Direction = Camera->GetForwardVector();
+	FVector End = Start + Direction * 1000.0f;
+
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(OwnerCharacter);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
+
+	if (bHit && Hit.GetActor())
+	{
+		if (Hit.GetActor()->IsA<AFRPushableActor>() || Hit.GetActor()->IsA<AFRMonsterBase>())
+		{
+			HUD->ChangeCrossHairColor(); 
+			return;
+		}
+	}
+
+	HUD->ResetCrossHairColor(); 
 }

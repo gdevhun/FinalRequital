@@ -10,10 +10,22 @@ AFRPushableActor::AFRPushableActor()
 	RootComponent = StaticMesh;
 
 	StaticMesh->SetCanEverAffectNavigation(false);
+	StaticMesh->SetSimulatePhysics(true);
 }
 
 void AFRPushableActor::BeginPlay()
 {
 	Super::BeginPlay();
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AFRPushableActor::DisablePhysics, 2.0f, false);
+}
+
+void AFRPushableActor::DisablePhysics()
+{
+	if (StaticMesh)
+	{
+		StaticMesh->SetSimulatePhysics(false);
+		StaticMesh->SetEnableGravity(true); 
+	}
 }
 

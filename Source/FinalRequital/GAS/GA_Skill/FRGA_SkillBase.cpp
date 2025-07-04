@@ -42,7 +42,7 @@ void UFRGA_SkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		{
 			if (UFRHUDWidget* HUD = PC->GetHUDWidget())
 			{
-				HUD->ShowCrosshair(true);
+				HUD->ShowCrossHair(true);
 			}
 		}
 	}
@@ -97,7 +97,7 @@ void UFRGA_SkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 		{
 			if (UFRHUDWidget* HUD = PC->GetHUDWidget())
 			{
-				HUD->ShowCrosshair(false);
+				HUD->ShowCrossHair(false);
 			}
 		}
 	}

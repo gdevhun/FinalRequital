@@ -20,4 +20,7 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UStaticMeshComponent> StaticMesh;
+
+private:
+	void DisablePhysics();
 };
