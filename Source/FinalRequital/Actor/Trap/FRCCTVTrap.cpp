@@ -2,7 +2,6 @@
 
 
 #include "Actor/Trap/FRCCTVTrap.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Components/SpotLightComponent.h"
 #include "DrawDebugHelpers.h"
@@ -54,12 +53,28 @@ void AFRCCTVTrap::DetectByLineTrace()
 	const FVector Start = SpotLight->GetComponentLocation();
 	const FVector Forward = SpotLight->GetForwardVector();
 	const float MaxDistance = SpotLight->AttenuationRadius;
-	const float ConeAngle = FMath::DegreesToRadians(SpotLight->OuterConeAngle);
+	const float ConeAngleRadians = FMath::DegreesToRadians(DetectionConeAngleDegrees);
 	const int NumRays = 15;
 
+#if WITH_EDITOR
+	DrawDebugCone(
+		GetWorld(),
+		Start,
+		Forward,
+		MaxDistance,
+		ConeAngleRadians,
+		ConeAngleRadians,
+		12,
+		FColor::Yellow,
+		false,
+		0.5f,  
+		0,
+		1.5f  
+	);
+#endif
 	for (int i = 0; i < NumRays; ++i)
 	{
-		const FVector Direction = FMath::VRandCone(Forward, ConeAngle);
+		const FVector Direction = FMath::VRandCone(Forward, ConeAngleRadians);
 		const FVector End = Start + Direction * MaxDistance;
 
 		FHitResult Hit;
@@ -91,7 +106,7 @@ void AFRCCTVTrap::DetectByLineTrace()
 			}
 
 #if WITH_EDITOR
-			DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.15f);
+			DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 0.5f);
 #endif
 		}
 	}
