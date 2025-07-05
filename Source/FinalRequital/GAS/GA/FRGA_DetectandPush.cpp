@@ -17,6 +17,7 @@
 #include "Actor/FRPushableActor.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Character/FRMonsterBase.h"
+#include "Character/FRSoul.h"
 
 UFRGA_DetectandPush::UFRGA_DetectandPush()
 {
@@ -111,7 +112,15 @@ void UFRGA_DetectandPush::ActivateAbility(
 
             GetWorld()->GetTimerManager().SetTimer(TimerHandle, Delegate, 0.8f, false);
         }
+        else if (AFRSoul* Soul = Cast<AFRSoul>(HitActor))
+        {
+            // Soul 단순 LaunchCharacter 처리만
+            FVector SoulPushDir = Direction.GetSafeNormal();
+            SoulPushDir.Z += 0.5f;
+            SoulPushDir.Normalize();
 
+            Soul->LaunchCharacter(SoulPushDir * PushStrength, true, true);
+        }
         // AFRPushableActor
         else if (AFRPushableActor* Pushable = Cast<AFRPushableActor>(HitActor))
         {

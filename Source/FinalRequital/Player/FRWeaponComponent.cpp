@@ -10,6 +10,7 @@
 #include "Actor/FRPushableActor.h"
 #include "Camera/CameraComponent.h"
 #include "Character/FRMonsterBase.h"
+#include "Character/FRSoul.h"
 #include "GameFramework/Character.h"
 
 UFRWeaponComponent::UFRWeaponComponent()
@@ -197,7 +198,8 @@ void UFRWeaponComponent::CheckPushableTarget()
 
 	if (bHit && Hit.GetActor())
 	{
-		if (Hit.GetActor()->IsA<AFRPushableActor>() || Hit.GetActor()->IsA<AFRMonsterBase>())
+		if (Hit.GetActor()->IsA<AFRPushableActor>() || Hit.GetActor()->IsA<AFRMonsterBase>()
+			|| Hit.GetActor()->IsA<AFRSoul>())
 		{
 			HUD->ChangeCrossHairColor(); 
 			return;
