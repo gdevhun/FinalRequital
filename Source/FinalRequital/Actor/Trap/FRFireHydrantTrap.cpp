@@ -76,8 +76,11 @@ void AFRFireHydrantTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAc
     }
 }
 
+void AFRFireHydrantTrap::ActivateVisualEffect_Implementation(){}
+void AFRFireHydrantTrap::DeActivateVisualEffect_Implementation(){}
+
 void AFRFireHydrantTrap::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
     if (!OtherActor) return;
 
@@ -94,6 +97,7 @@ void AFRFireHydrantTrap::ToggleTrapActive()
     if (bIsTrapActive)
     {
         ParticleSystem->Activate(true);
+        ActivateVisualEffect();
 
         GetWorld()->GetTimerManager().SetTimer(
             DamageTickTimer,
@@ -106,6 +110,7 @@ void AFRFireHydrantTrap::ToggleTrapActive()
     else
     {
         ParticleSystem->Deactivate();
+        DeActivateVisualEffect();
         GetWorld()->GetTimerManager().ClearTimer(DamageTickTimer);
     }
 }
