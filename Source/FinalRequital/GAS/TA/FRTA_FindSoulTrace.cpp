@@ -7,7 +7,7 @@
 #include "GameFramework/Character.h"
 #include "DrawDebugHelpers.h"
 #include "FRDebugHelper.h"
-#include "Actor/FRSoulPiece.h"
+#include "Actor/FRMemoryCell.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Physics/FRCollision.h"
 
@@ -49,7 +49,7 @@ FGameplayAbilityTargetDataHandle AFRTA_FindSoulTrace::MakeTargetData() const
 
 	FGameplayAbilityTargetDataHandle DataHandle;
 
-	if (bHit && OutHit.GetActor()->IsA<AFRSoulPiece>())
+	if (bHit && OutHit.GetActor()->IsA<AFRMemoryCell>())
 	{
 		DataHandle.Add(new FGameplayAbilityTargetData_SingleTargetHit(OutHit));
 	}

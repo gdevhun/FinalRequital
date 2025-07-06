@@ -2,10 +2,9 @@
 
 
 #include "GAS/GA/FRGA_SoulPieceHitCheck.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FRDebugHelper.h"
-#include "Actor/FRSoulPiece.h"
+#include "Actor/FRMemoryCell.h"
 #include "GAS/AT/FRAT_Trace.h"
 
 UFRGA_SoulPieceHitCheck::UFRGA_SoulPieceHitCheck()
@@ -31,9 +30,9 @@ void UFRGA_SoulPieceHitCheck::OnTraceResultCallback(const FGameplayAbilityTarget
 	{
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
 		FR_LOG(FRLOG, Error, TEXT("EXECUTE1"));
-		if (AFRSoulPiece* SoulPiece = Cast<AFRSoulPiece>(HitResult.GetActor()))
+		if (AFRMemoryCell* MemoryCell = Cast<AFRMemoryCell>(HitResult.GetActor()))
 		{
-			SoulPiece->OnDetectedOnce();
+			MemoryCell->OnDetectedOnce();
 			FR_LOG(FRLOG, Error, TEXT("EXECUTE DETECTED"));
 		}
 	}
