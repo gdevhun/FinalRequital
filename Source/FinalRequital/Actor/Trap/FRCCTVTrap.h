@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -52,9 +52,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	ETrapIntervalType TrapIntervalType = ETrapIntervalType::Interval_3;
 
+	// Pitch rotation 각도는 -90이 아래를 보는 기준각임.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float MinPitch = -60.0f;
-
+	// Pitch rotation 각도는 -90이 아래를 보는 기준각임.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float MaxPitch = -120.0f;
 private:
