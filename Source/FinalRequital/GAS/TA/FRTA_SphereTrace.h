@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GAS/TA/FRTA_Trace.h"
-#include "FRTA_FindSoulTrace.generated.h"
+#include "FRTA_SphereTrace.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API AFRTA_FindSoulTrace : public AFRTA_Trace
+class FINALREQUITAL_API AFRTA_SphereTrace : public AFRTA_Trace
 {
 	GENERATED_BODY()
 
 protected:
 	virtual FGameplayAbilityTargetDataHandle MakeTargetData() const override;
-
 };

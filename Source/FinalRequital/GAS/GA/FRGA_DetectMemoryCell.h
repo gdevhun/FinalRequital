@@ -4,18 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "FRGA_FindSoulPiece.generated.h"
+#include "FRGA_DetectMemoryCell.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRGA_FindSoulPiece : public UGameplayAbility
+class FINALREQUITAL_API UFRGA_DetectMemoryCell : public UGameplayAbility
 {
 	GENERATED_BODY()
-
 public:
-	UFRGA_FindSoulPiece();
+	UFRGA_DetectMemoryCell();
 
 public:
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
@@ -26,7 +25,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-	TObjectPtr<class UAnimMontage> FindSoulPieceMontage;
+	TObjectPtr<class UAnimMontage> DetectingMemoryCellMontage;
 
 	UFUNCTION()
 	void OnCompleteCallback();
