@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Actor.h"
+#include "Actor/Trap/FRTrapIntervalHelper.h"
 #include "FRFloorTrap.generated.h"
 
 UCLASS()
@@ -49,6 +50,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float TrapActiveInterval = 3.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	ETrapIntervalType TrapIntervalType = ETrapIntervalType::Interval_3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;

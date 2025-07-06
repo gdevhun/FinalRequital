@@ -49,6 +49,8 @@ void AFRFloorTrap::BeginPlay()
         ASC->InitAbilityActorInfo(this, this);
     }
 
+    TrapActiveInterval = UFRTrapIntervalHelper::GetIntervalSeconds(TrapIntervalType);
+
     GetWorld()->GetTimerManager().SetTimer(
         ToggleActiveTimer,
         this,

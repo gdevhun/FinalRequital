@@ -51,15 +51,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float BreakInterval = 3.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
-	FRotator MinRotation = FRotator(0.0f, -60.0f, 0.0f);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float MinPitch = -60.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
-	FRotator MaxRotation = FRotator(0.0f, 115.0f, 0.0f);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float MaxPitch = -120.0f;
 private:
-	void RotateSpotCycle();
-	FTimerHandle RotationTimerHandle;
-
 	void DetectByLineTrace();
 	FTimerHandle TraceTimerHandle;
 

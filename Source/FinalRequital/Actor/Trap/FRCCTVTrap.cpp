@@ -50,10 +50,6 @@ class UAbilitySystemComponent* AFRCCTVTrap::GetAbilitySystemComponent() const
 	return ASC;
 }
 
-void AFRCCTVTrap::RotateSpotCycle()
-{
-}
-
 void AFRCCTVTrap::DetectByLineTrace()
 {
 	const FVector Start = SpotLight->GetComponentLocation();
