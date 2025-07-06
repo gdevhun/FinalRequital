@@ -49,6 +49,11 @@ class UAbilitySystemComponent* AFRCCTVTrap::GetAbilitySystemComponent() const
 {
 	return ASC;
 }
+
+void AFRCCTVTrap::RotateSpotCycle()
+{
+}
+
 void AFRCCTVTrap::DetectByLineTrace()
 {
 	const FVector Start = SpotLight->GetComponentLocation();
@@ -75,7 +80,7 @@ void AFRCCTVTrap::DetectByLineTrace()
 		const FVector WorldDirection = (Forward * LocalDirection.X +
 			Right * LocalDirection.Y +
 			Up * LocalDirection.Z).GetSafeNormal();
-		const FVector End = Start + WorldDirection * DetectionRange;
+		const FVector End = Start + WorldDirection * DetectionRayLength;
 
 #if WITH_EDITOR
 		// 모든 레이를 빨간색으로 먼저 그리기

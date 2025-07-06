@@ -17,10 +17,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<class USceneComponent> RootSceneComponent;
 
@@ -40,16 +39,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float DetectionAngleDegrees = 30.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
-	float DetectionRange = 1200.0f;
+	float DetectionRayLength = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	int32 NumDetectionRays = 15;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	float BreakInterval = 3.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FRotator MinRotation = FRotator(0.0f, -60.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	FRotator MaxRotation = FRotator(0.0f, 115.0f, 0.0f);
 private:
+	void RotateSpotCycle();
+	FTimerHandle RotationTimerHandle;
+
 	void DetectByLineTrace();
 	FTimerHandle TraceTimerHandle;
 

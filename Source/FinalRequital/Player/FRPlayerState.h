@@ -57,10 +57,10 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UFRCharacterAttributeSet> AttributeSet;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "GAS")
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TArray<EWeaponType> AcquiredWeapons;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "GAS")
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	EMaskSkillType SelectedMaskSkill;
 
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
