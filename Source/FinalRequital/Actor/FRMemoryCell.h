@@ -5,23 +5,25 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Actor.h"
-#include "FRSoulPiece.generated.h"
+#include "FRMemoryCell.generated.h"
 
 UCLASS()
-class FINALREQUITAL_API AFRSoulPiece : public AActor, public IAbilitySystemInterface
+class FINALREQUITAL_API AFRMemoryCell : public AActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
 public:	
-	AFRSoulPiece();
-
-	UFUNCTION()
-	void OnDetectedOnce();
+	AFRMemoryCell();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+public:	
+	UFUNCTION()
+	void OnDetectedOnce();
+
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
