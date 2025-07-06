@@ -17,10 +17,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 

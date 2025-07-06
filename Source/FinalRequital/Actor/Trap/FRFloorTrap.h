@@ -48,8 +48,8 @@ public:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
-	float TrapActiveInterval = 3.0f;
+	UPROPERTY()
+	float TrapActiveInterval;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	ETrapIntervalType TrapIntervalType = ETrapIntervalType::Interval_3;

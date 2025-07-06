@@ -26,6 +26,9 @@ protected:
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
 	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class USceneComponent> RootSceneComponent;
+
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> MeshComp;
 
 	UPROPERTY(EditDefaultsOnly)
