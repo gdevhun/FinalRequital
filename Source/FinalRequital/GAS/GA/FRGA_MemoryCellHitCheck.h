@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "FRGA_SoulPieceHitCheck.generated.h"
+#include "FRGA_MemoryCellHitCheck.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRGA_SoulPieceHitCheck : public UGameplayAbility
+class FINALREQUITAL_API UFRGA_MemoryCellHitCheck : public UGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	UFRGA_SoulPieceHitCheck();
+	UFRGA_MemoryCellHitCheck();
 
 public:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;

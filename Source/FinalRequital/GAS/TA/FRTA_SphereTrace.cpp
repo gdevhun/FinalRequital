@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GAS/TA/FRTA_FindSoulTrace.h"
+#include "GAS/TA/FRTA_SphereTrace.h"
 #include "GAS/TA/FRTA_MultiTrace.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameFramework/Character.h"
@@ -11,7 +11,7 @@
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Physics/FRCollision.h"
 
-FGameplayAbilityTargetDataHandle AFRTA_FindSoulTrace::MakeTargetData() const
+FGameplayAbilityTargetDataHandle AFRTA_SphereTrace::MakeTargetData() const
 {
 	ACharacter* Character = CastChecked<ACharacter>(SourceActor);
 	if (!Character) return FGameplayAbilityTargetDataHandle();
@@ -30,22 +30,22 @@ FGameplayAbilityTargetDataHandle AFRTA_FindSoulTrace::MakeTargetData() const
 		return FGameplayAbilityTargetDataHandle();
 	}
 
-	// ¿øÇü ÀåÆÇ ¼³Á¤
-	const float CircleRadius = AttributeSet->GetAttackRange() * 1.5f; // ÀåÆÇ ¹ÝÁö¸§
+	// ì›í˜• ìž¥íŒ ì„¤ì •
+	const float CircleRadius = AttributeSet->GetAttackRange() * 1.5f; // ìž¥íŒ ë°˜ì§€ë¦„
 
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(UFRTA_FindSoulTrace), false, Character);
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(UFRTA_DetectMemoryCellTrace), false, Character);
 
-	// Ä³¸¯ÅÍ Áß½É À§Ä¡
+	// ìºë¦­í„° ì¤‘ì‹¬ ìœ„ì¹˜
 	const FVector CharacterLocation = Character->GetActorLocation();
-	const FVector CircleCenter = CharacterLocation; // Ä³¸¯ÅÍ ¹Ù·Î ¾Æ·¡
+	const FVector CircleCenter = CharacterLocation; // ìºë¦­í„° ë°”ë¡œ ì•„ëž˜
 
-	// ¿øÇü ¿µ¿ª¿¡¼­ ´ÜÀÏ Å¸°Ù °Ë»ö
+	// ì›í˜• ì˜ì—­ì—ì„œ ë‹¨ì¼ íƒ€ê²Ÿ ê²€ìƒ‰
 	FHitResult OutHit;
 	bool bHit = GetWorld()->SweepSingleByChannel(
 		OutHit,
 		CircleCenter,
-		CircleCenter,FQuat::Identity,
-		CCHANNEL_FRACTION,FCollisionShape::MakeSphere(CircleRadius),Params);
+		CircleCenter, FQuat::Identity,
+		CCHANNEL_FRACTION, FCollisionShape::MakeSphere(CircleRadius), Params);
 
 	FGameplayAbilityTargetDataHandle DataHandle;
 
@@ -59,8 +59,8 @@ FGameplayAbilityTargetDataHandle AFRTA_FindSoulTrace::MakeTargetData() const
 	{
 		FColor DrawColor = bHit ? FColor::Green : FColor::Red;
 
-		DrawDebugSphere(GetWorld(),CircleCenter,CircleRadius,16,
-		DrawColor,false, 5.0f);
+		DrawDebugSphere(GetWorld(), CircleCenter, CircleRadius, 16,
+			DrawColor, false, 5.0f);
 	}
 
 #endif
