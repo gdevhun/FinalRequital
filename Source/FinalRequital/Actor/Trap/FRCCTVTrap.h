@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "FRTrapIntervalHelper.h"
 #include "GameFramework/Actor.h"
 #include "FRCCTVTrap.generated.h"
 
@@ -49,7 +50,7 @@ public:
 	int32 NumDetectionRays = 15;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
-	float BreakInterval = 3.0f;
+	ETrapIntervalType TrapIntervalType = ETrapIntervalType::Interval_3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float MinPitch = -60.0f;
