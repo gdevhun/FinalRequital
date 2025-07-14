@@ -13,9 +13,9 @@ void UFRHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (CrossHair)
+	if (IMG_CrossHair)
 	{
-		CrossHair->SetColorAndOpacity(FLinearColor::White);
+		IMG_CrossHair->SetColorAndOpacity(FLinearColor::White);
 		ShowCrossHair(false);
 	}
 	
@@ -23,24 +23,24 @@ void UFRHUDWidget::NativeConstruct()
 
 void UFRHUDWidget::ShowCrossHair(bool bShow)
 {
-	if (CrossHair)
+	if (IMG_CrossHair)
 	{
-		CrossHair->SetVisibility(bShow ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		IMG_CrossHair->SetVisibility(bShow ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	}
 }
 
 void UFRHUDWidget::ChangeCrossHairColor()
 {
-	if (CrossHair)
+	if (IMG_CrossHair)
 	{
-		CrossHair->SetColorAndOpacity(FLinearColor::Green);
+		IMG_CrossHair->SetColorAndOpacity(FLinearColor::Green);
 	}
 }
 
 void UFRHUDWidget::ResetCrossHairColor()
 {
-	if (CrossHair)
+	if (IMG_CrossHair)
 	{
-		CrossHair->SetColorAndOpacity(FLinearColor::White);
+		IMG_CrossHair->SetColorAndOpacity(FLinearColor::White);
 	}
 }

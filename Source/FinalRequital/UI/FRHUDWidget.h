@@ -26,7 +26,7 @@ public:
 	void ResetCrossHairColor();
 
 	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
-	TObjectPtr<class UImage> CrossHair;
+	TObjectPtr<class UImage> IMG_CrossHair;
 
 private:
 
