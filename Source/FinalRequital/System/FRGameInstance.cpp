@@ -2,4 +2,43 @@
 
 
 #include "System/FRGameInstance.h"
+#include "kismet/GameplayStatics.h"
 
+UFRGameInstance::UFRGameInstance(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+
+}
+
+void UFRGameInstance::ApplyMasterVolume(float Value) const
+{
+	if (MasterMix && MasterClass)
+	{
+		UGameplayStatics::SetSoundMixClassOverride(this, MasterMix, MasterClass, Value, 1.0f, 0.0f);
+		UGameplayStatics::PushSoundMixModifier(this, MasterMix);
+	}
+}
+
+void UFRGameInstance::ApplyMusicVolume(float Value) const
+{
+	if (BGMMix && BGMClass)
+	{
+		UGameplayStatics::SetSoundMixClassOverride(this, BGMMix, BGMClass, Value, 1.0f, 0.0f);
+		UGameplayStatics::PushSoundMixModifier(this, BGMMix);
+	}
+}
+
+
+void UFRGameInstance::ApplySFXVolume(float Value) const
+{
+	if (SFXMix && SFXClass)
+	{
+		UGameplayStatics::SetSoundMixClassOverride(this, SFXMix, SFXClass, Value, 1.0f, 0.0f);
+		UGameplayStatics::PushSoundMixModifier(this, SFXMix);
+	}
+}
+
+void UFRGameInstance::ApplyMouseSensitivityValue(float Value)
+{
+	CurrentSettingValue.MouseSensitivityValue = Value;
+}

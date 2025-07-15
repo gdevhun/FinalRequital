@@ -26,8 +26,17 @@ public:
 	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return AFRHUDWidget; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
-	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // 플레이어에게 보일 HUD UI 위젯 BP
+	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // HUD UI 위젯 BP REF
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UFRHUDWidget> AFRHUDWidget; // HUD UI 포인터
+
+	UFUNCTION(BlueprintCallable)
+	void PushUIWidgetToStack(UUserWidget* NewWidget);
+
+	UFUNCTION(BlueprintCallable)
+	void PopUIWidgetFromStack(UUserWidget* NewWidget);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<UUserWidget>> UIWidgetStack;
 };
