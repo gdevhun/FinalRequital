@@ -15,6 +15,7 @@
 #include "InputActionValue.h"
 #include "Player/FRPlayerController.h"
 #include "Physics/FRCollision.h"
+#include "System/FRGameInstance.h"
 
 AFRCharacterBase::AFRCharacterBase()
 {
@@ -124,6 +125,15 @@ void AFRCharacterBase::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+	if (Controller)
+	{
+		if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
+		{
+			float Sensitivity = GI->CurrentSettingValue.MouseSensitivityValue;
+			AddControllerYawInput(LookAxisVector.X * Sensitivity);
+			AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
+		}
 	}
 }
 

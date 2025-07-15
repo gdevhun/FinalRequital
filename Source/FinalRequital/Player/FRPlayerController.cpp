@@ -29,3 +29,14 @@ void AFRPlayerController::BeginPlay()
 	//bShowMouseCursor = true;              // 마우스 커서 표시
 
 }
+
+void AFRPlayerController::PushUIWidgetToStack(UUserWidget* NewWidget)
+{
+	if (!NewWidget) return;
+	UIWidgetStack.Add(NewWidget);
+
+}
+
+void AFRPlayerController::PopUIWidgetFromStack(UUserWidget* NewWidget)
+{
+}
