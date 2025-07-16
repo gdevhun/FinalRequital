@@ -2,7 +2,7 @@
 
 
 #include "Player/FRPlayerController.h"
-#include "UI/FRHUDWidget.h"
+#include "UI/HUD/FRHUDWidget.h"
 
 AFRPlayerController::AFRPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)

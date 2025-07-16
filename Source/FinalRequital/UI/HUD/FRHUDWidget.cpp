@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/FRHUDWidget.h"
+#include "UI/HUD/FRHUDWidget.h"
 #include "Components/Image.h"
 
 UFRHUDWidget::UFRHUDWidget(const FObjectInitializer& ObjectInitializer)

@@ -8,7 +8,7 @@
 #include "Character/FRCharacterBase.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Player/FRPlayerController.h"
-#include "UI/FRHUDWidget.h"
+#include "UI/HUD/FRHUDWidget.h"
 
 void UFRGA_SkillBase::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo)

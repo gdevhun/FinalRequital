@@ -4,7 +4,7 @@
 #include "Player/FRGASCharacterPlayer.h"
 #include "AbilitySystemComponent.h"
 #include "Player/FRPlayerController.h"
-#include "UI/FRHUDWidget.h"
+#include "UI/HUD/FRHUDWidget.h"
 #include "Actor/FRWeaponBase.h"
 #include "FRPlayerState.h"
 #include "Actor/FRPushableActor.h"
