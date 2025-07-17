@@ -4,6 +4,10 @@
 #include "Player/FRMaskSkillComponent.h"
 #include "FRPlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "FRGASCharacterPlayer.h"
+#include "FRPlayerController.h"
+#include "UI/HUD/FRHUDWidget.h"
+#include "UI/HUD/FRSkillSlotWidget.h"
 
 UFRMaskSkillComponent::UFRMaskSkillComponent()
 {
@@ -13,6 +17,15 @@ UFRMaskSkillComponent::UFRMaskSkillComponent()
 void UFRMaskSkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OwnerCharacter = Cast<AFRGASCharacterPlayer>(GetOwner());
+	if (OwnerCharacter)
+	{
+		if (AFRPlayerController* PC = Cast<AFRPlayerController>(OwnerCharacter->GetController()))
+		{
+			HUD = PC->GetHUDWidget();
+		}
+	}
 }
 
 void UFRMaskSkillComponent::ActivateSelectedMaskSkill() const
@@ -53,4 +66,7 @@ void UFRMaskSkillComponent::ActivateSelectedMaskSkill() const
 		ASC->GiveAbility(FGameplayAbilitySpec(SkillAbility, 1, 3));
 		UE_LOG(LogTemp, Log, TEXT("Mask skill ability granted: %s"), *SkillAbility->GetName());
 	}
+
+	HUD->WBP_SkillSlot->UpdateSkillImage(SkillType);
+
 }

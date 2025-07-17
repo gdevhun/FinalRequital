@@ -18,24 +18,27 @@ class FINALREQUITAL_API UFRSkillSlotWidget : public UFRUserWidget
 public:
 	UFRSkillSlotWidget(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UProgressBar> PB_SkillCoolTime;
+	void UpdateSkillImage(EMaskSkillType SelectedSkillType);
+
+protected:
+	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UImage> IMG_Skill;
+	TObjectPtr<class UProgressBar> PB_MaskSkillCoolTime;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_MaskSkill;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage>IMG_MaskSkillDeactivated;
 
 	// 미리 할당된 스킬별 이미지
 	UPROPERTY(EditAnywhere, Category = "Skill")
 	TMap<EMaskSkillType, UTexture2D*> SkillImages;
 
+	UPROPERTY(EditAnywhere, Category = "Skill")
+	TObjectPtr<class UTexture2D> ActivatedSkillFrame;
+
 private:
-	void InitializeImage();
 
-	// 현재 선택된 스킬
-	EMaskSkillType CurrentSkill;
-
-	// 쿨타임 업데이트용 타이머
-	FTimerHandle CooldownTimerHandle;
-
-	
 };

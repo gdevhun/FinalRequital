@@ -43,4 +43,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Skill")
 	TSubclassOf<UGameplayAbility> MuAbility;
+
+	UPROPERTY()
+	TObjectPtr<class UFRHUDWidget> HUD;
+
+	UPROPERTY()
+	TObjectPtr<class AFRGASCharacterPlayer> OwnerCharacter;
+
 };
