@@ -10,6 +10,7 @@ enum class EWeaponType : uint8;
 /**
  * 
  */
+
 UCLASS()
 class FINALREQUITAL_API UFRHUDWidget : public UUserWidget
 {
@@ -25,12 +26,12 @@ public:
 	void ShowCrossHair(bool bShow);
 	void ChangeCrossHairColor();
 	void ResetCrossHairColor();
-
+	void UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType);
 	void BindActivatedWeaponSlotsToPlayerState();
 
 	UFUNCTION()
 	void OnWeaponAcquiredFromState(EWeaponType WeaponType);
-protected:
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_CrossHair;
 

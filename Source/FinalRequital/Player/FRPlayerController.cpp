@@ -18,11 +18,11 @@ void AFRPlayerController::BeginPlay()
 	// HUD 위젯을 화면에 추가 -> 에셋정보는 블루프린트에서 캐시
 	if (FRHUDWidgetClass) // RXHUDWidgetClass가 유효한지 확인
 	{
-		AFRHUDWidget = CreateWidget<UFRHUDWidget>(GetWorld(), FRHUDWidgetClass);
-		if (AFRHUDWidget)
+		HUDWidget = CreateWidget<UFRHUDWidget>(GetWorld(), FRHUDWidgetClass);
+		if (HUDWidget)
 		{
 			// HUD를 화면에 추가
-			AFRHUDWidget->AddToViewport();
+			HUDWidget->AddToViewport();
 		}
 	}
 	//SetInputMode(FInputModeGameAndUI()); // UI와 게임 모드 둘 다 활성화

@@ -116,6 +116,8 @@ void UFRWeaponComponent::EquipWeapon(EWeaponType WeaponType)
 	{
 		const bool bShowCrosshair = (WeaponType == EWeaponType::Bow) || (WeaponType == EWeaponType::BronzeBell);
 		HUD->ShowCrossHair(bShowCrosshair);
+
+		HUD->UpdateWeaponSlotBySwap(WeaponType);
 	}
 	
 	if (WeaponType == EWeaponType::BronzeBell)
@@ -158,6 +160,7 @@ void UFRWeaponComponent::ClearWeapon()
 	if (HUD)
 	{
 		HUD->ShowCrossHair(false);
+		HUD->UpdateWeaponSlotBySwap(EWeaponType::None);
 	}
 }
 

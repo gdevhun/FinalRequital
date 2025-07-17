@@ -5,6 +5,9 @@
 #include "Character/FRCharacterBase.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/FRPlayerController.h"
+#include "UI/HUD/FRHUDWidget.h"
+#include "UI/HUD/FRWeaponSlotWidget.h"
 
 UFRGA_SpecialMeleeAttack::UFRGA_SpecialMeleeAttack()
 {
@@ -32,6 +35,28 @@ void UFRGA_SpecialMeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_SpecialMeleeAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
 
+
+	float TimeRemaining = 0.f;
+	float CooldownDuration = 0.f;
+
+	GetCooldownTimeRemainingAndDuration(Handle, ActorInfo, TimeRemaining, CooldownDuration);
+
+	if (AFRPlayerController* PC = Cast<AFRPlayerController>(ActorInfo->PlayerController.Get()))
+	{
+		if (UFRHUDWidget* HUD = PC->GetHUDWidget())
+		{
+			if (bIsSwordAttack)
+			{
+				HUD->WBP_WeaponSlot_1->StartSlotCooldown(TimeRemaining, CooldownDuration);
+			}
+			else
+			{
+				HUD->WBP_WeaponSlot_3->StartSlotCooldown(TimeRemaining, CooldownDuration);
+			}
+
+		}
+	}
+	//UE_LOG(LogTemp, Warning, TEXT("remain: %.2f / total: %.2f"), TimeRemaining, CooldownDuration);
 }
 
 void UFRGA_SpecialMeleeAttack::EndAbility(const FGameplayAbilitySpecHandle Handle,

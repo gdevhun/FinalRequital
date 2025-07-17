@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FRHUDWidget.h"
 #include "UI/FRUserWidget.h"
 #include "FRWeaponSlotWidget.generated.h"
 
@@ -10,6 +11,8 @@ enum class EWeaponType : uint8;
 /**
  * 
  */
+
+
 UCLASS()
 class FINALREQUITAL_API UFRWeaponSlotWidget : public UFRUserWidget
 {
@@ -17,6 +20,10 @@ class FINALREQUITAL_API UFRWeaponSlotWidget : public UFRUserWidget
 
 public:
 	UFRWeaponSlotWidget(const FObjectInitializer& ObjectInitializer);
+
+	void UpdateSlotVisibilityByAcquisition(EWeaponType NewlyAcquiredWeapon);
+	void UpdateSlotVisibilityBySwap();
+	void StartSlotCooldown(float Remaining, float TotalDuration);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -36,6 +43,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WeaponType")
 	EWeaponType ThisSlotWeaponType;
 
-public:
-	void UpdateSlotVisibility(EWeaponType NewlyAcquiredWeapon);
+private:
+	void UpdateCooldownProgress();
+	float CooldownStartTime = 0.f;
+	float MaxCooldownTime = 1.f;
+	FTimerHandle CooldownUpdateTimerHandle;
+
 };

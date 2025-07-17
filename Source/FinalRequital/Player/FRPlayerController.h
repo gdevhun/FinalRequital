@@ -23,13 +23,13 @@ protected:
 
 	//HUD SECTION
 public:
-	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return AFRHUDWidget; }
+	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return HUDWidget; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // HUD UI 위젯 BP REF
 
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UFRHUDWidget> AFRHUDWidget; // HUD UI 포인터
+	TObjectPtr<UFRHUDWidget> HUDWidget; // HUD UI 포인터
 
 	UFUNCTION(BlueprintCallable)
 	void PushUIWidgetToStack(UUserWidget* NewWidget);

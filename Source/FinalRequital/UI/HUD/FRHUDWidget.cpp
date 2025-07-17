@@ -2,10 +2,10 @@
 
 
 #include "UI/HUD/FRHUDWidget.h"
-
 #include "FRWeaponSlotWidget.h"
 #include "Components/Image.h"
 #include "Player/FRPlayerState.h"
+#include "Player/FRWeaponComponent.h"
 
 UFRHUDWidget::UFRHUDWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -68,7 +68,29 @@ void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
 	{
 		if (WeaponSlot)
 		{
-			WeaponSlot->UpdateSlotVisibility(WeaponType);
+			WeaponSlot->UpdateSlotVisibilityByAcquisition(WeaponType);
 		}
 	}
+}
+
+void UFRHUDWidget::UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType)
+{
+	auto UpdateSlot = [&](UFRWeaponSlotWidget* SlotWidget, EWeaponType SlotType)
+		{
+			if (!SlotWidget) return;
+
+			if (CurrentEquippedWeaponType == SlotType)
+			{
+				SlotWidget->UpdateSlotVisibilityBySwap();
+			}
+			else
+			{
+				SlotWidget->UpdateSlotVisibilityByAcquisition(SlotType); //Deactivation
+			}
+		};
+
+	UpdateSlot(WBP_WeaponSlot_1, EWeaponType::Sword);
+	UpdateSlot(WBP_WeaponSlot_2, EWeaponType::Bow);
+	UpdateSlot(WBP_WeaponSlot_3, EWeaponType::IronMace);
+	UpdateSlot(WBP_WeaponSlot_4, EWeaponType::BronzeBell);
 }

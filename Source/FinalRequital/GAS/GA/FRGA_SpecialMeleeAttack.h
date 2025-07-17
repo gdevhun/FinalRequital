@@ -30,4 +30,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UAnimMontage> SpecialAttackActionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsSwordAttack;
 };
