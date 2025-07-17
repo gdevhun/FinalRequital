@@ -55,6 +55,15 @@ void UFRWeaponSlotWidget::UpdateSlotVisibilityByAcquisition(EWeaponType NewlyAcq
 	}
 }
 
+void UFRWeaponSlotWidget::UpdateRestSlotVisibilityBySwap(EWeaponType NewlyAcquiredWeapon)
+{
+	if (NewlyAcquiredWeapon == ThisSlotWeaponType)
+	{
+		IMG_WeaponSelected->SetVisibility(ESlateVisibility::Hidden);
+		IMG_WeaponDeactivated->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
 void UFRWeaponSlotWidget::UpdateSlotVisibilityBySwap()
 {
 	IMG_WeaponSelected->SetVisibility(ESlateVisibility::Visible);

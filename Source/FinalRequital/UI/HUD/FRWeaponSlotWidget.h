@@ -22,6 +22,7 @@ public:
 	UFRWeaponSlotWidget(const FObjectInitializer& ObjectInitializer);
 
 	void UpdateSlotVisibilityByAcquisition(EWeaponType NewlyAcquiredWeapon);
+	void UpdateRestSlotVisibilityBySwap(EWeaponType NewlyAcquiredWeapon);
 	void UpdateSlotVisibilityBySwap();
 	void StartSlotCooldown(float Remaining, float TotalDuration);
 

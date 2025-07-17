@@ -85,7 +85,7 @@ void UFRHUDWidget::UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType)
 			}
 			else
 			{
-				SlotWidget->UpdateSlotVisibilityByAcquisition(SlotType); //Deactivation
+				SlotWidget->UpdateRestSlotVisibilityBySwap(SlotType); //Deactivation
 			}
 		};
 
