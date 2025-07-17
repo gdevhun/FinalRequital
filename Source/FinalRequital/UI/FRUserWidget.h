@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRUserWidget : public UUserWidget,public IAbilitySystemInterface
+class FINALREQUITAL_API UFRUserWidget : public UUserWidget, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 

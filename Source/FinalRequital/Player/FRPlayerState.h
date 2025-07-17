@@ -18,6 +18,8 @@ enum class EFRCharacterStatType : uint8
 	P UMETA(DisplayName = "의념")
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponAcquired, EWeaponType, WeaponType);
+
 /**
  * 
  */
@@ -35,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AcquireWeapon(EWeaponType WeaponType);
 	bool HasWeapon(EWeaponType WeaponType) const;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWeaponAcquired OnWeaponAcquired;
 
 	// 마스크 스킬 관리
 	UFUNCTION(BlueprintCallable)

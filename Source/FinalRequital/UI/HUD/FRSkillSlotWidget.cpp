@@ -6,4 +6,10 @@
 UFRSkillSlotWidget::UFRSkillSlotWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
+	
+}
+
+void UFRSkillSlotWidget::InitializeImage()
+{
+
 }

@@ -3,26 +3,39 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/FRUserWidget.h"
 #include "FRWeaponSlotWidget.generated.h"
 
+enum class EWeaponType : uint8;
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRWeaponSlotWidget : public UUserWidget
+class FINALREQUITAL_API UFRWeaponSlotWidget : public UFRUserWidget
 {
 	GENERATED_BODY()
 
 public:
 	UFRWeaponSlotWidget(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+protected:
+	virtual void NativeConstruct() override;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> PB_WeaponSkillCoolTime;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_Weapon;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_WeaponSelected;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_WeaponDeactivated;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "WeaponType")
+	EWeaponType ThisSlotWeaponType;
+
+public:
+	void UpdateSlotVisibility(EWeaponType NewlyAcquiredWeapon);
 };

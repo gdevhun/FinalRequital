@@ -8,6 +8,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayEffectExtension.h"
+#include "UI/HUD/FRWeaponSlotWidget.h"
 
 AFRPlayerState::AFRPlayerState()
 {
@@ -39,6 +40,7 @@ void AFRPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 void AFRPlayerState::AcquireWeapon(EWeaponType WeaponType)
 {
 	AcquiredWeapons.Add(WeaponType);
+	OnWeaponAcquired.Broadcast(WeaponType);
 }
 
 bool AFRPlayerState::HasWeapon(EWeaponType WeaponType) const

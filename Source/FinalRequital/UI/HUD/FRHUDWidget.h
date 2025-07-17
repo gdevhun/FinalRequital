@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "FRHUDWidget.generated.h"
 
+enum class EWeaponType : uint8;
 /**
  * 
  */
@@ -25,9 +26,27 @@ public:
 	void ChangeCrossHairColor();
 	void ResetCrossHairColor();
 
+	void BindActivatedWeaponSlotsToPlayerState();
+
+	UFUNCTION()
+	void OnWeaponAcquiredFromState(EWeaponType WeaponType);
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_CrossHair;
 
-private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRSkillSlotWidget> WBP_SkillSlot;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_4;
 
 };
