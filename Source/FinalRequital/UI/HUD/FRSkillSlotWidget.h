@@ -19,6 +19,7 @@ public:
 	UFRSkillSlotWidget(const FObjectInitializer& ObjectInitializer);
 
 	void UpdateSkillImage(EMaskSkillType SelectedSkillType);
+	void StartSkillSlotCooldown(float Remaining, float TotalDuration);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -30,7 +31,7 @@ protected:
 	TObjectPtr<class UImage> IMG_MaskSkill;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UImage>IMG_MaskSkillDeactivated;
+	TObjectPtr<class UImage> IMG_MaskSkillDeactivated;
 
 	// 미리 할당된 스킬별 이미지
 	UPROPERTY(EditAnywhere, Category = "Skill")
@@ -40,5 +41,8 @@ protected:
 	TObjectPtr<class UTexture2D> ActivatedSkillFrame;
 
 private:
-
+	void UpdateCooldownProgress();
+	float CooldownStartTime = 0.f;
+	float MaxCooldownTime = 1.f;
+	FTimerHandle CooldownUpdateTimerHandle;
 };

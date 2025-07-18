@@ -9,6 +9,7 @@
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Player/FRPlayerController.h"
 #include "UI/HUD/FRHUDWidget.h"
+#include "UI/HUD/FRSkillSlotWidget.h"
 
 void UFRGA_SkillBase::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo)
@@ -47,6 +48,20 @@ void UFRGA_SkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		}
 	}
 
+	float TimeRemaining = 0.f;
+	float CooldownDuration = 0.f;
+
+	GetCooldownTimeRemainingAndDuration(Handle, ActorInfo, TimeRemaining, CooldownDuration);
+
+	if (AFRPlayerController* PC = Cast<AFRPlayerController>(ActorInfo->PlayerController.Get()))
+	{
+		if (UFRHUDWidget* HUD = PC->GetHUDWidget())
+		{
+
+			HUD->WBP_SkillSlot->StartSkillSlotCooldown(TimeRemaining, CooldownDuration);
+		}
+	}
+	//UE_LOG(LogTemp, Warning, TEXT("remain: %.2f / total: %.2f"), TimeRemaining, CooldownDuration);
 	// GameplayCue Execute
 	if (GameplayCueToTrigger.IsValid())
 	{

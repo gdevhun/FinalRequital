@@ -35,7 +35,6 @@ void UFRGA_SpecialMeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_SpecialMeleeAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
 
-
 	float TimeRemaining = 0.f;
 	float CooldownDuration = 0.f;
 
