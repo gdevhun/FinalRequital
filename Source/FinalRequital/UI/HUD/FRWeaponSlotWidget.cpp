@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "UI/HUD/FRWeaponSlotWidget.h"
@@ -32,7 +32,7 @@ void UFRWeaponSlotWidget::UpdateCooldownProgress()
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
 	const float Elapsed = CurrentTime - CooldownStartTime;
 
-	// ½Ã°£ÀÌ Áö³¯¼ö·Ï ÆÛ¼¾Æ® Áõ°¡
+	// ì‹œê°„ì´ ì§€ë‚ ìˆ˜ë¡ í¼ì„¼íŠ¸ ì¦ê°€
 	float Ratio = Elapsed / MaxCooldownTime;
 	Ratio = FMath::Clamp(Ratio, 0.f, 1.f);
 
@@ -77,7 +77,7 @@ void UFRWeaponSlotWidget::StartSlotCooldown(float Remaining, float TotalDuration
 	MaxCooldownTime = TotalDuration;
 	CooldownStartTime = GetWorld()->GetTimeSeconds();
 
-	UpdateCooldownProgress(); // Ã¹ ÇÁ·¹ÀÓ Áï½Ã °»½Å
+	UpdateCooldownProgress(); // ì²« í”„ë ˆìž„ ì¦‰ì‹œ ê°±ì‹ 
 
 	GetWorld()->GetTimerManager().SetTimer(
 		CooldownUpdateTimerHandle,

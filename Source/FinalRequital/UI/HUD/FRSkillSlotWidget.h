@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -33,7 +33,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_MaskSkillDeactivated;
 
-	// ¹Ì¸® ÇÒ´çµÈ ½ºÅ³º° ÀÌ¹ÌÁö
+	// ë¯¸ë¦¬ í• ë‹¹ëœ ìŠ¤í‚¬ë³„ ì´ë¯¸ì§€
 	UPROPERTY(EditAnywhere, Category = "Skill")
 	TMap<EMaskSkillType, UTexture2D*> SkillImages;
 
