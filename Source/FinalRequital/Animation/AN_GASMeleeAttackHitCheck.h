@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+Ôªø// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -9,11 +9,11 @@
 
 /**
  * UFRGA_MeleeAttackHitCheck
-   ¶¶¢∫ UFRAT_Trace (AbilityTask)
-          ¶¶¢∫ AFRTA_Trace (TargetActor)
-                ¶¶¢∫ TargetData ª˝º∫ + Broadcast
-          ¶¶¢∏ OnTargetDataReadyCallback °Ê OnComplete.Broadcast
-   ¢∏¶°¶° OnTraceResultCallback(DataHandle)
+   ‚îî‚ñ∂ UFRAT_Trace (AbilityTask)
+          ‚îî‚ñ∂ AFRTA_Trace (TargetActor)
+                ‚îî‚ñ∂ TargetData ÏÉùÏÑ± + Broadcast
+          ‚îî‚óÄ OnTargetDataReadyCallback ‚Üí OnComplete.Broadcast
+   ‚óÄ‚îÄ‚îÄ OnTraceResultCallback(DataHandle)
  */
 UCLASS()
 class FINALREQUITAL_API UAN_GASMeleeAttackHitCheck : public UAnimNotify

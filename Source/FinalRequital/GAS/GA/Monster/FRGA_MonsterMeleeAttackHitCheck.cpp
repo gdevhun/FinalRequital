@@ -1,0 +1,81 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "GAS/GA/Monster/FRGA_MonsterMeleeAttackHitCheck.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "FRDebugHelper.h"
+#include "FRGameplayTag.h"
+#include "GAS/AT/FRAT_MonsterTrace.h"
+#include "GAS/Attribute/FRMonsterAttributeSet.h"
+#include "Player/FRGASCharacterPlayer.h"
+
+UFRGA_MonsterMeleeAttackHitCheck::UFRGA_MonsterMeleeAttackHitCheck()
+{
+
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+}
+
+void UFRGA_MonsterMeleeAttackHitCheck::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	UFRAT_MonsterTrace* AttackTraceTask = UFRAT_MonsterTrace::CreateTask(this, TargetActorClass);
+	AttackTraceTask->OnComplete.AddDynamic(this, &UFRGA_MonsterMeleeAttackHitCheck::OnTraceResultCallback);
+	AttackTraceTask->ReadyForActivation();
+}
+
+void UFRGA_MonsterMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
+{
+	// 단일 대상 감지 Trace 기반
+	if (UAbilitySystemBlueprintLibrary::TargetDataHasHitResult(TargetDataHandle, 0))
+	{
+		// 타겟데이터 0번째 배열에 결과값이 존재하는지
+		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
+
+		AActor* HitActor = HitResult.GetActor();
+		D(FString::Printf(TEXT("Hit: %s"), *GetNameSafe(HitActor)));
+
+		if (HitActor->IsA<AFRGASCharacterPlayer>())
+		{
+			D(TEXT("캐스팅 성공!"));
+		}
+		// 플레이어 클래스인지 확인
+		AFRGASCharacterPlayer* TargetPlayer = Cast<AFRGASCharacterPlayer>(HitResult.GetActor());
+		if (!TargetPlayer)
+		{
+			// 플레이어가 아니면 처리하지 않음
+			bool bReplicatedEndAbility = true;
+			bool bWasCancelled = false;
+			D(FString::Printf(TEXT("TRIGGER!3")));
+			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+			return;
+		}
+
+		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
+		const UFRMonsterAttributeSet* SourceAttribute = SourceASC->GetSet<UFRMonsterAttributeSet>();
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
+		if (!SourceASC || !TargetASC)
+		{
+			// 감지한 액터의 ASC(타겟ASC)가 없고 나의 ASC(소스ASC)의 액터중 하나라도 없으면 에러
+			FR_LOG(FRLOG, Error, TEXT("ASC Not Found!"));
+			return;
+		}
+		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, 1);
+		if (EffectSpecHandle.IsValid())
+		{
+			D(FString::Printf(TEXT("TRIGGER!")));
+			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetDataHandle);
+			FGameplayEffectContextHandle CueContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(EffectSpecHandle);
+			CueContextHandle.AddHitResult(HitResult);
+			FGameplayCueParameters CueParameters;
+			CueParameters.EffectContext = CueContextHandle;
+			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT, CueParameters);
+		}
+	}
+	
+	bool bReplicatedEndAbility = true;
+	bool bWasCancelled = false;
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+}

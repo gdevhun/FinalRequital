@@ -31,14 +31,15 @@ protected:
 	TObjectPtr<class UFRMonsterAttributeSet> AttributeSet;
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS)
+	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
+
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TSubclassOf<class UGameplayEffect> InitStatEffect;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	float Level;
-
-	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayAbility> HitReactAbilityClass;
 
 	UFUNCTION()
 	virtual void OnOutOfHealth();

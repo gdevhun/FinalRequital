@@ -83,10 +83,18 @@ void AFRMonsterBase::PossessedBy(AController* NewController)
 
 	ASC->InitAbilityActorInfo(this, this);
 
-	if (HitReactAbilityClass)
+	for (int32 i = 0; i < StartAbilities.Num(); ++i)
 	{
-		FGameplayAbilitySpec Spec(HitReactAbilityClass, 1, INDEX_NONE, this);
-		HitReactAbilityHandle = ASC->GiveAbility(Spec);
+		const TSubclassOf<UGameplayAbility>& StartAbility = StartAbilities[i];
+		FGameplayAbilitySpec StartSpec(StartAbility);
+
+		FGameplayAbilitySpecHandle GivenHandle = ASC->GiveAbility(StartSpec);
+
+		// 0번 인덱스는 HitReact 따로 저장
+		if (i == 0)
+		{
+			HitReactAbilityHandle = GivenHandle;
+		}
 	}
 
 	// 몬스터 체력 관련 DELEGATE 연결 처리
