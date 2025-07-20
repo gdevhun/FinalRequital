@@ -12,6 +12,7 @@
 #define FRTAG_CHARACTER_ISDEAD FGameplayTag::RequestGameplayTag(FName("Character.State.IsDead"))
 #define FRTAG_CHARACTER_INVISIBLE FGameplayTag::RequestGameplayTag(FName("Character.State.Invisible"))
 #define FRTAG_CHARACTER_STUNNED FGameplayTag::RequestGameplayTag(FName("Character.State.Stunned"))
+#define FRTAG_CHARACTER_IMMUNE FGameplayTag::RequestGameplayTag(FName("Character.State.Immune"))
 
 #define FRTAG_CHARACTER_COOLTIME_SWORD FGameplayTag::RequestGameplayTag(FName("Character.State.IronMaceSpecialAttackCooldown"))
 #define FRTAG_CHARACTER_COOLTIME_IRONMACE FGameplayTag::RequestGameplayTag(FName("Character.State.SwordSpecialAttackCooldown"))

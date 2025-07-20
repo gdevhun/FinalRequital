@@ -6,9 +6,6 @@
 #include "FRMaskSkillComponent.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Net/UnrealNetwork.h"
-#include "GameplayEffectTypes.h"
-#include "GameplayEffectExtension.h"
-#include "UI/HUD/FRWeaponSlotWidget.h"
 
 AFRPlayerState::AFRPlayerState()
 {

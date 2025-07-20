@@ -49,22 +49,21 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TMap<int32, TSubclassOf<class UGameplayAbility>> StartInputAbilities;
 
+	UPROPERTY(EditAnywhere, Category = "GAS")
+	TSubclassOf<class UGameplayAbility> HitReactAbilityClass;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<class UFRWeaponComponent> WeaponComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<class UFRMaskSkillComponent> MaskSkillComponent;
 
-
-	//UPROPERTY(VisibleAnywhere)
-	//TObjectPtr<class UFRWidgetComponent> HpBar;
-
 public:
 	// State Delegate
 	void OnStunTagChanged(const FGameplayTag Tag, int32 NewCount);
 
-	UPROPERTY(EditAnywhere, Category = Animation)
-	TObjectPtr<UAnimMontage> StunMontage;
+	UFUNCTION()
+	void HandleTakeDamage();
 
 	// LayerAnim Section
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

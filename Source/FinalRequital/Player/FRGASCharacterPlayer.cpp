@@ -8,15 +8,13 @@
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "FRWeaponComponent.h"
-#include "UI/FRWidgetComponent.h"
 #include "FRMaskSkillComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/Attribute/FRCharacterAttributeSet.h"
 
 AFRGASCharacterPlayer::AFRGASCharacterPlayer()
 {
 	ASC = nullptr;
-
-	//HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
 	WeaponComponent = CreateDefaultSubobject<UFRWeaponComponent>(TEXT("WeaponComponent"));
 	MaskSkillComponent = CreateDefaultSubobject<UFRMaskSkillComponent>(TEXT("MaskSkillComponent"));
 }
@@ -57,11 +55,16 @@ void AFRGASCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInp
 void AFRGASCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if (ASC)
 	{
 		ASC->RegisterGameplayTagEvent(FRTAG_CHARACTER_STUNNED, EGameplayTagEventType::NewOrRemoved)
 			.AddUObject(this, &AFRGASCharacterPlayer::OnStunTagChanged);
+
+		if (const UFRCharacterAttributeSet* Attribute = Cast<UFRCharacterAttributeSet>(ASC->GetSet<UAttributeSet>()))
+		{
+			Attribute->OnTakeDamage.AddDynamic(this, &AFRGASCharacterPlayer::HandleTakeDamage); 
+		}
 	}
 }
 
@@ -112,18 +115,30 @@ void AFRGASCharacterPlayer::OnStunTagChanged(const FGameplayTag Tag, int32 NewCo
 	if (NewCount > 0)
 	{
 		GetCharacterMovement()->DisableMovement();
-		//bUseControllerRotationYaw = false;
 		bIsStunned = true;
 
-		if (StunMontage)
+		if (HitReactAbilityClass)
 		{
-			PlayAnimMontage(StunMontage, 1.0f);
+			FGameplayAbilitySpec Spec(HitReactAbilityClass);
+			ASC->TryActivateAbility(ASC->GiveAbilityAndActivateOnce(Spec));
 		}
 	}
 	else
 	{
 		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 		bIsStunned = false;
+	}
+}
+
+void AFRGASCharacterPlayer::HandleTakeDamage()
+{
+	if (!ASC || ASC->HasMatchingGameplayTag(FRTAG_CHARACTER_IMMUNE))
+		return;
+
+	if (HitReactAbilityClass)
+	{
+		FGameplayAbilitySpec Spec(HitReactAbilityClass);
+		ASC->TryActivateAbility(ASC->GiveAbilityAndActivateOnce(Spec));
 	}
 }
 
