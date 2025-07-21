@@ -19,6 +19,11 @@ class FINALREQUITAL_API UFRHUDWidget : public UUserWidget
 public:
 	UFRHUDWidget(const FObjectInitializer& ObjectInitializer);
 
+	void InitHUDWidget(class UAbilitySystemComponent* InASC);
+
+	UPROPERTY()
+	TObjectPtr<class UAbilitySystemComponent> ASC;
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -29,8 +34,12 @@ public:
 	void UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType);
 	void BindActivatedWeaponSlotsToPlayerState();
 
+
 	UFUNCTION()
 	void OnWeaponAcquiredFromState(EWeaponType WeaponType);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UFRPlayerHpBarWidget> WBP_PlayerHpBar;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_CrossHair;

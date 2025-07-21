@@ -2,6 +2,7 @@
 
 
 #include "Player/FRPlayerController.h"
+#include "FRGASCharacterPlayer.h"
 #include "UI/HUD/FRHUDWidget.h"
 
 AFRPlayerController::AFRPlayerController(const FObjectInitializer& ObjectInitializer)
@@ -13,16 +14,19 @@ void AFRPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	this->ConsoleCommand(TEXT("showdebug abilitysystem"));
+	//this->ConsoleCommand(TEXT("showdebug abilitysystem"));
 
-	// HUD 위젯을 화면에 추가 -> 에셋정보는 블루프린트에서 캐시
-	if (FRHUDWidgetClass) // RXHUDWidgetClass가 유효한지 확인
+	if (FRHUDWidgetClass) 
 	{
 		HUDWidget = CreateWidget<UFRHUDWidget>(GetWorld(), FRHUDWidgetClass);
 		if (HUDWidget)
 		{
-			// HUD를 화면에 추가
 			HUDWidget->AddToViewport();
+
+			if (AFRGASCharacterPlayer* PlayerChar = Cast<AFRGASCharacterPlayer>(GetCharacter()))
+			{
+				HUDWidget->InitHUDWidget(PlayerChar->GetAbilitySystemComponent());
+			}
 		}
 	}
 	//SetInputMode(FInputModeGameAndUI()); // UI와 게임 모드 둘 다 활성화

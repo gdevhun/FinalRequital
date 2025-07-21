@@ -24,11 +24,11 @@ protected:
 	void UpdateHpBar();
 
 protected:
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<class UProgressBar> PbHpBar;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(BindWidget))
+	TObjectPtr<class UProgressBar> PB_MonsterHp;
 
-	UPROPERTY(meta=(BindWidget))
-	TObjectPtr<class UTextBlock> TxtHpStat;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(BindWidget))
+	TObjectPtr<class UTextBlock> TXT_MonsterHpStat;
 
 	float CurrentHealth = 0.0f;
 	float CurrentMaxHealth = 0.1f;

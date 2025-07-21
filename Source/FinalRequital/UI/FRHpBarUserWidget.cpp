@@ -44,12 +44,12 @@ void UFRHpBarUserWidget::OnMaxHealthChanged(const FOnAttributeChangeData& Change
 
 void UFRHpBarUserWidget::UpdateHpBar()
 {
-	if(PbHpBar)
+	if(PB_MonsterHp)
 	{
-		PbHpBar->SetPercent(CurrentHealth / CurrentMaxHealth);
+		PB_MonsterHp->SetPercent(CurrentHealth / CurrentMaxHealth);
 	}
-	if(TxtHpStat)
+	if(TXT_MonsterHpStat)
 	{
-		TxtHpStat->SetText(FText::FromString(FString::Printf(TEXT("%.0f/%0.f"), CurrentHealth, CurrentMaxHealth)));
+		TXT_MonsterHpStat->SetText(FText::FromString(FString::Printf(TEXT("%.0f/%0.f"), CurrentHealth, CurrentMaxHealth)));
 	}
 }

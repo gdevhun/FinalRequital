@@ -2,6 +2,7 @@
 
 
 #include "UI/HUD/FRHUDWidget.h"
+#include "FRPlayerHpBarWidget.h"
 #include "FRWeaponSlotWidget.h"
 #include "Components/Image.h"
 #include "Player/FRPlayerState.h"
@@ -10,6 +11,17 @@
 UFRHUDWidget::UFRHUDWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
+}
+
+void UFRHUDWidget::InitHUDWidget(class UAbilitySystemComponent* InASC)
+{
+	if (!InASC) return;
+	ASC = InASC;
+
+	if (WBP_PlayerHpBar)
+	{
+		WBP_PlayerHpBar->InitWithAbilitySystem(ASC);
+	}
 }
 
 void UFRHUDWidget::NativeConstruct()
@@ -22,6 +34,7 @@ void UFRHUDWidget::NativeConstruct()
 		ShowCrossHair(false);
 	}
 
+	// BIND DELEGATE
 	BindActivatedWeaponSlotsToPlayerState();
 }
 
@@ -59,6 +72,8 @@ void UFRHUDWidget::BindActivatedWeaponSlotsToPlayerState()
 		}
 	}
 }
+
+
 
 void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
 {
