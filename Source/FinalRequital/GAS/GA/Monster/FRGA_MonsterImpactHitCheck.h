@@ -25,8 +25,8 @@ protected:
 	void OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle);
 
 	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> AttackDamageEffect;
+	TSubclassOf<class AFRTA_MonsterTrace> TargetActorClass;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class AFRTA_MonsterTrace> TargetActorClass;
+	float PushForce = 600.f;
 };

@@ -34,13 +34,6 @@ void UFRGA_MonsterMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbil
 		// 타겟데이터 0번째 배열에 결과값이 존재하는지
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
 
-		AActor* HitActor = HitResult.GetActor();
-		D(FString::Printf(TEXT("Hit: %s"), *GetNameSafe(HitActor)));
-
-		if (HitActor->IsA<AFRGASCharacterPlayer>())
-		{
-			D(TEXT("캐스팅 성공!"));
-		}
 		// 플레이어 클래스인지 확인
 		AFRGASCharacterPlayer* TargetPlayer = Cast<AFRGASCharacterPlayer>(HitResult.GetActor());
 		if (!TargetPlayer)
@@ -48,13 +41,11 @@ void UFRGA_MonsterMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbil
 			// 플레이어가 아니면 처리하지 않음
 			bool bReplicatedEndAbility = true;
 			bool bWasCancelled = false;
-			D(FString::Printf(TEXT("TRIGGER!3")));
 			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
 			return;
 		}
 
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
-		const UFRMonsterAttributeSet* SourceAttribute = SourceASC->GetSet<UFRMonsterAttributeSet>();
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
 		if (!SourceASC || !TargetASC)
 		{
@@ -65,7 +56,6 @@ void UFRGA_MonsterMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbil
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, 1);
 		if (EffectSpecHandle.IsValid())
 		{
-			D(FString::Printf(TEXT("TRIGGER!")));
 			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetDataHandle);
 			FGameplayEffectContextHandle CueContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(EffectSpecHandle);
 			CueContextHandle.AddHitResult(HitResult);
