@@ -24,7 +24,10 @@ public class FinalRequital : ModuleRules
 			"GameplayAbilities",
 			"GameplayTags",
 			"GameplayTasks",
-			"AIModule"
+			"AIModule",
+			"OnlineSubsystem",
+			"OnlineSubsystemUtils",
+			"OnlineSubsystemSteam"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
