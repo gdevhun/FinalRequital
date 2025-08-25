@@ -6,6 +6,7 @@
 #include "Components/ProgressBar.h"
 #include "FRDebugHelper.h"
 #include "TimerManager.h"
+#include "Player/FRPlayerState.h"
 #include "UI/HUD/FRHUDWidget.h"
 
 UFRWeaponSlotWidget::UFRWeaponSlotWidget(const FObjectInitializer& ObjectInitializer)
@@ -16,17 +17,38 @@ UFRWeaponSlotWidget::UFRWeaponSlotWidget(const FObjectInitializer& ObjectInitial
 void UFRWeaponSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
-	
-	if (PB_WeaponSkillCoolTime && IMG_Weapon && IMG_WeaponSelected)
+
+	if (PB_WeaponSkillCoolTime)
 	{
 		PB_WeaponSkillCoolTime->SetVisibility(ESlateVisibility::Hidden);
-		IMG_Weapon->SetVisibility(ESlateVisibility::Hidden);
-		IMG_WeaponSelected->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	if (APlayerController* PC = GetOwningPlayer())
+	{
+		if (AFRPlayerState* PS = PC->GetPlayerState<AFRPlayerState>())
+		{
+			bool bOwned = PS->HasWeapon(ThisSlotWeaponType);
+			UpdateSlotVisibility(bOwned);
+		}
 	}
 
 }
-
+void UFRWeaponSlotWidget::UpdateSlotVisibility(bool bOwned) const
+{
+	if (bOwned)
+	{
+		IMG_Weapon->SetVisibility(ESlateVisibility::Visible);
+		IMG_WeaponSelected->SetVisibility(ESlateVisibility::Hidden);
+		PB_WeaponSkillCoolTime->SetVisibility(ESlateVisibility::Visible);
+		IMG_WeaponDeactivated->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		IMG_Weapon->SetVisibility(ESlateVisibility::Hidden);
+		IMG_WeaponSelected->SetVisibility(ESlateVisibility::Hidden);
+		IMG_WeaponDeactivated->SetVisibility(ESlateVisibility::Visible);
+	}
+}
 void UFRWeaponSlotWidget::UpdateCooldownProgress()
 {
 	const float CurrentTime = GetWorld()->GetTimeSeconds();

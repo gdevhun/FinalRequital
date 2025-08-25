@@ -5,7 +5,6 @@
 #include "AbilitySystemComponent.h"
 #include "FRMaskSkillComponent.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
-#include "Net/UnrealNetwork.h"
 
 AFRPlayerState::AFRPlayerState()
 {

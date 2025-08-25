@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/FRGASCharacterPlayer.h"
+#include "Player/FRPlayerState.h"
+#include "System/FRGameInstance.h"
 
 AFRLevelOpenHelper::AFRLevelOpenHelper()
 {
@@ -29,17 +31,27 @@ void AFRLevelOpenHelper::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAc
 	AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(OtherActor);
 	if (!Player) return;
 
-	// 서버에서만 실행
-	if (bOnlyServerCanTrigger && !HasAuthority()) return;
 
-	// Optional: 중복 트리거 방지 (한 번만 호출하고 싶을 때)
-	CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	// SeamlessTravel로 레벨 이동
-	UWorld* World = GetWorld();
-	if (World)
+	AFRPlayerState* PS = Player->GetPlayerState<AFRPlayerState>();
+	if (PS)
 	{
-		FString CurrentURL = NextLevelName.ToString();
-		UGameplayStatics::OpenLevel(World, FName(*CurrentURL), true); // true = seamless
+		if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
+		{
+			GI->PersistentPlayerData.AcquiredWeapons = PS->AcquiredWeapons;
+			GI->PersistentPlayerData.SelectedMaskSkill = PS->GetSelectedMaskSkill();
+			GI->PersistentPlayerData.Stat_H = PS->Stat_H;
+			GI->PersistentPlayerData.Stat_D = PS->Stat_D;
+			GI->PersistentPlayerData.Stat_P = PS->Stat_P;
+		}
+	}
+
+	OpenNextLevel();
+}
+
+void AFRLevelOpenHelper::OpenNextLevel()
+{
+	if (NextLevelName != NAME_None)
+	{
+		UGameplayStatics::OpenLevel(this, NextLevelName);
 	}
 }

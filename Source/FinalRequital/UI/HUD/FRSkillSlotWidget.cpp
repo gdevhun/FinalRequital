@@ -7,6 +7,7 @@
 #include "Components/ProgressBar.h"
 #include "TimerManager.h"
 #include "Player/FRMaskSkillComponent.h"
+#include "Player/FRPlayerState.h"
 #include "UI/HUD/FRHUDWidget.h"
 
 UFRSkillSlotWidget::UFRSkillSlotWidget(const FObjectInitializer& ObjectInitializer)
@@ -22,6 +23,16 @@ void UFRSkillSlotWidget::NativeConstruct()
 	{
 		PB_MaskSkillCoolTime->SetVisibility(ESlateVisibility::Hidden);
 		IMG_MaskSkill->SetVisibility(ESlateVisibility::Hidden);
+	}
+	if (APlayerController* PC = GetOwningPlayer())
+	{
+		if (AFRPlayerState* PS = PC->GetPlayerState<AFRPlayerState>())
+		{
+			if (PS->GetSelectedMaskSkill() != EMaskSkillType::None)
+			{
+				UpdateSkillImage(PS->GetSelectedMaskSkill());
+			}
+		}
 	}
 }
 void UFRSkillSlotWidget::UpdateSkillImage(EMaskSkillType SelectedSkillType)

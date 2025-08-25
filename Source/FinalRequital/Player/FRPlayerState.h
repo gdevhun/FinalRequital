@@ -55,7 +55,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void ApplyStatsToAttributes();
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, Category="GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 

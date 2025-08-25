@@ -26,6 +26,7 @@ void UFRMaskSkillComponent::BeginPlay()
 			HUD = PC->GetHUDWidget();
 		}
 	}
+	ActivateSelectedMaskSkill();
 }
 
 void UFRMaskSkillComponent::ActivateSelectedMaskSkill() const

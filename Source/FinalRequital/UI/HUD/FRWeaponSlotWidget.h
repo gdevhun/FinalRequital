@@ -25,6 +25,7 @@ public:
 	void UpdateRestSlotVisibilityBySwap(EWeaponType NewlyAcquiredWeapon);
 	void UpdateSlotVisibilityBySwap();
 	void StartSlotCooldown(float Remaining, float TotalDuration);
+	void UpdateSlotVisibility(bool bOwned) const;
 
 protected:
 	virtual void NativeConstruct() override;

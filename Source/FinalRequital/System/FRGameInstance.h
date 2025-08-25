@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Player/FRMaskSkillComponent.h"
+#include "Player/FRWeaponComponent.h"
 #include "FRGameInstance.generated.h"
 
 USTRUCT(BlueprintType)
@@ -30,6 +32,31 @@ public:
 	}
 };
 
+USTRUCT(BlueprintType)
+struct FPlayerPersistentData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite)
+	TArray<EWeaponType> AcquiredWeapons;
+
+	UPROPERTY(BlueprintReadWrite)
+	EMaskSkillType SelectedMaskSkill;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 Stat_H;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 Stat_D;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 Stat_P;
+
+	FPlayerPersistentData()
+		: SelectedMaskSkill(EMaskSkillType::None), Stat_H(0), Stat_D(0), Stat_P(0)
+	{
+	}
+};
 /**
  * 
  */
@@ -43,6 +70,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SettingValue")
 	FSettingValues CurrentSettingValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
+	FPlayerPersistentData PersistentPlayerData;
 
 protected:
 	void ApplyMasterVolume(float Value) const;

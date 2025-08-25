@@ -24,6 +24,7 @@ void UFRHUDWidget::InitHUDWidget(class UAbilitySystemComponent* InASC)
 	}
 }
 
+
 void UFRHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -72,8 +73,6 @@ void UFRHUDWidget::BindActivatedWeaponSlotsToPlayerState()
 		}
 	}
 }
-
-
 
 void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
 {

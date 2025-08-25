@@ -31,6 +31,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UFRHUDWidget> HUDWidget; // HUD UI 포인터
 
+	void InitializePlayerStateStatus() const;
 	UFUNCTION(BlueprintCallable)
 	void PushUIWidgetToStack(UUserWidget* NewWidget);
 

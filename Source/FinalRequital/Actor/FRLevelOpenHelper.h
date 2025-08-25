@@ -25,10 +25,11 @@ protected:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION(BlueprintCallable)
+	void OpenNextLevel();
+
 protected:	
 	UPROPERTY(EditAnywhere, Category="Level")
 	FName NextLevelName;
 
-	UPROPERTY(EditAnywhere, Category = "Level")
-	bool bOnlyServerCanTrigger = true;
 };
