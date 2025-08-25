@@ -10,7 +10,6 @@
 AFRPlayerState::AFRPlayerState()
 {
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
-	ASC->SetIsReplicated(true);
 	AttributeSet = CreateDefaultSubobject<UFRCharacterAttributeSet>(TEXT("AttributeSet"));
 
 	Stat_H = 0;
@@ -21,17 +20,6 @@ AFRPlayerState::AFRPlayerState()
 class UAbilitySystemComponent* AFRPlayerState::GetAbilitySystemComponent() const
 {
 	return ASC;
-}
-
-void AFRPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(AFRPlayerState, AcquiredWeapons);
-	DOREPLIFETIME(AFRPlayerState, SelectedMaskSkill);
-	DOREPLIFETIME(AFRPlayerState, Stat_H);
-	DOREPLIFETIME(AFRPlayerState, Stat_D);
-	DOREPLIFETIME(AFRPlayerState, Stat_P);
 }
 
 void AFRPlayerState::AcquireWeapon(EWeaponType WeaponType)
@@ -96,7 +84,6 @@ void AFRPlayerState::ApplyStatsToAttributes()
 	AttributeSet->SetAttackRate(NewAttackRate);
 	AttributeSet->SetMaxHealth(NewMaxHealth);
 	AttributeSet->SetMana(NewMana);
-
 	
 }
 
