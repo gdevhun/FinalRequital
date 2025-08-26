@@ -1,34 +1,32 @@
-ï»¿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/FRAmuletProjectile.h"
-#include "AbilitySystemGlobals.h"
+#include "Actor/FRMonsterProjectile.h"
 #include "AbilitySystemComponent.h"
-#include "FRDebugHelper.h"
+#include "AbilitySystemGlobals.h"
 #include "FRGameplayTag.h"
-#include "Character/FRMonsterBase.h"
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "GameplayCueManager.h" 
 #include "Kismet/GameplayStatics.h"
+#include "Player/FRGASCharacterPlayer.h"
 
-AFRAmuletProjectile::AFRAmuletProjectile()
+AFRMonsterProjectile::AFRMonsterProjectile()
 {
-	PrimaryActorTick.bCanEverTick = false;
 
+	PrimaryActorTick.bCanEverTick = false;
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->InitSphereRadius(15.0f);
 	CollisionComponent->SetCollisionProfileName(TEXT("BlockAllDynamic"));
 	CollisionComponent->SetNotifyRigidBodyCollision(true);
 	CollisionComponent->SetGenerateOverlapEvents(false);
-	CollisionComponent->OnComponentHit.AddDynamic(this, &AFRAmuletProjectile::OnHit);
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AFRMonsterProjectile::OnHit);
 	RootComponent = CollisionComponent;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AmuletMesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Mesh->SetRelativeLocation(FVector(15.f, 0.f, 0.f)); 
+	Mesh->SetRelativeLocation(FVector(15.f, 0.f, 0.f));
 	Mesh->SetRelativeRotation(FRotator(-90.f, 90.f, 90.f));
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
@@ -45,37 +43,28 @@ AFRAmuletProjectile::AFRAmuletProjectile()
 
 }
 
-void AFRAmuletProjectile::BeginPlay()
+void AFRMonsterProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
-
-void AFRAmuletProjectile::InitVelocity(const FVector& Direction, float Speed)
-{
-	if (ProjectileMovement)
-	{
-		ProjectileMovement->Velocity = Direction * Speed;
-	}
-}
-
-void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AFRMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!OtherActor || OtherActor == GetOwner())
 	{
 		Destroy();
 		return;
 	}
-
 	const FVector HitLocation = Hit.ImpactPoint;
 	const FVector HitNormal = Hit.Normal;
 
 	UAbilitySystemComponent* SourceASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
-	AFRMonsterBase* Monster = Cast<AFRMonsterBase>(OtherActor);
-	if (Monster && SourceASC && TargetASC && DamageEffectClass)
+	AFRGASCharacterPlayer* TargetPlayer = Cast<AFRGASCharacterPlayer>(OtherActor);
+	if (TargetPlayer && SourceASC && TargetASC && DamageEffectClass)
 	{
 		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 		EffectContext.AddHitResult(Hit);
@@ -99,12 +88,12 @@ void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other
 		return;
 	}
 
-	// ASCê°€ ì—†ê±°ë‚˜ ëª¬ìŠ¤í„°ê°€ ì•„ë‹Œ ê²½ìš°
+	// ASC°¡ ¾ø°Å³ª ÇÃ·¹ÀÌ¾î°¡ ¾Æ´Ñ °æ¿ì
 	ActiveEffect();
 	Destroy();
 }
 
-void AFRAmuletProjectile::ActiveEffect() const
+void AFRMonsterProjectile::ActiveEffect() const
 {
 	if (ImpactParticleEffect)
 	{
@@ -115,3 +104,6 @@ void AFRAmuletProjectile::ActiveEffect() const
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
 	}
 }
+
+
+

@@ -1,0 +1,62 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "GAS/GA/Monster/FRGA_MonsterRangeAttack.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "Character/FRMonsterBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
+UFRGA_MonsterRangeAttack::UFRGA_MonsterRangeAttack()
+{
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+}
+
+void UFRGA_MonsterRangeAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                               const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+                                               const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, false, true);
+		return;
+	}
+
+	AFRMonsterBase* TargetCharacter = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
+	(this, TEXT("PlayMeleeAttack"), MonsterAttackActionMontage, 1.0f);
+	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_MonsterRangeAttack::OnCompleteCallback);
+	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_MonsterRangeAttack::OnInterruptedCallback);
+	PlayAttackTask->ReadyForActivation();
+}
+
+void UFRGA_MonsterRangeAttack::CancelAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	bool bReplicateCancelAbility)
+{
+	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
+}
+
+void UFRGA_MonsterRangeAttack::EndAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
+
+void UFRGA_MonsterRangeAttack::OnCompleteCallback()
+{
+	bool bReplicatedEndAbility = true;
+	bool bWasCancelled = false;
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+}
+
+void UFRGA_MonsterRangeAttack::OnInterruptedCallback()
+{
+	bool bReplicatedEndAbility = true;
+	bool bWasCancelled = true;
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+}
