@@ -53,8 +53,13 @@ void AFRMemoryCell::OnDetectedOnce()
 		if (FXComponent)
 		{
 			FXComponent->ActivateSystem();
+			AttachToSoul();
 		}
 	}
+}
+
+void AFRMemoryCell::AttachToSoul_Implementation()
+{
 }
 
 class UAbilitySystemComponent* AFRMemoryCell::GetAbilitySystemComponent() const

@@ -23,6 +23,10 @@ public:
 	UFUNCTION()
 	void OnDetectedOnce();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AttachToSoul();
+	void AttachToSoul_Implementation();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;

@@ -20,4 +20,17 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<class UStaticMeshComponent> VisualMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class UStaticMeshComponent> VisualMesh2;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class UStaticMeshComponent> VisualMesh3;
+
+	UFUNCTION(BlueprintCallable)
+	void ActiveFirstVisualMesh();
+
+	UFUNCTION(BlueprintCallable)
+	void ActiveSecondVisualMesh();
+	
 };
