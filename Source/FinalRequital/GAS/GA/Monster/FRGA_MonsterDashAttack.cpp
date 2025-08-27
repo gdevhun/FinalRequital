@@ -21,7 +21,7 @@ void UFRGA_MonsterDashAttack::ActivateAbility(const FGameplayAbilitySpecHandle H
 		EndAbility(Handle, ActorInfo, ActivationInfo, false, true);
 		return;
 	}
-	AFRMonsterBase* TargetCharacter = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	//AFRMonsterBase* FRMonsterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
 	///TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy

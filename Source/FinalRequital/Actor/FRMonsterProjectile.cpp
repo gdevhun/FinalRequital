@@ -35,8 +35,8 @@ AFRMonsterProjectile::AFRMonsterProjectile()
 	ArrowComponent->SetRelativeRotation(FRotator::ZeroRotator);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 3000.f;
-	ProjectileMovement->MaxSpeed = 3000.f;
+	ProjectileMovement->InitialSpeed = 750.f;
+	ProjectileMovement->MaxSpeed = 750.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->ProjectileGravityScale = 0.f;
 	ProjectileMovement->bInitialVelocityInLocalSpace = false;
@@ -46,7 +46,7 @@ AFRMonsterProjectile::AFRMonsterProjectile()
 void AFRMonsterProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetLifeSpan(5.0f);
 }
 
 void AFRMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -57,9 +57,6 @@ void AFRMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Othe
 		Destroy();
 		return;
 	}
-	const FVector HitLocation = Hit.ImpactPoint;
-	const FVector HitNormal = Hit.Normal;
-
 	UAbilitySystemComponent* SourceASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
@@ -75,13 +72,7 @@ void AFRMonsterProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Othe
 		{
 			TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
 
-			FGameplayCueParameters CueParams;
-			CueParams.EffectContext = SpecHandle.Data->GetEffectContext();
-			CueParams.Location = HitLocation;
-			CueParams.Normal = HitNormal;
 			ActiveEffect();
-			//TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
-			TargetASC->AddGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
 		}
 
 		Destroy();

@@ -2,6 +2,8 @@
 
 
 #include "GAS/GA/Monster/FRGA_MonsterRangeAttack.h"
+
+#include "FRDebugHelper.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Character/FRMonsterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -23,11 +25,11 @@ void UFRGA_MonsterRangeAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 		return;
 	}
 
-	AFRMonsterBase* TargetCharacter = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
-	TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
+	AFRMonsterBase* FRMonsterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	FRMonsterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
-	(this, TEXT("PlayMeleeAttack"), MonsterAttackActionMontage, 1.0f);
+	(this, TEXT("PlayRangeAttack"), MonsterAttackActionMontage, 1.0f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_MonsterRangeAttack::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_MonsterRangeAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
@@ -45,6 +47,9 @@ void UFRGA_MonsterRangeAttack::EndAbility(const FGameplayAbilitySpecHandle Handl
 	bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	AFRMonsterBase* FRMonsterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	FRMonsterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+
 }
 
 void UFRGA_MonsterRangeAttack::OnCompleteCallback()

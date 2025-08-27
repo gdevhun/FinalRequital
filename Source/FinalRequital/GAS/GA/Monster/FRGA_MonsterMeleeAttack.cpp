@@ -24,8 +24,8 @@ void UFRGA_MonsterMeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 		return;
 	}
 
-	AFRMonsterBase* TargetCharacter = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
-	TargetCharacter->GetCharacterMovement()->SetMovementMode(MOVE_None);
+	AFRMonsterBase* FRMonsterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	FRMonsterBase->GetCharacterMovement()->SetMovementMode(MOVE_None);
 
 	UAbilityTask_PlayMontageAndWait* PlayAttackTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy
 	(this, TEXT("PlayMeleeAttack"), MonsterAttackActionMontage, 1.0f);
@@ -45,8 +45,8 @@ void UFRGA_MonsterMeleeAttack::EndAbility(const FGameplayAbilitySpecHandle Handl
                                           const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                           bool bReplicateEndAbility, bool bWasCancelled)
 {
-	AFRMonsterBase* FRCharacterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
-	FRCharacterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	AFRMonsterBase* FRMonsterBase = CastChecked<AFRMonsterBase>(ActorInfo->AvatarActor.Get());
+	FRMonsterBase->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

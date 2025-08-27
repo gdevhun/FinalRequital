@@ -23,5 +23,7 @@ public:
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterProjectile")
+	TSubclassOf<class AFRMonsterProjectile> MonsterProjectileClass;
 
 };

@@ -16,11 +16,14 @@ public:
 
 	class USphereComponent* GetCollisionComponent() const { return CollisionComponent; }
 
-protected:
-	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Collision")
+	TObjectPtr<class USphereComponent> CollisionComponent;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
+
+protected:
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UStaticMeshComponent> Mesh;
@@ -31,9 +34,6 @@ protected:
 	// 데미지 전달용 GE 클래스
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<class UGameplayEffect> DamageEffectClass;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Collision")
-	TObjectPtr<class USphereComponent> CollisionComponent;
 
 	// 피격 처리 함수
 	UFUNCTION()
