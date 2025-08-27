@@ -57,6 +57,17 @@ public:
 	UFUNCTION()
 	void HitReact();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class USphereComponent> DetectSphere;
+
+	UFUNCTION()
+	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 private:
 	FGameplayAbilitySpecHandle HitReactAbilityHandle;
 	void PlayAnimMontage(UAnimMontage* Montage) const;

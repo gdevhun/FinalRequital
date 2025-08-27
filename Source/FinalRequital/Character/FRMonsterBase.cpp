@@ -12,6 +12,8 @@
 #include "UI/FRUserWidget.h"
 #include "AIController.h"
 #include "BrainComponent.h"
+#include "Components/SphereComponent.h"
+#include "Player/FRGASCharacterPlayer.h"
 
 AFRMonsterBase::AFRMonsterBase()
 {
@@ -38,14 +40,23 @@ AFRMonsterBase::AFRMonsterBase()
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
 
+	// HpBar UI Detect Sphere
+	DetectSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DetectSphere"));
+	DetectSphere->SetupAttachment(RootComponent);
+	DetectSphere->InitSphereRadius(400.0f);
+	DetectSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	DetectSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+	DetectSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
 	// ASC
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
 	AttributeSet = CreateDefaultSubobject<UFRMonsterAttributeSet>(TEXT("MonsterAttributeSet"));
 
-	// HP UI
+	// HPBar UI
 	HpBar = CreateDefaultSubobject<UFRWidgetComponent>(TEXT("Widget"));
 	HpBar->SetupAttachment(GetMesh());
 	HpBar->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+
 	static ConstructorHelpers::FClassFinder<UUserWidget> HpWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_HpBar.WBP_HpBar_C'"));
 	if (HpWidgetRef.Succeeded())
 	{
@@ -61,15 +72,13 @@ void AFRMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*if (HpWidgetClassRef)
-	{
-		HpBar->SetWidgetClass(HpWidgetClassRef);
-		HpBar->SetWidgetSpace(EWidgetSpace::Screen);
-		HpBar->SetDrawSize(FVector2D(200.0f, 20.f));
-		HpBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	HpBar->SetVisibility(false);
 
-		HpBar->InitWidget();
-	}*/
+	if (DetectSphere)
+	{
+		DetectSphere->OnComponentBeginOverlap.AddDynamic(this, &AFRMonsterBase::OnSphereBeginOverlap);
+		DetectSphere->OnComponentEndOverlap.AddDynamic(this, &AFRMonsterBase::OnSphereEndOverlap);
+	}
 	
 }
 class UAbilitySystemComponent* AFRMonsterBase::GetAbilitySystemComponent() const
@@ -125,7 +134,29 @@ void AFRMonsterBase::PossessedBy(AController* NewController)
 	}
 
 }
+void AFRMonsterBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && OtherActor->IsA(AFRGASCharacterPlayer::StaticClass()))
+	{
+		if (HpBar)
+		{
+			HpBar->SetVisibility(true);
+		}
+	}
+}
 
+void AFRMonsterBase::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor && OtherActor->IsA(AFRGASCharacterPlayer::StaticClass()))
+	{
+		if (HpBar)
+		{
+			HpBar->SetVisibility(false);
+		}
+	}
+}
 void AFRMonsterBase::OnOutOfHealth()
 {
 	SetDead();
