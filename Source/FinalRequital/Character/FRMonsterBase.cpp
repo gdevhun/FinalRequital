@@ -39,6 +39,8 @@ AFRMonsterBase::AFRMonsterBase()
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -55.0f), FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
+	GetMesh()->SetRenderCustomDepth(false);
+	GetMesh()->SetCustomDepthStencilValue(250);
 
 	// HpBar UI Detect Sphere
 	DetectSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DetectSphere"));
@@ -134,8 +136,19 @@ void AFRMonsterBase::PossessedBy(AController* NewController)
 	}
 
 }
+
+void AFRMonsterBase::Highlight()
+{
+	GetMesh()->SetRenderCustomDepth(true);
+}
+
+void AFRMonsterBase::UnHighlight()
+{
+	GetMesh()->SetRenderCustomDepth(false);
+}
+
 void AFRMonsterBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor && OtherActor->IsA(AFRGASCharacterPlayer::StaticClass()))
 	{

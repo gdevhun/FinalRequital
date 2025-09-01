@@ -4,15 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/FRHighlightInterface.h"
 #include "FRSoul.generated.h"
 
 UCLASS()
-class FINALREQUITAL_API AFRSoul : public ACharacter
+class FINALREQUITAL_API AFRSoul : public ACharacter, public IFRHighlightInterface
 {
 	GENERATED_BODY()
 
 public:
 	AFRSoul();
+	virtual void Highlight() override;
+	virtual void UnHighlight() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,9 +31,13 @@ public:
 	TObjectPtr<class UStaticMeshComponent> VisualMesh3;
 
 	UFUNCTION(BlueprintCallable)
-	void ActiveFirstVisualMesh();
+	void ActiveSecondVisualMesh();
 
 	UFUNCTION(BlueprintCallable)
-	void ActiveSecondVisualMesh();
-	
+	void ActiveThirdVisualMesh();
+
+private:
+	bool bIsActivatedSecondMesh = false;
+	bool bIsActivatedThirdMesh = false;
+
 };

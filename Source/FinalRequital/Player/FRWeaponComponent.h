@@ -90,4 +90,7 @@ protected:
 private:
 	FTimerHandle CrossHairCheckTimer;
 	void CheckPushableTarget();
+
+	UPROPERTY()
+	TObjectPtr<AActor> LastHighlightedActor;
 };

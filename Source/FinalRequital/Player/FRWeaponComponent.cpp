@@ -199,15 +199,36 @@ void UFRWeaponComponent::CheckPushableTarget()
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 
-	if (bHit && Hit.GetActor())
+	// 새로운 타겟 액터
+	AActor* TargetActor = (bHit && Hit.GetActor() && Hit.GetActor()->GetClass()->ImplementsInterface(UFRHighlightInterface::StaticClass()))
+		? Hit.GetActor()
+		: nullptr;
+
+	// 이전 하이라이트 액터가 현재 타겟과 다르면 UnHighlight
+	if (LastHighlightedActor && LastHighlightedActor != TargetActor)
 	{
-		if (Hit.GetActor()->IsA<AFRPushableActor>() || Hit.GetActor()->IsA<AFRMonsterBase>()
-			|| Hit.GetActor()->IsA<AFRSoul>())
+		if (LastHighlightedActor->GetClass()->ImplementsInterface(UFRHighlightInterface::StaticClass()))
 		{
-			HUD->ChangeCrossHairColor(); 
+			if (IFRHighlightInterface* PrevHighlight = Cast<IFRHighlightInterface>(LastHighlightedActor))
+			{
+				PrevHighlight->UnHighlight();
+			}
+		}
+		LastHighlightedActor = nullptr;
+	}
+
+	// 새 타겟이 있으면 Highlight
+	if (TargetActor)
+	{
+		if (IFRHighlightInterface* HighlightTarget = Cast<IFRHighlightInterface>(TargetActor))
+		{
+			HighlightTarget->Highlight();
+			HUD->ChangeCrossHairColor();
+			LastHighlightedActor = TargetActor;
 			return;
 		}
 	}
 
-	HUD->ResetCrossHairColor(); 
+	// 타겟 없으면 크로스헤어 초기화
+	HUD->ResetCrossHairColor();
 }

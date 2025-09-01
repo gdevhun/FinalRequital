@@ -6,11 +6,12 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "GameFramework/Character.h"
+#include "Interface/FRHighlightInterface.h"
 #include "FRMonsterBase.generated.h"
 
 
 UCLASS()
-class FINALREQUITAL_API AFRMonsterBase : public ACharacter , public IAbilitySystemInterface
+class FINALREQUITAL_API AFRMonsterBase : public ACharacter , public IAbilitySystemInterface, public IFRHighlightInterface
 {
 	GENERATED_BODY()
 
@@ -20,6 +21,8 @@ public:
 
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void Highlight() override;
+	virtual void UnHighlight() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -31,7 +34,6 @@ protected:
 	TObjectPtr<class UFRMonsterAttributeSet> AttributeSet;
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS)
 	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
 

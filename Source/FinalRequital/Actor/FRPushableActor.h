@@ -4,15 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interface/FRHighlightInterface.h"
 #include "FRPushableActor.generated.h"
 
 UCLASS()
-class FINALREQUITAL_API AFRPushableActor : public AActor
+class FINALREQUITAL_API AFRPushableActor : public AActor, public IFRHighlightInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	AFRPushableActor();
+	virtual void Highlight() override;
+	virtual void UnHighlight() override;
 
 protected:
 	virtual void BeginPlay() override;

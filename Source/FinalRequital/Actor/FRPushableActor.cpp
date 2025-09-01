@@ -11,6 +11,19 @@ AFRPushableActor::AFRPushableActor()
 
 	StaticMesh->SetCanEverAffectNavigation(false);
 	StaticMesh->SetSimulatePhysics(true);
+
+	StaticMesh->SetRenderCustomDepth(false);
+	StaticMesh->SetCustomDepthStencilValue(250);
+}
+
+void AFRPushableActor::Highlight()
+{
+	StaticMesh->SetRenderCustomDepth(true);
+}
+
+void AFRPushableActor::UnHighlight()
+{
+	StaticMesh->SetRenderCustomDepth(false);
 }
 
 void AFRPushableActor::BeginPlay()

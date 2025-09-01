@@ -22,25 +22,47 @@ AFRSoul::AFRSoul()
     VisualMesh3->SetupAttachment(GetCapsuleComponent());
     VisualMesh3->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+    VisualMesh->SetRenderCustomDepth(false);
+    GetMesh()->SetCustomDepthStencilValue(250);
+    VisualMesh2->SetRenderCustomDepth(false);
+    GetMesh()->SetCustomDepthStencilValue(250);
+    VisualMesh3->SetRenderCustomDepth(false);
+    GetMesh()->SetCustomDepthStencilValue(250);
+}
+
+void AFRSoul::Highlight()
+{
+    VisualMesh->SetRenderCustomDepth(true);
+    if (bIsActivatedSecondMesh)  VisualMesh2->SetRenderCustomDepth(true);
+	if (bIsActivatedThirdMesh)  VisualMesh3->SetRenderCustomDepth(true);
+}
+
+void AFRSoul::UnHighlight()
+{
+    VisualMesh->SetRenderCustomDepth(false);
+    if (bIsActivatedSecondMesh)  VisualMesh2->SetRenderCustomDepth(false);
+    if (bIsActivatedThirdMesh)  VisualMesh3->SetRenderCustomDepth(false);
 }
 
 void AFRSoul::BeginPlay()
 {
 	Super::BeginPlay();
-    // 초기에는 Mesh1만 보이게
+
     VisualMesh->SetVisibility(true);
     VisualMesh2->SetVisibility(false);
     VisualMesh3->SetVisibility(false);
 }
 
-void AFRSoul::ActiveFirstVisualMesh()
-{
-    VisualMesh2->SetVisibility(true);
-}
-
 void AFRSoul::ActiveSecondVisualMesh()
 {
+    VisualMesh2->SetVisibility(true);
+    bIsActivatedSecondMesh = true;
+}
+
+void AFRSoul::ActiveThirdVisualMesh()
+{
     VisualMesh3->SetVisibility(true);
+    bIsActivatedThirdMesh = true;
 }
 
 
