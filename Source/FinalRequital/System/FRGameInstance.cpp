@@ -10,6 +10,14 @@ UFRGameInstance::UFRGameInstance(const FObjectInitializer& ObjectInitializer)
 
 }
 
+void UFRGameInstance::Init()
+{
+	Super::Init();
+	ApplyMasterVolume(CurrentSettingValue.MasterVolumeValue);
+	ApplyMusicVolume(CurrentSettingValue.MusicVolumeValue);
+	ApplySFXVolume(CurrentSettingValue.SFXVolumeValue);
+}
+
 void UFRGameInstance::ApplyMasterVolume(float Value) const
 {
 	if (MasterMix && MasterClass)

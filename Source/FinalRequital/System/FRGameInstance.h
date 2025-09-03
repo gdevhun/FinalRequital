@@ -15,16 +15,16 @@ struct FSettingValues
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MasterVolumeValue; 
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MusicVolumeValue; 
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float SFXVolumeValue; 
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MouseSensitivityValue; 
 
 	FSettingValues()
@@ -37,19 +37,19 @@ struct FPlayerPersistentData
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<EWeaponType> AcquiredWeapons;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EMaskSkillType SelectedMaskSkill;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Stat_H;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Stat_D;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Stat_P;
 
 	FPlayerPersistentData()
@@ -75,6 +75,9 @@ public:
 	FPlayerPersistentData PersistentPlayerData;
 
 protected:
+	void Init() override;
+
+public:
 	void ApplyMasterVolume(float Value) const;
 	void ApplyMusicVolume(float Value) const;
 	void ApplySFXVolume(float Value) const;
@@ -98,4 +101,5 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	TObjectPtr<class USoundClass> SFXClass;
+
 };
