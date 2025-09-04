@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "FRPlayerController.generated.h"
 
+class UFRStackBaseWidget;
 /**
  * 
  */
@@ -19,25 +20,39 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	//virtual void SetupInputComponent() override;
+	virtual void SetupInputComponent() override;
 
 	//HUD SECTION
 public:
+	void InitializePlayerStateStatus() const;
+
 	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return HUDWidget; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // HUD UI 위젯 BP REF
-
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UFRHUDWidget> HUDWidget; // HUD UI 포인터
 
-	void InitializePlayerStateStatus() const;
-	UFUNCTION(BlueprintCallable)
-	void PushUIWidgetToStack(UUserWidget* NewWidget);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MainMenu")
+	TSubclassOf<class UFRMainMenuWidget> FRMainMenuWidgetClass; // HUD UI 위젯 BP REF
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UFRMainMenuWidget> MainMenuWidget; // MainMenu UI 포인터
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> ESCKeyAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> TabKeyAction;
+
+	void HandleESCKeyPressed();
+	void TabKeyPressedCallback();
 
 	UFUNCTION(BlueprintCallable)
-	void PopUIWidgetFromStack(UUserWidget* NewWidget);
+	void PushUIWidgetToStack(UFRStackBaseWidget* NewWidget);
+
+	UFUNCTION(BlueprintCallable)
+	void PopUIWidgetFromStack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TObjectPtr<UUserWidget>> UIWidgetStack;
+	TArray<TObjectPtr<UFRStackBaseWidget>> UIWidgetStack;
 };

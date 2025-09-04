@@ -30,8 +30,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> PB_PlayerOwnHp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
-	TObjectPtr<class UProgressBar> PB_PlayerRemoteHp;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	//TObjectPtr<class UProgressBar> PB_PlayerRemoteHp;
 
 	float CurrentHealth = 0.0f;
 	float CurrentMaxHealth = 0.1f;

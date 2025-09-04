@@ -2,8 +2,11 @@
 
 
 #include "Player/FRPlayerController.h"
+#include "UI/MainMenu/FRMainMenuWidget.h"
+#include "EnhancedInputComponent.h"
 #include "FRGASCharacterPlayer.h"
 #include "FRPlayerState.h"
+#include "Kismet/GameplayStatics.h"
 #include "System/FRGameInstance.h"
 #include "UI/HUD/FRHUDWidget.h"
 
@@ -38,6 +41,18 @@ void AFRPlayerController::BeginPlay()
 
 }
 
+void AFRPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	//UI Callback Function Bind
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInput->BindAction(ESCKeyAction, ETriggerEvent::Started, this, &AFRPlayerController::HandleESCKeyPressed);
+		EnhancedInput->BindAction(TabKeyAction, ETriggerEvent::Started, this, &AFRPlayerController::TabKeyPressedCallback);
+	}
+}
+
 void AFRPlayerController::InitializePlayerStateStatus() const
 {
 	AFRPlayerState* PS = GetPlayerState<AFRPlayerState>();
@@ -56,13 +71,59 @@ void AFRPlayerController::InitializePlayerStateStatus() const
 	}
 }
 
-void AFRPlayerController::PushUIWidgetToStack(UUserWidget* NewWidget)
+void AFRPlayerController::HandleESCKeyPressed()
 {
-	if (!NewWidget) return;
-	UIWidgetStack.Add(NewWidget);
+
+	// 스택이 비어있다면 → 메인메뉴 열기
+	if (UIWidgetStack.Num() == 0)
+	{
+		if (FRMainMenuWidgetClass)
+		{
+			MainMenuWidget = CreateWidget<UFRMainMenuWidget>(this, FRMainMenuWidgetClass);
+			if (MainMenuWidget)
+			{
+				PushUIWidgetToStack(MainMenuWidget);
+				UGameplayStatics::SetGamePaused(GetWorld(), true);
+				bShowMouseCursor = true;
+				SetInputMode(FInputModeGameAndUI());
+			}
+		}
+	}
+	else
+	{
+		// 스택에 뭔가 있으면 하나 닫기
+		PopUIWidgetFromStack();
+	}
+}
+
+void AFRPlayerController::TabKeyPressedCallback()
+{
 
 }
 
-void AFRPlayerController::PopUIWidgetFromStack(UUserWidget* NewWidget)
+void AFRPlayerController::PushUIWidgetToStack(UFRStackBaseWidget* NewWidget)
 {
+	if (!NewWidget) return;
+	NewWidget->AddToViewport();
+	UIWidgetStack.Add(NewWidget);
+}
+
+void AFRPlayerController::PopUIWidgetFromStack()
+{
+	if (UIWidgetStack.Num() == 0) return;
+
+	// 제일 위에 있는 위젯 제거
+	if (UFRStackBaseWidget* TopWidget = UIWidgetStack.Last())
+	{
+		TopWidget->RemoveFromParent();
+	}
+	UIWidgetStack.Pop();
+
+	// 다 닫혔다면 → 게임 재개
+	if (UIWidgetStack.Num() == 0)
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+		bShowMouseCursor = false;
+		SetInputMode(FInputModeGameOnly());
+	}
 }

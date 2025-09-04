@@ -11,6 +11,7 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "FRDebugHelper.h"
 #include "GameplayTagContainer.h"
 #include "InputActionValue.h"
 #include "Player/FRPlayerController.h"
@@ -74,7 +75,6 @@ void AFRCharacterBase::BeginPlay()
 	}
 }
 
-
 void AFRCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -133,6 +133,7 @@ void AFRCharacterBase::Look(const FInputActionValue& Value)
 			float Sensitivity = GI->CurrentSettingValue.MouseSensitivityValue;
 			AddControllerYawInput(LookAxisVector.X * Sensitivity);
 			AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
+			//D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
 		}
 	}
 }

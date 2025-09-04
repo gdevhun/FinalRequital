@@ -61,6 +61,9 @@ protected:
 	TObjectPtr<UInputAction> SkillAttackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> InteractAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TArray<TObjectPtr<UInputAction>> QuickSlotActions;
 
 	// Data Section

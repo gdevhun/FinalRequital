@@ -3,24 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
-#include "FRUserSettingWidget.generated.h"
+#include "FRStackBaseWidget.h"
+#include "FRGameSettingWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FINALREQUITAL_API UFRUserSettingWidget : public UUserWidget
+class FINALREQUITAL_API UFRGameSettingWidget : public UFRStackBaseWidget
 {
 	GENERATED_BODY()
-
 public:
-	UFRUserSettingWidget(const FObjectInitializer& ObjectInitializer);
+	UFRGameSettingWidget(const FObjectInitializer& ObjectInitializer);
 
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TObjectPtr<class UTexture>> ProgressBarIMG;
+	TArray<TObjectPtr<class UTexture2D>> ProgressBarIMG;
 
 	//게이지 이미지 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
@@ -59,19 +58,34 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UButton> BTN_SFXVolume_Right;
 
+	//나가기 버튼
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UButton> BTN_Back;
+
 private:
 	//버튼 콜백 함수
+	UFUNCTION(BlueprintCallable)
 	void OnMasterVolumeDown();
+	UFUNCTION(BlueprintCallable)
 	void OnMasterVolumeUp();
 
+	UFUNCTION(BlueprintCallable)
 	void OnBGMVolumeDown();
+	UFUNCTION(BlueprintCallable)
 	void OnBGMVolumeUp();
 
+	UFUNCTION(BlueprintCallable)
 	void OnSFXVolumeDown();
+	UFUNCTION(BlueprintCallable)
 	void OnSFXVolumeUp();
 
+	UFUNCTION(BlueprintCallable)
 	void MouseSensitivityDown();
+	UFUNCTION(BlueprintCallable)
 	void MouseSensitivityUp();
+
+	UFUNCTION(BlueprintCallable)
+	void BackBTNCallback();
 
 	//게이지이미지 업데이트 초기화 함수
 	void UpdateGauge(UImage* GaugeImage, float Value);
