@@ -13,6 +13,7 @@ enum class EWeaponType : uint8;
 UENUM(BlueprintType)
 enum class EFRCharacterStatType : uint8
 {
+	None UMETA(DisplayName = "NULL"),
 	H UMETA(DisplayName = "기력"),
 	D UMETA(DisplayName = "결심"),
 	P UMETA(DisplayName = "의념")

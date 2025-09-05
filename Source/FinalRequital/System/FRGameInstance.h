@@ -75,7 +75,7 @@ public:
 	FPlayerPersistentData PersistentPlayerData;
 
 protected:
-	void Init() override;
+	virtual void Init() override;
 
 public:
 	void ApplyMasterVolume(float Value) const;

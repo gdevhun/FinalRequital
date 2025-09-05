@@ -13,6 +13,8 @@ UCLASS()
 class FINALREQUITAL_API UFRStackBaseWidget : public UUserWidget
 {
 	GENERATED_BODY()
+	// ESC Key Remove UI Widget Stack Base Class Parent
+
 public:
 	UFRStackBaseWidget(const FObjectInitializer& ObjectInitializer);
 

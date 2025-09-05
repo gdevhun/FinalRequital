@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "FRMaskSkillComponent.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
+#include "System/FRGameInstance.h"
 
 AFRPlayerState::AFRPlayerState()
 {
@@ -66,6 +67,13 @@ void AFRPlayerState::IncreaseStat(EFRCharacterStatType StatType, int32 Amount)
 	}
 
 	ApplyStatsToAttributes();
+
+	if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
+	{
+		GI->PersistentPlayerData.Stat_H = Stat_H;
+		GI->PersistentPlayerData.Stat_D = Stat_D;
+		GI->PersistentPlayerData.Stat_P = Stat_P;
+	}
 }
 
 void AFRPlayerState::ApplyStatsToAttributes()
