@@ -47,6 +47,7 @@ public:
 	void HandleESCKeyPressed();
 	void TabKeyPressedCallback();
 
+
 	UFUNCTION(BlueprintCallable)
 	void PushUIWidgetToStack(UFRStackBaseWidget* NewWidget);
 

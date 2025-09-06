@@ -14,6 +14,7 @@
 #include "FRDebugHelper.h"
 #include "GameplayTagContainer.h"
 #include "InputActionValue.h"
+#include "Actor/interactable/FRInteractableBase.h"
 #include "Player/FRPlayerController.h"
 #include "Physics/FRCollision.h"
 #include "System/FRGameInstance.h"
@@ -83,6 +84,7 @@ void AFRCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFRCharacterBase::Move);
 		EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, this, &AFRCharacterBase::Look);
+		EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &AFRCharacterBase::Interact);
 	}
 }
 
@@ -135,6 +137,14 @@ void AFRCharacterBase::Look(const FInputActionValue& Value)
 			AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
 			//D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
 		}
+	}
+}
+
+void AFRCharacterBase::Interact()
+{
+	if (InteractiveActor)
+	{
+		InteractiveActor->Interact();
 	}
 }
 

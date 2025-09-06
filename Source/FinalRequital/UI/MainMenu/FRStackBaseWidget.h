@@ -18,6 +18,8 @@ class FINALREQUITAL_API UFRStackBaseWidget : public UUserWidget
 public:
 	UFRStackBaseWidget(const FObjectInitializer& ObjectInitializer);
 
+	virtual void NativeConstruct() override;
+
 	UFUNCTION(BlueprintCallable)
 	void RemoveUIWithPlayerController();
 

@@ -74,6 +74,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
 	FPlayerPersistentData PersistentPlayerData;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerStats")
+	int32 RemainingStats = 0;
+
 protected:
 	virtual void Init() override;
 

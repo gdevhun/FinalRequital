@@ -9,6 +9,23 @@ UFRStackBaseWidget::UFRStackBaseWidget(const FObjectInitializer& ObjectInitializ
 {
 }
 
+void UFRStackBaseWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+    if (!GetOwningPlayer())
+    {
+        if (UWorld* World = GetWorld())
+        {
+            if (APlayerController* PC = World->GetFirstPlayerController())
+            {
+                SetOwningPlayer(PC);
+            }
+        }
+    }
+    
+}
+
 void UFRStackBaseWidget::RemoveUIWithPlayerController()
 {
     if (APlayerController* PC = GetOwningPlayer())

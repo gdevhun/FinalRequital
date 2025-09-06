@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "FRCharacterBase.generated.h"
 
+class AFRInteractableBase;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -66,9 +67,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TArray<TObjectPtr<UInputAction>> QuickSlotActions;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> InteractionAction;
+
 	// Data Section
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UFRMeleeComboData> ComboActionData;
+
+	UPROPERTY()
+	TObjectPtr<AFRInteractableBase> InteractiveActor;
 
 	// Camera Zoom Section
 protected:
@@ -85,6 +92,9 @@ protected:
 	bool bWantsToZoom = false;
 
 public:
+	void Interact();
+	void SetInteractiveActor(AFRInteractableBase* InActor) { InteractiveActor = InActor; }
+
 	void SetZooming(bool bZooming);
 	bool bIsStunned = false;
 
