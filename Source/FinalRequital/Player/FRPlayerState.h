@@ -33,7 +33,7 @@ public:
 	AFRPlayerState();
 
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
+	virtual void BeginPlay() override;
 	// 무기 관리
 	UFUNCTION(BlueprintCallable)
 	void AcquireWeapon(EWeaponType WeaponType);

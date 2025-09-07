@@ -22,6 +22,19 @@ class UAbilitySystemComponent* AFRPlayerState::GetAbilitySystemComponent() const
 	return ASC;
 }
 
+void AFRPlayerState::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
+	{
+		Stat_H = GI->PersistentPlayerData.Stat_H;
+		Stat_D = GI->PersistentPlayerData.Stat_D;
+		Stat_P = GI->PersistentPlayerData.Stat_P;
+		ApplyStatsToAttributes();
+	}
+}
+
 void AFRPlayerState::AcquireWeapon(EWeaponType WeaponType)
 {
 	AcquiredWeapons.Add(WeaponType);
@@ -83,17 +96,13 @@ void AFRPlayerState::ApplyStatsToAttributes()
 {
 	if (!AttributeSet || !ASC) return;
 
-	const float CurrentAttackRate = AttributeSet->GetAttackRate();
-	const float CurrentMaxHealth = AttributeSet->GetMaxHealth();
-	const float CurrentMana = AttributeSet->GetMana();
+	const float NewAttackRate = AttributeSet->BaseAttackRate + Stat_D * 5.0f;
+	const float NewMaxHealth = AttributeSet->BaseMaxHealth + Stat_H * 25.0f;
+	const float NewMana = AttributeSet->BaseMana + Stat_P * 10.0f;
 
-	const float NewAttackRate = CurrentAttackRate + Stat_D * 5.0f;
-	const float NewMaxHealth = CurrentMaxHealth + Stat_H * 25.0F;
-	const float NewMana = CurrentMana + Stat_P;
-
-	AttributeSet->SetAttackRate(NewAttackRate);
-	AttributeSet->SetMaxHealth(NewMaxHealth);
-	AttributeSet->SetMana(NewMana);
+	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetAttackRateAttribute(), NewAttackRate);
+	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetMaxHealthAttribute(), NewMaxHealth);
+	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetManaAttribute(), NewMana);
 	
 }
 

@@ -90,5 +90,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData ReceivedPlayerDamage;
 
+public:
+
+	UPROPERTY()
+	float BaseAttackRate = 20.0f;
+	UPROPERTY()
+	float BaseMaxHealth = 100.0f;
+	UPROPERTY()
+	float BaseMana = 0.0f;
+
 	bool bOutOfHealth = false;
 };

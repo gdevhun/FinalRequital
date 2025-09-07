@@ -20,7 +20,7 @@ public:
 	UFRHUDWidget(const FObjectInitializer& ObjectInitializer);
 
 	void InitHUDWidget(class UAbilitySystemComponent* InASC);
-	void InitializeFromPlayerState() const;
+	
 	UPROPERTY()
 	TObjectPtr<class UAbilitySystemComponent> ASC;
 
