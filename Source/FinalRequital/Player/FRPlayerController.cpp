@@ -104,7 +104,19 @@ void AFRPlayerController::TabKeyPressedCallback()
 void AFRPlayerController::PushUIWidgetToStack(UFRStackBaseWidget* NewWidget)
 {
 	if (!NewWidget) return;
+
+	// 이전 Top 위젯 숨기기
+	if (UIWidgetStack.Num() > 0)
+	{
+		if (UFRStackBaseWidget* TopWidget = UIWidgetStack.Last())
+		{
+			TopWidget->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
+
 	NewWidget->AddToViewport();
+	NewWidget->SetVisibility(ESlateVisibility::Visible);
+
 	UIWidgetStack.Add(NewWidget);
 }
 
@@ -119,9 +131,17 @@ void AFRPlayerController::PopUIWidgetFromStack()
 	}
 	UIWidgetStack.Pop();
 
-	// 다 닫혔다면 → 게임 재개
-	if (UIWidgetStack.Num() == 0)
+	// 이전 위젯 다시 보이게 하기
+	if (UIWidgetStack.Num() > 0)
 	{
+		if (UFRStackBaseWidget* NewTop = UIWidgetStack.Last())
+		{
+			NewTop->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+	else
+	{
+		// 스택이 완전히 비면 게임 재개
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		bShowMouseCursor = false;
 		SetInputMode(FInputModeGameOnly());
