@@ -34,13 +34,13 @@ float UFRGE_ActionCooldownCalc::CalculateBaseMagnitude_Implementation(const FGam
 	// 이 부분은 실제로는 블루프린트의 Coefficient에서 자동으로 곱해짐
 	// 따라서 여기서는 계산만 하고 최종 결과에 Coefficient가 곱함
 
-	// 기본 마나는 0이고, P 스탯이 1씩 증가할 때마다 마나가 1씩 증가
+	// 마나 값이 음수가 되지 않도록 보정
 	const float PStat = FMath::Max(0.0f, ManaValue);
 
-	// P 스탯 1당 10%씩 감소 (최대 30% 감소로 제한)
-	const float ReductionPercent = FMath::Min(0.4f, PStat * 0.1f);
+	// P 스탯 1당 10%씩 감소, 최대 40%로 제한
+	const float ReductionPercent = FMath::Clamp(PStat * 0.1f, 0.0f, 0.4f);
 
-	// 여기서는 1.0에서 감소율을 뺀 값을 반환 (Coefficient와 곱해짐)
+	// 최종적으로 쿨다운에 곱해질 배율 (1.0이 기본, 감소율만큼 줄어듦)
 	const float ReductionMultiplier = 1.0f - ReductionPercent;
 
 	return ReductionMultiplier; // 블루프린트의 Coefficient(기본 쿨다운)와 곱해짐

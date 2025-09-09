@@ -15,7 +15,7 @@ UFRCharacterAttributeSet::UFRCharacterAttributeSet() :
 	MaxAttackRate(100.0f),
 	MaxHealth(100.0f),
 	Mana(0.0f),
-	MaxMana(3.0f),
+	MaxMana(4.0f),
 	ReceivedPlayerDamage(0.0f)
 {
 	InitHealth(GetMaxHealth());

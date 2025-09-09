@@ -98,11 +98,12 @@ void AFRPlayerState::ApplyStatsToAttributes()
 
 	const float NewAttackRate = AttributeSet->BaseAttackRate + Stat_D * 5.0f;
 	const float NewMaxHealth = AttributeSet->BaseMaxHealth + Stat_H * 25.0f;
-	const float NewMana = AttributeSet->BaseMana + Stat_P * 10.0f;
+	const float NewMana = AttributeSet->BaseMana + Stat_P;
 
 	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetAttackRateAttribute(), NewAttackRate);
 	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetMaxHealthAttribute(), NewMaxHealth);
 	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetManaAttribute(), NewMana);
-	
+
+	ASC->SetNumericAttributeBase(UFRCharacterAttributeSet::GetHealthAttribute(), NewMaxHealth);
 }
 
