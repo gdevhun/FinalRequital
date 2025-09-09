@@ -30,6 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> PB_PlayerOwnHp;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TXT_CurrentHp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TXT_MaxHp;
+
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	//TObjectPtr<class UProgressBar> PB_PlayerRemoteHp;
 

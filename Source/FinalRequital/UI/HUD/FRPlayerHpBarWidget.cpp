@@ -2,8 +2,8 @@
 
 
 #include "UI/HUD/FRPlayerHpBarWidget.h"
-
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 
 UFRPlayerHpBarWidget::UFRPlayerHpBarWidget(const FObjectInitializer& ObjectInitializer)
@@ -54,5 +54,15 @@ void UFRPlayerHpBarWidget::UpdatePlayerHpBar()
 	if (PB_PlayerOwnHp)
 	{
 		PB_PlayerOwnHp->SetPercent(CurrentHealth / CurrentMaxHealth);
+	}
+
+	if (TXT_CurrentHp)
+	{
+		TXT_CurrentHp->SetText(FText::AsNumber(FMath::FloorToInt(CurrentHealth)));
+	}
+
+	if (TXT_MaxHp)
+	{
+		TXT_MaxHp->SetText(FText::AsNumber(FMath::FloorToInt(CurrentMaxHealth)));
 	}
 }
