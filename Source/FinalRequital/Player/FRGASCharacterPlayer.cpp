@@ -63,7 +63,8 @@ void AFRGASCharacterPlayer::BeginPlay()
 
 		if (const UFRCharacterAttributeSet* Attribute = Cast<UFRCharacterAttributeSet>(ASC->GetSet<UAttributeSet>()))
 		{
-			Attribute->OnTakeDamage.AddDynamic(this, &AFRGASCharacterPlayer::HandleTakeDamage); 
+			Attribute->OnTakeDamage.AddDynamic(this, &AFRGASCharacterPlayer::HandleTakeDamage);
+			Attribute->OnOutOfHealth.AddDynamic(this, &AFRGASCharacterPlayer::HandleOutOfHealth);
 		}
 	}
 }
@@ -140,6 +141,11 @@ void AFRGASCharacterPlayer::HandleTakeDamage()
 		FGameplayAbilitySpec Spec(HitReactAbilityClass);
 		ASC->TryActivateAbility(ASC->GiveAbilityAndActivateOnce(Spec));
 	}
+}
+
+void AFRGASCharacterPlayer::HandleOutOfHealth_Implementation()
+{
+
 }
 
 void AFRGASCharacterPlayer::GASInputPressed(int32 InputId)

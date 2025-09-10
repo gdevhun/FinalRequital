@@ -7,11 +7,10 @@
 #include "FRCharacterBase.generated.h"
 
 class AFRInteractableBase;
-class USpringArmComponent;
-class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+
 UCLASS()
 class FINALREQUITAL_API AFRCharacterBase : public ACharacter
 {
@@ -22,8 +21,8 @@ public:
 
 public:
 	FORCEINLINE class UFRMeleeComboData* GetComboActionData() const { return ComboActionData; }
-	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -73,6 +72,9 @@ protected:
 	// Data Section
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UFRMeleeComboData> ComboActionData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Dead, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> DeadAnimMontage;
 
 	UPROPERTY()
 	TObjectPtr<AFRInteractableBase> InteractiveActor;

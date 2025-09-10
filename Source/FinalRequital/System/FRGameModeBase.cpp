@@ -6,5 +6,5 @@
 AFRGameModeBase::AFRGameModeBase()
 {
 	// Seamless Travel 활성화: PlayerState 유지됨
-	bUseSeamlessTravel = true;
+	//bUseSeamlessTravel = true;
 }

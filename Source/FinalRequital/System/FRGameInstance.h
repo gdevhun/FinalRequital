@@ -86,6 +86,9 @@ public:
 	void ApplySFXVolume(float Value) const;
 	void ApplyMouseSensitivityValue(float Value);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
+	FName CurrentLevel;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	TObjectPtr<class USoundMix> MasterMix;

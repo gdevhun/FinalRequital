@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/interactable/FRInteractableBase.h"
+#include "Actor/Interactable/FRInteractableBase.h"
 #include "FRDebugHelper.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"

@@ -50,3 +50,4 @@ void UFRGameInstance::ApplyMouseSensitivityValue(float Value)
 {
 	CurrentSettingValue.MouseSensitivityValue = Value;
 }
+

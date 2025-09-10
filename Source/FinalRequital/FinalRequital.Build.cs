@@ -25,11 +25,9 @@ public class FinalRequital : ModuleRules
 			"GameplayTags",
 			"GameplayTasks",
 			"AIModule",
-			"OnlineSubsystem",
-			"OnlineSubsystemUtils",
-			"OnlineSubsystemSteam"
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		
 	}
 }

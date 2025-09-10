@@ -65,6 +65,9 @@ public:
 	UFUNCTION()
 	void HandleTakeDamage();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void HandleOutOfHealth();
+
 	// LayerAnim Section
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustUnarmedLayerAnim();
