@@ -121,23 +121,24 @@ void AFRCharacterBase::Move(const FInputActionValue& Value)
 
 void AFRCharacterBase::Look(const FInputActionValue& Value)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	if (Controller)
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	if (!Controller) return;
+
+	float Sensitivity = 1.0f;
+
+	if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
 	{
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		Sensitivity = FMath::GetMappedRangeValueClamped(
+			FVector2D(0.0f, 1.0f),   // 저장된 범위
+			FVector2D(0.0f, 2.0f),   // 실제 적용할 범위
+			GI->CurrentSettingValue.MouseSensitivityValue
+		);
 	}
-	if (Controller)
-	{
-		if (UFRGameInstance* GI = GetGameInstance<UFRGameInstance>())
-		{
-			float Sensitivity = GI->CurrentSettingValue.MouseSensitivityValue;
-			AddControllerYawInput(LookAxisVector.X * Sensitivity);
-			AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
-			//D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
-		}
-	}
+
+	AddControllerYawInput(LookAxisVector.X * Sensitivity);
+	AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
+	D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
 }
 
 void AFRCharacterBase::Interact()

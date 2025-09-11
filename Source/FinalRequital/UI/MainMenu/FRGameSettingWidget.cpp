@@ -140,7 +140,7 @@ void UFRGameSettingWidget::UpdateGauge(UImage* GaugeImage, float Value)
     if (!GaugeImage || ProgressBarIMG.Num() < 10) return;
 
     // 0.0 ~ 1.0 → 0~9 인덱스로 매핑
-    int32 Index = FMath::Clamp(FMath::RoundToInt(Value * 9), 0, 9);
+    int32 Index = FMath::Clamp(FMath::RoundToInt(Value * 10), 0, 10);
 
     if (ProgressBarIMG.IsValidIndex(Index))
     {
