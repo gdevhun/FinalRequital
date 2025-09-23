@@ -12,7 +12,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "FRDebugHelper.h"
 #include "InputActionValue.h"
+#include "Actor/Interactable/FRDialogueActor.h"
 #include "Actor/interactable/FRInteractableBase.h"
+#include "Interface/FRDialogueInterface.h"
 #include "Player/FRPlayerController.h"
 #include "Physics/FRCollision.h"
 #include "System/FRGameInstance.h"
@@ -83,6 +85,7 @@ void AFRCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFRCharacterBase::Move);
 		EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, this, &AFRCharacterBase::Look);
 		EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &AFRCharacterBase::Interact);
+		EnhancedInput->BindAction(TabKeyAction, ETriggerEvent::Started, this, &AFRCharacterBase::TabKeyPressedCallback);
 	}
 }
 
@@ -144,6 +147,16 @@ void AFRCharacterBase::Interact()
 	if (InteractiveActor)
 	{
 		InteractiveActor->Interact();
+	}
+}
+
+void AFRCharacterBase::TabKeyPressedCallback()
+{
+	if (!InteractiveActor) return;
+
+	if (IFRDialogueInterface* DialogueActor = Cast<IFRDialogueInterface>(InteractiveActor))
+	{
+		DialogueActor->ProceedDialogue();
 	}
 }
 

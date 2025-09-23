@@ -69,6 +69,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> InteractionAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> TabKeyAction;
+
 	// Data Section
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UFRMeleeComboData> ComboActionData;
@@ -96,6 +99,7 @@ protected:
 public:
 	void Interact();
 	void SetInteractiveActor(AFRInteractableBase* InActor) { InteractiveActor = InActor; }
+	void TabKeyPressedCallback();
 
 	void SetZooming(bool bZooming);
 	bool bIsStunned = false;

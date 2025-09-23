@@ -49,7 +49,6 @@ void AFRPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInput->BindAction(ESCKeyAction, ETriggerEvent::Started, this, &AFRPlayerController::HandleESCKeyPressed);
-		EnhancedInput->BindAction(TabKeyAction, ETriggerEvent::Started, this, &AFRPlayerController::TabKeyPressedCallback);
 	}
 }
 
@@ -94,11 +93,6 @@ void AFRPlayerController::HandleESCKeyPressed()
 		// 스택에 뭔가 있으면 하나 닫기
 		PopUIWidgetFromStack();
 	}
-}
-
-void AFRPlayerController::TabKeyPressedCallback()
-{
-
 }
 
 void AFRPlayerController::PushUIWidgetToStack(UFRStackBaseWidget* NewWidget)
