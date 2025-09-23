@@ -41,12 +41,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ESCKeyAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputAction> TabKeyAction;
-
 	void HandleESCKeyPressed();
-	void TabKeyPressedCallback();
-
 
 	UFUNCTION(BlueprintCallable)
 	void PushUIWidgetToStack(UFRStackBaseWidget* NewWidget);
