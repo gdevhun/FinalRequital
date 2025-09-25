@@ -79,7 +79,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Dead, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> DeadAnimMontage;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<AFRInteractableBase> InteractiveActor;
 
 	// Camera Zoom Section

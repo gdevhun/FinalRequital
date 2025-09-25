@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "FRDialogueWidget.generated.h"
 
+struct FDialogueLine;
 /**
  * 
  */
@@ -16,9 +17,24 @@ class FINALREQUITAL_API UFRDialogueWidget : public UUserWidget
 public:
 	UFRDialogueWidget(const FObjectInitializer& ObjectInitializer);
 
+	void NativeConstruct() override;
+	void NativeDestruct() override;
+
+	//Dialogue Top Text
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_BG_Dialogue;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UTextBlock> TXT_Dialogue;
 
+	//Monologue bottom Text
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_BG_Monologue;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UTextBlock> TXT_Monologue;
+
 	UFUNCTION(BlueprintCallable, Category="Dialogue")
-	void UpdateDialogueText(const FText& NewText);
+	void UpdateDialogue(const FDialogueLine& Line);
+
 };

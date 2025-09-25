@@ -139,7 +139,7 @@ void AFRCharacterBase::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(LookAxisVector.X * Sensitivity);
 	AddControllerPitchInput(LookAxisVector.Y * Sensitivity);
-	D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
+	//D(FString::Printf(TEXT("Current MS: %f"), Sensitivity));
 }
 
 void AFRCharacterBase::Interact()

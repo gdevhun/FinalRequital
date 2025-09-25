@@ -18,7 +18,7 @@ void AFRDialogueActor::StartDialogue()
 		if (DialogueWidget)
 		{
 			DialogueWidget->AddToViewport();
-			DialogueWidget->UpdateDialogueText(DialogueLines[CurrentDialogueIndex]);
+			DialogueWidget->UpdateDialogue(DialogueLines[CurrentDialogueIndex]);
 		}
 	}
 }
@@ -30,7 +30,7 @@ void AFRDialogueActor::ProceedDialogue()
 	CurrentDialogueIndex++;
 	if (DialogueLines.IsValidIndex(CurrentDialogueIndex))
 	{
-		DialogueWidget->UpdateDialogueText(DialogueLines[CurrentDialogueIndex]);
+		DialogueWidget->UpdateDialogue(DialogueLines[CurrentDialogueIndex]);
 	}
 	else
 	{

@@ -10,6 +10,19 @@
 /**
  * 
  */
+
+USTRUCT(BlueprintType)
+struct FDialogueLine
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Text;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsPlayerMonologue;
+};
+
 UCLASS()
 class FINALREQUITAL_API AFRDialogueActor : public AFRInteractableBase, public IFRDialogueInterface
 {
@@ -26,7 +39,7 @@ protected:
 	TObjectPtr<class UFRDialogueWidget> DialogueWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TArray<FText> DialogueLines;
+	TArray<FDialogueLine> DialogueLines;
 
 	int32 CurrentDialogueIndex;
 
