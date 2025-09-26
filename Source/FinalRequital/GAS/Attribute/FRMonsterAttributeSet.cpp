@@ -2,6 +2,8 @@
 
 
 #include "GAS/Attribute/FRMonsterAttributeSet.h"
+
+#include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "GameplayEffectExtension.h"
 
@@ -69,13 +71,16 @@ void UFRMonsterAttributeSet::PostGameplayEffectExecute(const struct FGameplayEff
 		SetHealth(FMath::Clamp(GetHealth() - GetReceivedMonsterDamage(), MinimumHealth, GetMaxHealth()));
 		OnMonsterTakeDamage.Broadcast();
 		SetReceivedMonsterDamage(0.0f);
+		//D(FString::Printf(TEXT("damaged!")));
 	}
 	// 죽는 기능 구현
 	if (GetHealth() <= 0.0f && !bOutOfHealth)
 	{
 		Data.Target.AddLooseGameplayTag(FRTAG_CHARACTER_ISDEAD);
 		OnMonsterOutOfHealth.Broadcast();
+		//D(FString::Printf(TEXT("dead!")));
 	}
 	bOutOfHealth = (GetHealth() <= 0.0f);
+	//D(FString::Printf(TEXT("dead2!")));
 }
 

@@ -81,7 +81,7 @@ void AFRMonsterBase::BeginPlay()
 		DetectSphere->OnComponentBeginOverlap.AddDynamic(this, &AFRMonsterBase::OnSphereBeginOverlap);
 		DetectSphere->OnComponentEndOverlap.AddDynamic(this, &AFRMonsterBase::OnSphereEndOverlap);
 	}
-	
+
 }
 class UAbilitySystemComponent* AFRMonsterBase::GetAbilitySystemComponent() const
 {
@@ -172,6 +172,7 @@ void AFRMonsterBase::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AAc
 }
 void AFRMonsterBase::OnOutOfHealth()
 {
+	//D(FString::Printf(TEXT("delegatedead!")));
 	SetDead();
 }
 
