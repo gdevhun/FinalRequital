@@ -27,6 +27,9 @@ public:
 	void AttachToSoul();
 	void AttachToSoul_Implementation();
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//bool bIsTutorialObj = false;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<class UAbilitySystemComponent> ASC;

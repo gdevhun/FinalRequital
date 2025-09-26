@@ -17,11 +17,11 @@ void UFRGA_MemoryCellHitCheck::ActivateAbility(const FGameplayAbilitySpecHandle 
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	D(FString::Printf(TEXT("TRIGGER!")));
+	//D(FString::Printf(TEXT("TRIGGER!")));
 	UFRAT_Trace* AttackTraceTask = UFRAT_Trace::CreateTask(this, TargetActorClass);
 	AttackTraceTask->OnComplete.AddDynamic(this, &UFRGA_MemoryCellHitCheck::OnTraceResultCallback);
 	AttackTraceTask->ReadyForActivation();
-	D(FString::Printf(TEXT("TRIGGER1!")));
+	D(FString::Printf(TEXT("Detected!")));
 }
 
 void UFRGA_MemoryCellHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle)

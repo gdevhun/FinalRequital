@@ -26,16 +26,17 @@ protected:
 public:
 	void InitializePlayerStateStatus() const;
 
+	UFUNCTION(BlueprintCallable, Category = "HUD")
 	FORCEINLINE class UFRHUDWidget* GetHUDWidget() { return HUDWidget; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 	TSubclassOf<class UFRHUDWidget> FRHUDWidgetClass; // HUD UI 위젯 BP REF
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UFRHUDWidget> HUDWidget; // HUD UI 포인터
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MainMenu")
 	TSubclassOf<class UFRMainMenuWidget> FRMainMenuWidgetClass; // HUD UI 위젯 BP REF
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UFRMainMenuWidget> MainMenuWidget; // MainMenu UI 포인터
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))

@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UStaticMeshComponent> StaticMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsTutorialObj = false;
+
 private:
 	void DisablePhysics();
 };

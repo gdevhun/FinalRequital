@@ -129,7 +129,7 @@ void UFRGA_DetectandPush::ActivateAbility(
                 // 물리 시뮬레이션 일시 활성화
                 Mesh->SetSimulatePhysics(true);
                 Mesh->AddImpulse(PushDir * PushStrength * 0.5f, NAME_None, true);
-
+                
                 // 일정 시간 후 물리 시뮬레이션 비활성화 (낙하 완료 후)
                 FTimerHandle DisablePhysicsHandle;
                 FTimerDelegate DisablePhysicsDelegate;
@@ -139,6 +139,7 @@ void UFRGA_DetectandPush::ActivateAbility(
                         if (Mesh)
                         {
                             Mesh->SetSimulatePhysics(false);
+                            Pushable->bIsTutorialObj = true;
                         }
                     });
 

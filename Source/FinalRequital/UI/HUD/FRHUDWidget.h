@@ -34,6 +34,8 @@ public:
 	void UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType);
 	void BindActivatedWeaponSlotsToPlayerState();
 
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void SetHUDVisibility(bool bVisible);
 
 	UFUNCTION()
 	void OnWeaponAcquiredFromState(EWeaponType WeaponType);

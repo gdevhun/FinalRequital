@@ -3,6 +3,7 @@
 
 #include "UI/HUD/FRHUDWidget.h"
 #include "FRPlayerHpBarWidget.h"
+#include "FRSkillSlotWidget.h"
 #include "FRWeaponSlotWidget.h"
 #include "Components/Image.h"
 #include "Player/FRPlayerState.h"
@@ -72,6 +73,19 @@ void UFRHUDWidget::BindActivatedWeaponSlotsToPlayerState()
 			PS->OnWeaponAcquired.AddDynamic(this, &UFRHUDWidget::OnWeaponAcquiredFromState);
 		}
 	}
+}
+
+void UFRHUDWidget::SetHUDVisibility(bool bVisible)
+{
+	const ESlateVisibility NewVisibility = bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
+
+	if (WBP_PlayerHpBar) WBP_PlayerHpBar->SetVisibility(NewVisibility);
+	if (IMG_CrossHair) IMG_CrossHair->SetVisibility(NewVisibility);
+	if (WBP_SkillSlot) WBP_SkillSlot->SetVisibility(NewVisibility);
+	if (WBP_WeaponSlot_1) WBP_WeaponSlot_1->SetVisibility(NewVisibility);
+	if (WBP_WeaponSlot_2) WBP_WeaponSlot_2->SetVisibility(NewVisibility);
+	if (WBP_WeaponSlot_3) WBP_WeaponSlot_3->SetVisibility(NewVisibility);
+	if (WBP_WeaponSlot_4) WBP_WeaponSlot_4->SetVisibility(NewVisibility);
 }
 
 void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
