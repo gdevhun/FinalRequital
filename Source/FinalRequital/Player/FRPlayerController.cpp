@@ -81,7 +81,6 @@ void AFRPlayerController::SwitchToInspectCamera(AActor* TargetActor, float Blend
 		if (APawn* PlayerPawn = GetPawn())
 		{
 			SetViewTargetWithBlend(TargetActor, BlendTime, EViewTargetBlendFunction::VTBlend_Cubic);
-
 			FVector CamLocation = CamComp->GetComponentLocation();
 			FRotator CamRotation = CamComp->GetComponentRotation();
 
@@ -89,7 +88,7 @@ void AFRPlayerController::SwitchToInspectCamera(AActor* TargetActor, float Blend
 			FVector Up = FVector::UpVector * UpOffset;
 			FVector NewPlayerLocation = CamLocation + Forward + Up;
 
-			PlayerPawn->SetActorLocation(NewPlayerLocation, true); 
+			PlayerPawn->SetActorLocation(NewPlayerLocation, true);
 
 			FRotator LookAtRotation = (CamLocation - NewPlayerLocation).Rotation();
 			FRotator FixedRotation(0.f, LookAtRotation.Yaw, 0.f);
