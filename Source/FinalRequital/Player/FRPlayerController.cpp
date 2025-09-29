@@ -6,6 +6,8 @@
 #include "EnhancedInputComponent.h"
 #include "FRGASCharacterPlayer.h"
 #include "FRPlayerState.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "System/FRGameInstance.h"
 #include "UI/HUD/FRHUDWidget.h"
@@ -66,6 +68,56 @@ void AFRPlayerController::InitializePlayerStateStatus() const
 			PS->Stat_P = GI->PersistentPlayerData.Stat_P;
 
 			PS->ApplyStatsToAttributes();
+		}
+	}
+}
+
+void AFRPlayerController::SwitchToInspectCamera(AActor* TargetActor, float BlendTime, float ForwardOffset, float UpOffset)
+{
+	if (!TargetActor) return;
+
+	if (UCameraComponent* CamComp = TargetActor->FindComponentByClass<UCameraComponent>())
+	{
+		if (APawn* PlayerPawn = GetPawn())
+		{
+			SetViewTargetWithBlend(TargetActor, BlendTime, EViewTargetBlendFunction::VTBlend_Cubic);
+
+			FVector CamLocation = CamComp->GetComponentLocation();
+			FRotator CamRotation = CamComp->GetComponentRotation();
+
+			FVector Forward = CamRotation.Vector() * -ForwardOffset;
+			FVector Up = FVector::UpVector * UpOffset;
+			FVector NewPlayerLocation = CamLocation + Forward + Up;
+
+			PlayerPawn->SetActorLocation(NewPlayerLocation, true); 
+
+			FRotator LookAtRotation = (CamLocation - NewPlayerLocation).Rotation();
+			FRotator FixedRotation(0.f, LookAtRotation.Yaw, 0.f);
+			PlayerPawn->SetActorRotation(FixedRotation);
+
+			if (ACharacter* MyCharacter = Cast<ACharacter>(PlayerPawn))
+			{
+				if (MyCharacter->GetCharacterMovement())
+				{
+					MyCharacter->GetCharacterMovement()->DisableMovement();
+				}
+			}
+		}
+	}
+}
+
+void AFRPlayerController::ReturnToPlayerCamera(float BlendTime)
+{
+	if (APawn* PlayerPawn = GetPawn())
+	{
+		SetViewTargetWithBlend(PlayerPawn, BlendTime, EViewTargetBlendFunction::VTBlend_Cubic);
+
+		if (ACharacter* MyCharacter = Cast<ACharacter>(PlayerPawn))
+		{
+			if (MyCharacter->GetCharacterMovement())
+			{
+				MyCharacter->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+			}
 		}
 	}
 }
