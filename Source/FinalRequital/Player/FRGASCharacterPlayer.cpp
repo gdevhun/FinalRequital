@@ -60,12 +60,12 @@ void AFRGASCharacterPlayer::BeginPlay()
 	{
 		ASC->RegisterGameplayTagEvent(FRTAG_CHARACTER_STUNNED, EGameplayTagEventType::NewOrRemoved)
 			.AddUObject(this, &AFRGASCharacterPlayer::OnStunTagChanged);
+	}
 
-		if (const UFRCharacterAttributeSet* Attribute = Cast<UFRCharacterAttributeSet>(ASC->GetSet<UAttributeSet>()))
-		{
-			Attribute->OnTakeDamage.AddDynamic(this, &AFRGASCharacterPlayer::HandleTakeDamage);
-			Attribute->OnOutOfHealth.AddDynamic(this, &AFRGASCharacterPlayer::HandleOutOfHealth);
-		}
+	if (const UFRCharacterAttributeSet* Attribute = Cast<UFRCharacterAttributeSet>(ASC->GetSet<UAttributeSet>()))
+	{
+		Attribute->OnTakeDamage.AddDynamic(this, &AFRGASCharacterPlayer::HandleTakeDamage);
+		Attribute->OnOutOfHealth.AddDynamic(this, &AFRGASCharacterPlayer::HandleOutOfHealth);
 	}
 }
 
@@ -121,7 +121,7 @@ void AFRGASCharacterPlayer::OnStunTagChanged(const FGameplayTag Tag, int32 NewCo
 		if (HitReactAbilityClass)
 		{
 			FGameplayAbilitySpec Spec(HitReactAbilityClass);
-			ASC->TryActivateAbility(ASC->GiveAbilityAndActivateOnce(Spec));
+			ASC->TryActivateAbilityByClass(HitReactAbilityClass);
 		}
 	}
 	else
@@ -139,7 +139,7 @@ void AFRGASCharacterPlayer::HandleTakeDamage()
 	if (HitReactAbilityClass)
 	{
 		FGameplayAbilitySpec Spec(HitReactAbilityClass);
-		ASC->TryActivateAbility(ASC->GiveAbilityAndActivateOnce(Spec));
+		ASC->TryActivateAbilityByClass(HitReactAbilityClass);
 	}
 }
 
@@ -147,6 +147,7 @@ void AFRGASCharacterPlayer::HandleOutOfHealth_Implementation()
 {
 
 }
+
 
 void AFRGASCharacterPlayer::GASInputPressed(int32 InputId)
 {

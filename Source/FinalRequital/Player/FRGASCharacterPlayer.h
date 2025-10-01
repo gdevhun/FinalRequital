@@ -67,20 +67,22 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void HandleOutOfHealth();
+	void HandleOutOfHealth_Implementation();
 
 	// LayerAnim Section
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustUnarmedLayerAnim();
-
+	void AdjustUnarmedLayerAnim_Implementation();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustSwordLayerAnim();
-
+	void AdjustSwordLayerAnim_Implementation();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustIronMaceLayerAnim();
-
+	void AdjustIronMaceLayerAnim_Implementation();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustBowLayerAnim();
-
+	void AdjustBowLayerAnim_Implementation();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AdjustBronzeBellLayerAnim();
+	void AdjustBronzeBellLayerAnim_Implementation();
 };

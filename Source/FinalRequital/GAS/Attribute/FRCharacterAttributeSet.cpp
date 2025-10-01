@@ -70,25 +70,32 @@ void UFRCharacterAttributeSet::PostGameplayEffectExecute(const struct FGameplayE
 
 	float MinimumHealth = 0.0f;
 
-	if(Data.EvaluatedData.Attribute==GetHealthAttribute())
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		//FR_LOG(FRLOG, Warning, TEXT("Direct HEALTH Access: %f "), GetHealth());
+		// Health 값이 직접 수정된 경우 → 클램프만
 		SetHealth(FMath::Clamp(GetHealth(), MinimumHealth, GetMaxHealth()));
 	}
 	else if (Data.EvaluatedData.Attribute == GetReceivedPlayerDamageAttribute())
 	{
-		//FR_LOG(FRLOG, Log, TEXT("Damage: %f "), GetDamage());
+		// 체력 감소는 여기서만 적용
+		const float DamageDone = GetReceivedPlayerDamage();
+		if (DamageDone > 0.0f)
+		{
+			const float NewHealth = GetHealth() - DamageDone;
+			SetHealth(FMath::Clamp(NewHealth, MinimumHealth, GetMaxHealth()));
 
-		SetHealth(FMath::Clamp(GetHealth() - GetReceivedPlayerDamage(), MinimumHealth, GetMaxHealth()));
+			OnTakeDamage.Broadcast();
+			D(FString::Printf(TEXT("TRIGGER12!")));
+		}
 
-		OnTakeDamage.Broadcast();
-
+		// 다음 틱에서 중복 안되게 리셋
 		SetReceivedPlayerDamage(0.0f);
 	}
-
-	// 죽는 기능 구현
-	if (GetHealth()<=0.0f && !bOutOfHealth)
+	//죽음 체크
+	if (GetHealth() <= 0.0f && !bOutOfHealth)
 	{
+		//Data.Target.AddLooseGameplayTag(FRTAG_CHARACTER_ISDEAD);
+		//OnOutOfHealth.Broadcast();
 		Data.Target.AddLooseGameplayTag(FRTAG_CHARACTER_ISDEAD);
 		OnOutOfHealth.Broadcast();
 	}
