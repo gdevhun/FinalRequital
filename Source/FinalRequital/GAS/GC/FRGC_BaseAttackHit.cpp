@@ -14,7 +14,7 @@ bool UFRGC_BaseAttackHit::OnExecute_Implementation(AActor* Target, const FGamepl
 {
 	// HitResult 정보가 있는 경우 해당 ImpactPoint에 출력
 	const FHitResult* HitResult = Parameters.EffectContext.GetHitResult();
-
+	UE_LOG(LogTemp, Warning, TEXT(">>> GameplayCue Executed, Target: %s"), *GetNameSafe(Target));
 	if (HitResult)
 	{
 		FVector SpawnLocation = HitResult->ImpactPoint;
@@ -26,7 +26,16 @@ bool UFRGC_BaseAttackHit::OnExecute_Implementation(AActor* Target, const FGamepl
 
 		if (HitSound)
 		{
-			UGameplayStatics::PlaySoundAtLocation(Target, HitSound, SpawnLocation);
+			UGameplayStatics::PlaySoundAtLocation(
+				Target,
+				HitSound,
+				SpawnLocation,
+				FRotator::ZeroRotator,   // Rotation 
+				1.0f,                    // Volume
+				1.0f,                    // Pitch
+				0.0f,                    // Start Time
+				AttenuationSetting.Get() // AttenuationSettings
+			);
 		}
 	}
 	// 그렇지 않으면 EffectContext에서 가져온 액터 위치에 출력
@@ -47,11 +56,20 @@ bool UFRGC_BaseAttackHit::OnExecute_Implementation(AActor* Target, const FGamepl
 
 				if (HitSound)
 				{
-					UGameplayStatics::PlaySoundAtLocation(TargetActor.Get(), HitSound, SpawnLocation);
+					UGameplayStatics::PlaySoundAtLocation(
+						Target,
+						HitSound,
+						SpawnLocation,
+						FRotator::ZeroRotator,   // Rotation 
+						1.0f,                    // Volume
+						1.0f,                    // Pitch
+						0.0f,                    // Start Time
+						AttenuationSetting.Get() // AttenuationSettings
+					);
 				}
 			}
 		}
 	}
-
+	
 	return Super::OnExecute_Implementation(Target, Parameters);
 }

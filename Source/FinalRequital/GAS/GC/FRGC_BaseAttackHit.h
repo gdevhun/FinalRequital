@@ -27,4 +27,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameplayCue)
 	TObjectPtr<USoundBase> HitSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = GameplayCue)
+	TObjectPtr<USoundAttenuation> AttenuationSetting;
 };
