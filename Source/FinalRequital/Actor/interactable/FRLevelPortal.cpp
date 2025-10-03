@@ -20,9 +20,9 @@ void AFRLevelPortal::BeginPlay()
 	Super::BeginPlay();
 	if (bIsAutoActivate)
 	{
-		PortalEffect->Activate();
+		ActivatePortal();
 	}
-	else PortalEffect->Deactivate();
+	else DeactivatePortal();
 }
 
 void AFRLevelPortal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -72,11 +72,13 @@ void AFRLevelPortal::Interact_Implementation()
 void AFRLevelPortal::ActivatePortal()
 {
 	bIsActivated = true;
+	SetActorHiddenInGame(false);
+}
 
-	if (PortalEffect)
-	{
-		PortalEffect->Activate(true);
-	}
+void AFRLevelPortal::DeactivatePortal()
+{
+	bIsActivated = false;
+	SetActorHiddenInGame(true);
 }
 
 void AFRLevelPortal::OpenNextLevel()

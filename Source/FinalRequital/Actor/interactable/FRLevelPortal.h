@@ -36,6 +36,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ActivatePortal();
+	UFUNCTION(BlueprintCallable)
+	void DeactivatePortal();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
 	bool bIsActivated = false;
