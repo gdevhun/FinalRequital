@@ -18,8 +18,11 @@ AFRLevelPortal::AFRLevelPortal()
 void AFRLevelPortal::BeginPlay()
 {
 	Super::BeginPlay();
-
-	PortalEffect->Deactivate();
+	if (bIsAutoActivate)
+	{
+		PortalEffect->Activate();
+	}
+	else PortalEffect->Deactivate();
 }
 
 void AFRLevelPortal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

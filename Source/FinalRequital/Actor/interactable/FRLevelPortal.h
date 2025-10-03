@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
 	bool bIsActivated = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level")
+	bool bIsAutoActivate = false;
+
 	UFUNCTION(BlueprintCallable)
 	void OpenNextLevel();
 
