@@ -36,7 +36,7 @@ AFRInteractableBase::AFRInteractableBase()
 	{
 		InteractionPromptWidget->SetWidgetClass(InteractionWidgetRef.Class);
 		InteractionPromptWidget->SetWidgetSpace(EWidgetSpace::Screen);
-		InteractionPromptWidget->SetDrawSize(FVector2D(160.0f, 20.f));
+		InteractionPromptWidget->SetDrawSize(FVector2D(50.f, 50.f));
 		InteractionPromptWidget->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
