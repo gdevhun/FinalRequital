@@ -34,14 +34,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trap")
 	TObjectPtr<class UParticleSystemComponent> ParticleSystem;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Trap")
+	TArray<TObjectPtr<class ACharacter>> OverlappingCharacters;
+
 	UPROPERTY(EditAnywhere, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> PlayerDamageEffectClass;
+
+	UPROPERTY(EditAnywhere, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> MonsterDamageEffectClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayAbility> PlayerHitAbilityClass;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Trap")
-	TArray<TObjectPtr<class AFRGASCharacterPlayer>> OverlappingCharacters;
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayAbility> MonsterHitAbilityClass;
 public:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
