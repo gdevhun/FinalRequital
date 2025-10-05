@@ -83,49 +83,47 @@ void AFRFloorTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 {
     if (!OtherActor || !bIsTrapActive) return;
 
-    for (ACharacter* Character : OverlappingCharacters)
+    ACharacter* Character = Cast<ACharacter>(OtherActor);
+    if (!Character) return;
+
+    UAbilitySystemComponent* TargetASC = nullptr;
+    TSubclassOf<UGameplayEffect> EffectClass = nullptr;
+    TSubclassOf<UGameplayAbility> AbilityClass = nullptr;
+
+    // Player
+    if (AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(Character))
     {
-        if (!Character) continue;
+        TargetASC = Player->GetAbilitySystemComponent();
+        EffectClass = PlayerDamageEffectClass;
+        AbilityClass = PlayerHitAbilityClass;
+    }
+    // Monster
+    else if (AFRMonsterBase* Monster = Cast<AFRMonsterBase>(Character))
+    {
+        TargetASC = Monster->GetAbilitySystemComponent();
+        EffectClass = MonsterDamageEffectClass;
+        AbilityClass = MonsterHitAbilityClass;
+    }
 
-        UAbilitySystemComponent* TargetASC = nullptr;
-        TSubclassOf<UGameplayEffect> EffectClass = nullptr;
-        TSubclassOf<UGameplayAbility> AbilityClass = nullptr;
+    if (TargetASC)
+    {
+        // Apply Damage Effect
+        if (EffectClass)
+        {
+            FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+            EffectContext.AddSourceObject(this);
 
-        // Player Check
-        if (AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(Character))
-        {
-            TargetASC = Player->GetAbilitySystemComponent();
-            EffectClass = PlayerDamageEffectClass;
-            AbilityClass = PlayerHitAbilityClass;
-        }
-        // Monster
-        else if (AFRMonsterBase* Monster = Cast<AFRMonsterBase>(Character))
-        {
-            TargetASC = Monster->GetAbilitySystemComponent();
-            EffectClass = MonsterDamageEffectClass;
-            AbilityClass = MonsterHitAbilityClass;
-        }
-
-        if (TargetASC)
-        {
-            //  Apply Damage Effect
-            if (EffectClass)
+            FGameplayEffectSpecHandle EffectSpec = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
+            if (EffectSpec.IsValid())
             {
-                FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
-                EffectContext.AddSourceObject(this);
-
-                FGameplayEffectSpecHandle EffectSpec = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
-                if (EffectSpec.IsValid())
-                {
-                    ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
-                }
+                ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
             }
+        }
 
-            // Trigger Ability
-            if (AbilityClass)
-            {
-                TargetASC->TryActivateAbilityByClass(AbilityClass);
-            }
+        // Trigger Hit Ability
+        if (AbilityClass)
+        {
+            TargetASC->TryActivateAbilityByClass(AbilityClass);
         }
     }
 }
