@@ -4,6 +4,7 @@
 #include "Character/FRSoul.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 AFRSoul::AFRSoul()
@@ -63,6 +64,27 @@ void AFRSoul::ActiveThirdVisualMesh()
 {
     VisualMesh3->SetVisibility(true);
     bIsActivatedThirdMesh = true;
+}
+
+void AFRSoul::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp,
+	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+    if (!bIsPushing || bHasBouncedOnce)
+        return;
+
+    bHasBouncedOnce = true;
+
+    FVector Velocity = GetCharacterMovement()->Velocity;
+    FVector Reflected = FMath::GetReflectionVector(Velocity, HitNormal);
+    LaunchCharacter(Reflected * 0.6f, true, true);
+
+    // 나중에 다시 튕길 수 있도록 약간의 시간 뒤 초기화
+    GetWorldTimerManager().SetTimerForNextTick([this]()
+        {
+            bIsPushing = false;
+            bHasBouncedOnce = false;
+        });
 }
 
 

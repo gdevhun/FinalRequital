@@ -120,6 +120,20 @@ void UFRGA_DetectandPush::ActivateAbility(
             SoulPushDir.Normalize();
 
             Soul->LaunchCharacter(SoulPushDir * PushStrength, true, true);
+
+            FTimerHandle ResetHandle;
+            Soul->GetWorldTimerManager().SetTimer(
+                ResetHandle,
+                FTimerDelegate::CreateLambda([Soul]()
+                    {
+                        if (IsValid(Soul))
+                        {
+                            Soul->bIsPushing = false;
+                        }
+                    }),
+                0.2f,  // 지속시간 (튕겨나는 순간만 유지)
+                false
+            );
         }
         // AFRPushableActor
         else if (AFRPushableActor* Pushable = Cast<AFRPushableActor>(HitActor))

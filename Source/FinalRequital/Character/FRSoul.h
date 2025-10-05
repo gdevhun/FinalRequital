@@ -36,7 +36,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ActiveThirdVisualMesh();
 
+	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
+	bool bIsPushing = false;
+
 private:
+	bool bHasBouncedOnce = false;
 	bool bIsActivatedSecondMesh = false;
 	bool bIsActivatedThirdMesh = false;
 

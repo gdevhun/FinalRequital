@@ -7,6 +7,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Player/FRGASCharacterPlayer.h"
 #include "FRDebugHelper.h"
+#include "Character/FRMonsterBase.h"
 
 AFRFloorTrap::AFRFloorTrap()
 {
@@ -82,30 +83,49 @@ void AFRFloorTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 {
     if (!OtherActor || !bIsTrapActive) return;
 
-    if (AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(OtherActor))
+    for (ACharacter* Character : OverlappingCharacters)
     {
-        if (UAbilitySystemComponent* TargetASC = Player->GetAbilitySystemComponent())
+        if (!Character) continue;
+
+        UAbilitySystemComponent* TargetASC = nullptr;
+        TSubclassOf<UGameplayEffect> EffectClass = nullptr;
+        TSubclassOf<UGameplayAbility> AbilityClass = nullptr;
+
+        // Player Check
+        if (AFRGASCharacterPlayer* Player = Cast<AFRGASCharacterPlayer>(Character))
         {
-            // 데미지 적용
-            if (PlayerDamageEffectClass)
+            TargetASC = Player->GetAbilitySystemComponent();
+            EffectClass = PlayerDamageEffectClass;
+            AbilityClass = PlayerHitAbilityClass;
+        }
+        // Monster
+        else if (AFRMonsterBase* Monster = Cast<AFRMonsterBase>(Character))
+        {
+            TargetASC = Monster->GetAbilitySystemComponent();
+            EffectClass = MonsterDamageEffectClass;
+            AbilityClass = MonsterHitAbilityClass;
+        }
+
+        if (TargetASC)
+        {
+            //  Apply Damage Effect
+            if (EffectClass)
             {
                 FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
                 EffectContext.AddSourceObject(this);
 
-                FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(PlayerDamageEffectClass, 1.f, EffectContext);
-                if (SpecHandle.IsValid())
+                FGameplayEffectSpecHandle EffectSpec = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
+                if (EffectSpec.IsValid())
                 {
-                    ASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+                    ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
                 }
             }
 
-            // 어빌리티 발동
-            if (PlayerHitAbilityClass)
+            // Trigger Ability
+            if (AbilityClass)
             {
-                TargetASC->TryActivateAbilityByClass(PlayerHitAbilityClass);
+                TargetASC->TryActivateAbilityByClass(AbilityClass);
             }
         }
-       // D(TEXT("Trap Triggered by Player"));
     }
-
 }
