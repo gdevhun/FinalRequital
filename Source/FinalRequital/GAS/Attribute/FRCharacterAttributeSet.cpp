@@ -85,7 +85,6 @@ void UFRCharacterAttributeSet::PostGameplayEffectExecute(const struct FGameplayE
 			SetHealth(FMath::Clamp(NewHealth, MinimumHealth, GetMaxHealth()));
 
 			OnTakeDamage.Broadcast();
-			D(FString::Printf(TEXT("TRIGGER12!")));
 		}
 
 		// 다음 틱에서 중복 안되게 리셋

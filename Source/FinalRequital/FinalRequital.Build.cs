@@ -25,7 +25,8 @@ public class FinalRequital : ModuleRules
 			"GameplayTags",
 			"GameplayTasks",
 			"AIModule",
-			"Niagara"
+			"Niagara",
+			"NavigationSystem"
 		});
 
 		

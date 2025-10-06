@@ -25,6 +25,9 @@ public:
 	TObjectPtr<class UStaticMeshComponent> StaticMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UNavModifierComponent> NavModifier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsTutorialObj = false;
 
 private:

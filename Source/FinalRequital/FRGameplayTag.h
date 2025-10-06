@@ -17,6 +17,7 @@
 #define FRTAG_CHARACTER_COOLTIME_SWORD FGameplayTag::RequestGameplayTag(FName("Character.State.IronMaceSpecialAttackCooldown"))
 #define FRTAG_CHARACTER_COOLTIME_IRONMACE FGameplayTag::RequestGameplayTag(FName("Character.State.SwordSpecialAttackCooldown"))
 
+#define GAMEPLAYCUE_CHARACTER_SOULATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.SoulAttackHit"))
 #define GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.MeleeAttackHit"))
 #define GAMEPLAYCUE_CHARACTER_ARROWATTACKHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.ArrowAttackHit"))
 #define GAMEPLAYCUE_CHARACTER_BRONZEBELLHIT FGameplayTag::RequestGameplayTag(FName("GameplayCue.Character.BronzeBellHit"))

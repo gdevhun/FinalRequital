@@ -2,6 +2,8 @@
 
 
 #include "Actor/FRPushableActor.h"
+#include "NavModifierComponent.h"
+#include "NavAreas/NavArea_Obstacle.h"
 
 AFRPushableActor::AFRPushableActor()
 {
@@ -14,6 +16,10 @@ AFRPushableActor::AFRPushableActor()
 
 	StaticMesh->SetRenderCustomDepth(false);
 	StaticMesh->SetCustomDepthStencilValue(250);
+
+	NavModifier = CreateDefaultSubobject<UNavModifierComponent>(TEXT("NavModifier"));
+	NavModifier->SetAreaClass(UNavArea_Obstacle::StaticClass());
+	NavModifier->SetCanEverAffectNavigation(true);
 }
 
 void AFRPushableActor::Highlight()

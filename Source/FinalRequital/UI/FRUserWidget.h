@@ -16,7 +16,9 @@ class FINALREQUITAL_API UFRUserWidget : public UUserWidget, public IAbilitySyste
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void SetAbilitySystemComponent(AActor* InOwner);
+
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
