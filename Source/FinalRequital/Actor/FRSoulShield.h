@@ -39,6 +39,12 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "GAS")
     TSubclassOf<class UFRSoulShieldAttributeSet> AttributeSetClass;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UParticleSystem> ParticleEffect;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<USoundBase> HitSound;
+
     UPROPERTY()
     TObjectPtr<UFRSoulShieldAttributeSet> AttributeSet;
 

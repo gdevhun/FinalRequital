@@ -10,6 +10,7 @@
 #include "Character/FRMonsterBase.h"
 #include "Components/SphereComponent.h"
 #include "GAS/Attribute/FRSoulShieldAttributeSet.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/FRSoulShieldHpWidget.h"
 
 class UAbilitySystemComponent* AFRSoulShield::GetAbilitySystemComponent() const
@@ -58,12 +59,23 @@ void AFRSoulShield::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 
 	//  GameplayCue 발생 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Monster);
+
+	if (ParticleEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleEffect, Monster->GetActorLocation(), FRotator::ZeroRotator);
+	}
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, Monster->GetActorLocation());
+	}
+
 	if (TargetASC)
 	{
 		FGameplayCueParameters CueParams;
 		CueParams.Location = Monster->GetActorLocation();
-		TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_SOULATTACKHIT, CueParams);
-		D("Trigger!")
+		//D(FString::Printf(TEXT("Executing Cue on: %s"), *TargetASC->GetName()));
+		TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_AMULETDOTHIT, CueParams);
 	}
 
 	//  몬스터 제거

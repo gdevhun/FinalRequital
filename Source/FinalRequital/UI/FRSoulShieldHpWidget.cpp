@@ -31,9 +31,9 @@ void UFRSoulShieldHpWidget::NativeConstruct()
 
 void UFRSoulShieldHpWidget::UpdateShieldBar()
 {
-	D("t");
+	
 	if (!ASC) return;
-	D("tT");
+
 	if (const UFRSoulShieldAttributeSet* SoulShieldAttribute = ASC->GetSet<UFRSoulShieldAttributeSet>())
 	{
 		PB_Shield->SetPercent(SoulShieldAttribute->GetShield() / SoulShieldAttribute->GetMaxShield());
