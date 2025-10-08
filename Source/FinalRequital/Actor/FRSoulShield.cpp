@@ -2,7 +2,6 @@
 
 
 #include "Actor/FRSoulShield.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "FRDebugHelper.h"
@@ -11,7 +10,7 @@
 #include "Components/SphereComponent.h"
 #include "GAS/Attribute/FRSoulShieldAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/FRSoulShieldHpWidget.h"
+
 
 class UAbilitySystemComponent* AFRSoulShield::GetAbilitySystemComponent() const
 {
