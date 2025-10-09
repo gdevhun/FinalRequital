@@ -1,8 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "UI/FRSoulShieldHpWidget.h"
 #include "FRDebugHelper.h"
+#include "Components/Image.h"
 #include "Components/ProgressBar.h"
 #include "GAS/Attribute/FRSoulShieldAttributeSet.h"
 
@@ -14,18 +15,26 @@ void UFRSoulShieldHpWidget::NativeConstruct()
 	{
 		if (const UFRSoulShieldAttributeSet* SoulShieldAttribute = ASC->GetSet<UFRSoulShieldAttributeSet>())
 		{
-			// ÃÖ´ë°ª / ÃÊ±â°ª ¼¼ÆÃ
+			// ìµœëŒ€ê°’ / ì´ˆê¸°ê°’ ì„¸íŒ…
 			PB_Shield->SetPercent(SoulShieldAttribute->GetShield() / SoulShieldAttribute->GetMaxShield());
 			PB_Hp->SetPercent(SoulShieldAttribute->GetHealth() / SoulShieldAttribute->GetMaxHealth());
 
-			// Shield / Health °¨¼Ò µ¨¸®°ÔÀÌÆ® ¿¬°á
+			// Shield / Health ê°ì†Œ ë¸ë¦¬ê²Œì´íŠ¸ ì—°ê²°
 			SoulShieldAttribute->OnDamagedOfShield.AddDynamic(this, &UFRSoulShieldHpWidget::UpdateShieldBar);
 			SoulShieldAttribute->OnDamagedOfHealth.AddDynamic(this, &UFRSoulShieldHpWidget::UpdateHpBar);
 
-			// 0ÀÌ µÇ¾úÀ» ¶§ Ã³¸®
+			// 0ì´ ë˜ì—ˆì„ ë•Œ ì²˜ë¦¬
 			SoulShieldAttribute->OnOutOfShield.AddDynamic(this, &UFRSoulShieldHpWidget::HandleOutOfShield);
 			SoulShieldAttribute->OnOutOfHealth.AddDynamic(this, &UFRSoulShieldHpWidget::HandleOutOfHealth);
 		}
+	}
+}
+
+void UFRSoulShieldHpWidget::ChangeImageName()
+{
+	if (IMG_Name && HpTexture)
+	{
+		IMG_Name->SetBrushFromTexture(HpTexture);
 	}
 }
 
@@ -54,8 +63,9 @@ void UFRSoulShieldHpWidget::HandleOutOfShield()
 {
 	if (PB_Shield)
 	{
-		PB_Shield->SetVisibility(ESlateVisibility::Hidden); // ½¯µå¹Ù ¾Èº¸ÀÌ°Ô
+		PB_Shield->SetVisibility(ESlateVisibility::Hidden); // ì‰´ë“œë°” ì•ˆë³´ì´ê²Œ
 	}
+	ChangeImageName();
 }
 
 void UFRSoulShieldHpWidget::HandleOutOfHealth_Implementation()

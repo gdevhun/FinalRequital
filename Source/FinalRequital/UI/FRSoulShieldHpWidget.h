@@ -23,7 +23,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> PB_Shield;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_Name;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<class UTexture2D> HpTexture;
 public:
+	void ChangeImageName();
+
 	UFUNCTION()
 	void UpdateShieldBar();
 
