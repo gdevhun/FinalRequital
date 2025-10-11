@@ -16,15 +16,31 @@ class FINALREQUITAL_API AFRInteractableObject : public AFRInteractableBase
 
 protected:
 
+	AFRInteractableObject();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	TObjectPtr<class UAudioComponent> AudioComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	TSubclassOf<class UUserWidget> SelectionWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> SelectionWidget;
+
+public:
+
 	UFUNCTION(BlueprintCallable)
 	void ShowSelectionWidget();
 
 	UFUNCTION(BlueprintCallable)
 	void HideSelectionWidget();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
-	TSubclassOf<class UUserWidget> SelectionWidgetClass; 
-	UPROPERTY()
-	TObjectPtr<UUserWidget> SelectionWidget;
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+	void PlayInteractionSound();
 
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+	void StopInteractionSound();
+
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+	void RestartInteractionSound();
 };

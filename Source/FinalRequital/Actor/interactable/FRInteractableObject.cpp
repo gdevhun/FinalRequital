@@ -3,6 +3,15 @@
 
 #include "Actor/Interactable/FRInteractableObject.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/AudioComponent.h"
+
+AFRInteractableObject::AFRInteractableObject()
+{
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	AudioComponent->SetupAttachment(RootComponent);
+	//AudioComponent->bAutoActivate = false;
+}
 
 void AFRInteractableObject::ShowSelectionWidget()
 {
@@ -36,5 +45,30 @@ void AFRInteractableObject::HideSelectionWidget()
 				PC->bShowMouseCursor = false;
 			}
 		}
+	}
+}
+
+void AFRInteractableObject::PlayInteractionSound()
+{
+	if (AudioComponent && !AudioComponent->IsPlaying())
+	{
+		AudioComponent->Play();
+	}
+}
+
+void AFRInteractableObject::StopInteractionSound()
+{
+	if (AudioComponent && AudioComponent->IsPlaying())
+	{
+		AudioComponent->Stop();
+	}
+}
+
+void AFRInteractableObject::RestartInteractionSound()
+{
+	if (AudioComponent)
+	{
+		AudioComponent->Stop();
+		AudioComponent->Play();
 	}
 }
