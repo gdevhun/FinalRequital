@@ -40,8 +40,23 @@ public:
 	UFUNCTION()
 	void OnWeaponAcquiredFromState(EWeaponType WeaponType);
 
+	UFUNCTION(BlueprintCallable)
+	void SetStagePlayStatus();
+
+	UFUNCTION(BlueprintCallable)
+	void AcquireMemoryCell();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UFRPlayerHpBarWidget> WBP_PlayerHpBar;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_MemoryCellAcquireStatus;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_CrossHair;
@@ -61,4 +76,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_4;
 
+private:
+	bool bIsGetFirstMemoryCell = false;
 };

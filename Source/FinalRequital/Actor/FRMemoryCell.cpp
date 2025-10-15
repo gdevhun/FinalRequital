@@ -6,6 +6,8 @@
 #include "Components/AudioComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Physics/FRCollision.h"
+#include "Player/FRPlayerController.h"
+#include "UI/HUD/FRHUDWidget.h"
 
 AFRMemoryCell::AFRMemoryCell()
 {
@@ -60,6 +62,18 @@ void AFRMemoryCell::OnDetectedOnce()
 
 void AFRMemoryCell::AttachToSoul_Implementation()
 {
+	APlayerController* PC = GetWorld() ? GetWorld()->GetFirstPlayerController() : nullptr;
+	if (!PC) return;
+
+	AFRPlayerController* FRPC = Cast<AFRPlayerController>(PC);
+	if (!FRPC) return;
+
+	UFRHUDWidget* HUDWidget = FRPC->GetHUDWidget();
+	if (!HUDWidget)
+	{
+		return;
+	}
+	HUDWidget->AcquireMemoryCell();
 }
 
 class UAbilitySystemComponent* AFRMemoryCell::GetAbilitySystemComponent() const
