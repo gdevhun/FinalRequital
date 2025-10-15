@@ -101,6 +101,31 @@ void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
 	}
 }
 
+void UFRHUDWidget::SetStagePlayStatus()
+{
+	IMG_MemoryCellAcquireStatus->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UFRHUDWidget::AcquireMemoryCell()
+{
+	if (!bIsGetFirstMemoryCell)
+	{
+
+		if (IMG_MemoryCellAcquireStatus && MemoryCell_AcquireTexture_1)
+		{
+			IMG_MemoryCellAcquireStatus->SetBrushFromTexture(MemoryCell_AcquireTexture_1);
+			bIsGetFirstMemoryCell = true;
+		}
+	}
+	else
+	{
+		if (IMG_MemoryCellAcquireStatus && MemoryCell_AcquireTexture_2)
+		{
+			IMG_MemoryCellAcquireStatus->SetBrushFromTexture(MemoryCell_AcquireTexture_2);
+		}
+	}
+}
+
 void UFRHUDWidget::UpdateWeaponSlotBySwap(EWeaponType CurrentEquippedWeaponType)
 {
 	auto UpdateSlot = [&](UFRWeaponSlotWidget* SlotWidget, EWeaponType SlotType)
