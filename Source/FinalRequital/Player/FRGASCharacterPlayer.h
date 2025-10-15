@@ -25,7 +25,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
-
+	FORCEINLINE class UFRWeaponComponent* GetWeaponComponent() { return WeaponComponent; }
 protected:
 	void SetupGASInputComponent();
 	void GASInputPressed(int32 InputId);

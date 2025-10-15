@@ -3,12 +3,14 @@
 
 #include "GAS/GA/FRGA_MeleeAttackHitCheck.h"
 #include "GAS/AT/FRAT_Trace.h"
-#include "GAS/TA/FRTA_Trace.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
+#include "Actor/FRHintBox.h"
 #include "Character/FRMonsterBase.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
+#include "Player/FRGASCharacterPlayer.h"
+#include "Player/FRWeaponComponent.h"
 
 UFRGA_MeleeAttackHitCheck::UFRGA_MeleeAttackHitCheck()
 {
@@ -31,59 +33,61 @@ void UFRGA_MeleeAttackHitCheck::ActivateAbility(const FGameplayAbilitySpecHandle
 }
 void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
 {
-	// 단일 대상 감지 Trace 기반, SweepSingle 등의 HitResult 사용
+	// 무기 타입 확인
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	AFRGASCharacterPlayer* OwnerCharacter = Cast<AFRGASCharacterPlayer>(AvatarActor);
+	if (!OwnerCharacter)
+		return;
+	
+	// 캐릭터가 가지고 있는 무기 컴포넌트에서 현재 무기 타입 가져오기
+	EWeaponType CurrentWeaponType = OwnerCharacter->GetWeaponComponent()->GetCurrentWeaponType();
+	bool bIsMace = (CurrentWeaponType == EWeaponType::IronMace);
+	bool bIsSword = (CurrentWeaponType == EWeaponType::Sword);
+
+	// ===========================
+	// 단일 대상 감지
+	// ===========================
 	if (UAbilitySystemBlueprintLibrary::TargetDataHasHitResult(TargetDataHandle, 0))
 	{
-		// 타겟데이터 0번째 배열에 결과값이 존재하는지
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
+		AActor* HitActor = HitResult.GetActor();
 
-		// 몬스터 클래스인지 확인
-		AFRMonsterBase* TargetMonster = Cast<AFRMonsterBase>(HitResult.GetActor());
-		if (!TargetMonster)
-		{
-			// 몬스터가 아니면 처리하지 않음
-			bool bReplicatedEndAbility = true;
-			bool bWasCancelled = false;
-			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+		if (!HitActor)
 			return;
-		}
 
-		if (CameraShakeClass)
-		{   // 피격시 카메라 쉐이크적용
-			AActor* AvatarActor = GetAvatarActorFromActorInfo();
-			APawn* SourcePawn = Cast<APawn>(AvatarActor);
-			if (SourcePawn)
-			{
-				APlayerController* SourcePC = Cast<APlayerController>(SourcePawn->GetController());
-				if (SourcePC)
-				{
-					SourcePC->ClientStartCameraShake(CameraShakeClass);
-				}
-			}
+		// 몬스터 or HintBox 필터링
+		bool bIsMonster = HitActor->IsA(AFRMonsterBase::StaticClass());
+		bool bIsHintBox = HitActor->IsA(AFRHintBox::StaticClass());
+
+		// 검: 몬스터만 / 철퇴: 몬스터 + HintBox
+		if (!bIsMonster && !(bIsHintBox && bIsMace))
+		{
+			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+			return;
 		}
 
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
-		const UFRCharacterAttributeSet* SourceAttribute = SourceASC->GetSet<UFRCharacterAttributeSet>();
-		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
 		if (!SourceASC || !TargetASC)
-		{
-			// 감지한 액터의 ASC(타겟ASC)가 없고 나의 ASC(소스ASC)의 액터중 하나라도 없으면 에러
-			FR_LOG(FRLOG, Error, TEXT("ASC Not Found!"));
 			return;
-		}
 
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, CurrentLevel);
 		if (EffectSpecHandle.IsValid())
 		{
 			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetDataHandle);
+
 			FGameplayEffectContextHandle CueContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(EffectSpecHandle);
 			CueContextHandle.AddHitResult(HitResult);
+
 			FGameplayCueParameters CueParameters;
 			CueParameters.EffectContext = CueContextHandle;
 			TargetASC->ExecuteGameplayCue(GAMEPLAYCUE_CHARACTER_MELEEATTACKHIT, CueParameters);
 		}
 	}
-	// 다수 대상 감지 - OverlapMulti 의 Actor 배열 사용
+
+	// ===========================
+	// 다수 대상 감지
+	// ===========================
 	else if (UAbilitySystemBlueprintLibrary::TargetDataHasActor(TargetDataHandle, 0))
 	{
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();

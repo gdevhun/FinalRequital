@@ -38,4 +38,5 @@ protected:
 	// 블루프린트에서 할당한 타겟액터클래스 : 다수감지(멀티트레이스), 싱글감지(트레이스) 설정 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TSubclassOf<class AFRTA_Trace> TargetActorClass;
+
 };

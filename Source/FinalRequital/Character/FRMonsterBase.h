@@ -59,7 +59,7 @@ public:
 	UFUNCTION()
 	void HitReact();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 	TObjectPtr<class USphereComponent> DetectSphere;
 
 	UFUNCTION()
