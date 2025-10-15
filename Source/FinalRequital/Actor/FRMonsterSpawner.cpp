@@ -2,7 +2,6 @@
 
 
 #include "Actor/FRMonsterSpawner.h"
-
 #include "Character/FRMonsterBase.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -21,6 +20,9 @@ void AFRMonsterSpawner::StartSpawn()
 {
 	if (GetWorld())
 	{
+
+		SpawnMonster();
+
 		GetWorld()->GetTimerManager().SetTimer(
 			SpawnTimerHandle,
 			this,
