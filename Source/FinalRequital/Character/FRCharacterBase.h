@@ -6,10 +6,6 @@
 #include "GameFramework/Character.h"
 #include "FRCharacterBase.generated.h"
 
-class AFRInteractableBase;
-class UInputMappingContext;
-class UInputAction;
-struct FInputActionValue;
 
 UCLASS()
 class FINALREQUITAL_API AFRCharacterBase : public ACharacter
@@ -29,7 +25,7 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 
-	void Move(const FInputActionValue& Value);
+	void Move(const struct FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -40,10 +36,10 @@ protected:
 
 	// Input Section
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
+	TObjectPtr<class UInputMappingContext> DefaultMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> JumpAction;
+	TObjectPtr<class UInputAction> JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
@@ -80,7 +76,7 @@ protected:
 	TObjectPtr<class UAnimMontage> DeadAnimMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<AFRInteractableBase> InteractiveActor;
+	TObjectPtr<class AFRInteractableBase> InteractiveActor;
 
 	// Camera Zoom Section
 protected:
