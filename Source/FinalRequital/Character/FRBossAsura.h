@@ -19,6 +19,12 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	TObjectPtr<class AFRCharacterBase> TargetPlayer;
 
+	UFUNCTION()
+	void LookAtTargetPlayer();
 
+private:
+	FTimerHandle LookAtTimerHandle;
 };
