@@ -28,6 +28,8 @@ public:
 
 	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, AttackRadius);
 	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, MaxAttackRadius);
+	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, AttackRange);
+	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, MaxAttackRange);
 	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, AttackRate);
 	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, MaxAttackRate);
 	ATTRIBUTE_ACCESSORS(UFRBossAttributeSet, Health);
@@ -47,6 +49,11 @@ protected:
 	FGameplayAttributeData AttackRadius;
 	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxAttackRadius;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData AttackRange;
+	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData MaxAttackRange;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData AttackRate;

@@ -11,7 +11,6 @@
 
 UFRGA_MonsterMeleeAttackHitCheck::UFRGA_MonsterMeleeAttackHitCheck()
 {
-
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
