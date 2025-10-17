@@ -33,7 +33,11 @@ public:
 	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> InitStatEffect;
+	TSubclassOf<class UGameplayEffect> Phase1StatEffect;
+	UPROPERTY(EditAnywhere, Category = GAS)
+	TSubclassOf<class UGameplayEffect> Phase2StatEffect;
+	UPROPERTY(EditAnywhere, Category = GAS)
+	TSubclassOf<class UGameplayEffect> Phase3StatEffect;
 
 	UPROPERTY()
 	TObjectPtr<class AFRCharacterBase> TargetPlayer;
