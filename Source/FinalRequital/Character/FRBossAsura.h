@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "FRBossAsura.generated.h"
 
 UCLASS()
-class FINALREQUITAL_API AFRBossAsura : public ACharacter
+class FINALREQUITAL_API AFRBossAsura : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -17,7 +18,22 @@ public:
 
 protected:
 
+	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, Category = GAS)
+	TObjectPtr<class UAbilitySystemComponent> ASC;
+
+	UPROPERTY()
+	TObjectPtr<class UFRBossAttributeSet> AttributeSet;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS)
+	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
+
+	UPROPERTY(EditAnywhere, Category = GAS)
+	TSubclassOf<class UGameplayEffect> InitStatEffect;
 
 	UPROPERTY()
 	TObjectPtr<class AFRCharacterBase> TargetPlayer;
@@ -25,6 +41,8 @@ protected:
 	UFUNCTION()
 	void LookAtTargetPlayer();
 
+	UFUNCTION()
+	virtual void OnOutOfHealth();
 private:
 	FTimerHandle LookAtTimerHandle;
 };
