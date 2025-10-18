@@ -59,6 +59,9 @@ public:
 	UFUNCTION()
 	void HitReact();
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyLevelEffect(int InLevel);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 	TObjectPtr<class USphereComponent> DetectSphere;
 

@@ -207,6 +207,17 @@ void AFRMonsterBase::HitReact()
 	}
 }
 
+void AFRMonsterBase::ApplyLevelEffect(int InLevel)
+{
+	FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(InitStatEffect, InLevel, EffectContextHandle);
+	if (EffectSpecHandle.IsValid())
+	{
+		ASC->BP_ApplyGameplayEffectSpecToSelf(EffectSpecHandle);
+	}
+}
+
 void AFRMonsterBase::PlayAnimMontage(UAnimMontage* Montage) const
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
