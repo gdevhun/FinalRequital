@@ -49,6 +49,7 @@ AFRMonsterBase::AFRMonsterBase()
 	DetectSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	DetectSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	DetectSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	
 
 	// ASC
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
@@ -154,6 +155,7 @@ void AFRMonsterBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, A
 	{
 		if (HpBar)
 		{
+			GetWorld()->GetTimerManager().ClearTimer(HpBarTimerHandle);
 			HpBar->SetVisibility(true);
 		}
 	}
@@ -170,9 +172,9 @@ void AFRMonsterBase::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		}
 	}
 }
+
 void AFRMonsterBase::OnOutOfHealth()
 {
-	//D(FString::Printf(TEXT("delegatedead!")));
 	SetDead();
 }
 
@@ -204,6 +206,32 @@ void AFRMonsterBase::HitReact()
 	if (ASC && HitReactAbilityHandle.IsValid())
 	{
 		ASC->TryActivateAbility(HitReactAbilityHandle);
+
+		if (HpBar)
+		{
+			HpBar->SetVisibility(true);
+			GetWorld()->GetTimerManager().ClearTimer(HpBarTimerHandle);
+
+			// 플레이어가 범위 밖에 있으면 1.5초 후 숨김
+			TArray<AActor*> OverlappingActors;
+			DetectSphere->GetOverlappingActors(OverlappingActors, AFRGASCharacterPlayer::StaticClass());
+
+			if (OverlappingActors.Num() == 0)
+			{
+				GetWorld()->GetTimerManager().SetTimer(
+					HpBarTimerHandle,
+					FTimerDelegate::CreateLambda([this]()
+						{
+							if (HpBar)
+							{
+								HpBar->SetVisibility(false);
+							}
+						}),
+					1.5f,
+					false
+				);
+			}
+		}
 	}
 }
 

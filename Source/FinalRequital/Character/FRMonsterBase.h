@@ -46,7 +46,7 @@ public:
 	UFUNCTION()
 	virtual void OnOutOfHealth();
 
-	UPROPERTY(EditAnywhere, Category = Stat)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	TObjectPtr<class UFRWidgetComponent> HpBar;
 
 	UPROPERTY(EditAnywhere, Category = Stat)
@@ -75,6 +75,7 @@ public:
 
 private:
 	FGameplayAbilitySpecHandle HitReactAbilityHandle;
+	FTimerHandle HpBarTimerHandle;
 	void PlayAnimMontage(UAnimMontage* Montage) const;
 
 	void SetDead();
