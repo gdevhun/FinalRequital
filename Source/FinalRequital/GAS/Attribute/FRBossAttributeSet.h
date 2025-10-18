@@ -40,8 +40,8 @@ public:
     virtual bool PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data) override;
     virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
-	mutable FOutBossOfHealthDelegate OnMonsterOutOfHealth;
-	mutable FOnBossTakeDamageDelegate OnMonsterTakeDamage;
+	mutable FOutBossOfHealthDelegate OnBossOutOfHealth;
+	mutable FOnBossTakeDamageDelegate OnBossTakeDamage;
 
 protected:
 
