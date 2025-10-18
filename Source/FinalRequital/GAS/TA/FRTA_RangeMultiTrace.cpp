@@ -23,7 +23,7 @@ FGameplayAbilityTargetDataHandle AFRTA_RangeMultiTrace::MakeTargetData() const
 	}
 
 	TArray<FOverlapResult> Overlaps;
-	const float SkillRadius = 350.0f;
+	const float SkillRadius = 500.0f;
 
 	FVector Origin = Character->GetActorLocation();
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(AFRTA_RangeMultiTrace), false, Character);
