@@ -89,6 +89,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
 	FName CurrentLevel;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
+	int LevelSavePoint = 0;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	TObjectPtr<class USoundMix> MasterMix;
