@@ -52,11 +52,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_MemoryCellAcquireStatus;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_1;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_2;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<class UImage> IMG_DownDivider;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UImage> IMG_CrossHair;
@@ -75,6 +72,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UFRWeaponSlotWidget> WBP_WeaponSlot_4;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<class UTexture2D> MemoryCell_AcquireTexture_2;
 
 private:
 	bool bIsGetFirstMemoryCell = false;

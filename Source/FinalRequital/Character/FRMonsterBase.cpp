@@ -18,6 +18,7 @@
 AFRMonsterBase::AFRMonsterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	Level = 1;
 
 	// Capsule
 	GetCapsuleComponent()->InitCapsuleSize(28.f, 60.0f);
@@ -68,8 +69,6 @@ AFRMonsterBase::AFRMonsterBase()
 		HpBar->SetDrawSize(FVector2D(160.0f, 20.f));
 		HpBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-
-	Level = 1;
 }
 void AFRMonsterBase::BeginPlay()
 {

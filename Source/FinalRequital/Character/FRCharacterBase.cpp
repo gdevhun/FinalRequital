@@ -55,6 +55,7 @@ AFRCharacterBase::AFRCharacterBase()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
+	MemoryCellAcquireNum = 0;
 }
 
 void AFRCharacterBase::BeginPlay()

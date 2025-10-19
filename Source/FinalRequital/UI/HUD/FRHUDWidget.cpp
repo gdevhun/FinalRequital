@@ -86,6 +86,8 @@ void UFRHUDWidget::SetHUDVisibility(bool bVisible)
 	if (WBP_WeaponSlot_2) WBP_WeaponSlot_2->SetVisibility(NewVisibility);
 	if (WBP_WeaponSlot_3) WBP_WeaponSlot_3->SetVisibility(NewVisibility);
 	if (WBP_WeaponSlot_4) WBP_WeaponSlot_4->SetVisibility(NewVisibility);
+	if (IMG_MemoryCellAcquireStatus) IMG_MemoryCellAcquireStatus->SetVisibility(NewVisibility); 
+	if (IMG_DownDivider) IMG_DownDivider->SetVisibility(NewVisibility);
 }
 
 void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)

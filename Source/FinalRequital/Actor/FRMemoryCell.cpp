@@ -3,6 +3,7 @@
 
 #include "Actor/FRMemoryCell.h"
 #include "AbilitySystemComponent.h"
+#include "Character/FRCharacterBase.h"
 #include "Components/AudioComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Physics/FRCollision.h"
@@ -68,12 +69,17 @@ void AFRMemoryCell::AttachToSoul_Implementation()
 	AFRPlayerController* FRPC = Cast<AFRPlayerController>(PC);
 	if (!FRPC) return;
 
-	UFRHUDWidget* HUDWidget = FRPC->GetHUDWidget();
-	if (!HUDWidget)
+	AFRCharacterBase* FRPlayer = Cast<AFRCharacterBase>(FRPC->GetPawn());
+	if (FRPlayer)
 	{
-		return;
+		FRPlayer->MemoryCellAcquireNum++;
+
+		UFRHUDWidget* HUDWidget = FRPC->GetHUDWidget();
+		if (HUDWidget)
+		{
+			HUDWidget->AcquireMemoryCell();
+		}
 	}
-	HUDWidget->AcquireMemoryCell();
 }
 
 class UAbilitySystemComponent* AFRMemoryCell::GetAbilitySystemComponent() const

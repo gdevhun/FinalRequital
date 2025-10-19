@@ -93,6 +93,9 @@ protected:
 	bool bWantsToZoom = false;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MemoryCellAcquireNum = 0;
+
 	void Interact();
 	void SetInteractiveActor(AFRInteractableBase* InActor) { InteractiveActor = InActor; }
 	void TabKeyPressedCallback();
