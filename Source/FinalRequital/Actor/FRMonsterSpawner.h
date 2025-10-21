@@ -30,6 +30,8 @@ protected:
 	float SpawnInterval;
 	UPROPERTY(EditAnywhere, Category = "Monster")
 	float SpecialSpawnPercentage;
+	UPROPERTY(EditAnywhere, Category = "Monster")
+	float RandomDeviation = 0.0f;;
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnMonster();
