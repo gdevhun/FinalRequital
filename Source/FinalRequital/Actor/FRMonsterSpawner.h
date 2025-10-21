@@ -36,7 +36,11 @@ protected:
 
 	// 스폰 간격의 랜덤 편차(±값)
 	UPROPERTY(EditAnywhere, Category = "Monster")
-	float RandomDeviation = 0.0f;;
+	float RandomDeviation;
+
+	// 첫 스폰 지연 시간(초)
+	UPROPERTY(EditAnywhere, Category = "Monster")
+	float FirstSpawnDelay;
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnMonster();

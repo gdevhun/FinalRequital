@@ -11,9 +11,9 @@ AFRMonsterSpawner::AFRMonsterSpawner()
 	PrimaryActorTick.bCanEverTick = false;
 	SpawnInterval = 5.0f;
 	SpecialSpawnPercentage = 10.0f;
-	RandomDeviation = 1.0f; // 예: ±1초 변동
+	RandomDeviation = 1.0f;
+	FirstSpawnDelay = 0.0f;
 }
-
 void AFRMonsterSpawner::BeginPlay()
 {
 	Super::BeginPlay();
@@ -21,24 +21,16 @@ void AFRMonsterSpawner::BeginPlay()
 
 void AFRMonsterSpawner::StartSpawn()
 {
-	if (GetWorld())
-	{
-		SpawnMonster();
+	if (!GetWorld()) return;
 
-		// 첫 스폰 이후 주기적으로 실행
-		const float InitialInterval = UKismetMathLibrary::RandomFloatInRange(
-			SpawnInterval - RandomDeviation,
-			SpawnInterval + RandomDeviation
-		);
-
-		GetWorld()->GetTimerManager().SetTimer(
-			SpawnTimerHandle,
-			this,
-			&AFRMonsterSpawner::HandleSpawnTimer,
-			InitialInterval,
-			false // 반복이 아니라 매번 새 간격으로 다시 설정
-		);
-	}
+	// 첫 스폰을 FirstSpawnDelay 후에 실행
+	GetWorld()->GetTimerManager().SetTimer(
+		SpawnTimerHandle,
+		this,
+		&AFRMonsterSpawner::HandleSpawnTimer,
+		FMath::Max(0.0f, FirstSpawnDelay),
+		false
+	);
 }
 
 void AFRMonsterSpawner::StopSpawn()
@@ -51,9 +43,10 @@ void AFRMonsterSpawner::StopSpawn()
 
 void AFRMonsterSpawner::HandleSpawnTimer()
 {
+	// 몬스터 스폰 실행
 	SpawnMonster();
 
-	// 다음 스폰 간격도 랜덤하게 다시 설정
+	// 다음 스폰 간격 랜덤 적용
 	const float NextInterval = UKismetMathLibrary::RandomFloatInRange(
 		SpawnInterval - RandomDeviation,
 		SpawnInterval + RandomDeviation
@@ -63,7 +56,7 @@ void AFRMonsterSpawner::HandleSpawnTimer()
 		SpawnTimerHandle,
 		this,
 		&AFRMonsterSpawner::HandleSpawnTimer,
-		FMath::Max(0.1f, NextInterval), // 최소값 제한 (0 이하 방지)
+		FMath::Max(0.1f, NextInterval), // 최소 간격 보장
 		false
 	);
 }
