@@ -2,7 +2,6 @@
 
 
 #include "GAS/TA/FRTA_BossTrace.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FRDebugHelper.h"
 #include "Abilities/GameplayAbility.h"
@@ -34,12 +33,10 @@ void AFRTA_BossTrace::ConfirmTargetingAndContinue()
 		TargetDataReadyDelegate.Broadcast(DataHandle);
 	}
 }
-
 FGameplayAbilityTargetDataHandle AFRTA_BossTrace::MakeTargetData() const
 {
 	ACharacter* Character = CastChecked<ACharacter>(SourceActor);
 
-	// 최신 상태의 능력치 값을 얻기 위해 ASC에서 해당 AttributeSet을 가져와야 함
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(SourceActor);
 	if (!ASC)
 	{
@@ -55,18 +52,33 @@ FGameplayAbilityTargetDataHandle AFRTA_BossTrace::MakeTargetData() const
 	}
 
 	FHitResult OutHitResult;
-	const float AttackRange = AttributeSet->GetAttackRange();
-	const float AttackRadius = AttributeSet->GetAttackRadius();
 
-	// 여기서 3번째 인자는 무시할 자기 자신을 의미.
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(UFRTA_MonsterTrace), false, Character);
+	// 감지 범위 15배로 확대
+	const float AttackRange = AttributeSet->GetAttackRange() * 15.0f;
+	const float AttackRadius = AttributeSet->GetAttackRadius() * 15.0f;
 
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(UFRTA_BossTrace), false, Character);
+
+	// "왼쪽 앞" 방향 계산
 	const FVector Forward = Character->GetActorForwardVector();
-	const FVector Start = Character->GetActorLocation() + Forward * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
-	const FVector End = Start + Forward * AttackRange;
+	const FVector Left = -Character->GetActorRightVector();
 
-	bool HitDetected = GetWorld()->SweepSingleByChannel
-	(OutHitResult, Start, End, FQuat::Identity, CCHANNEL_FRMONSTERACTION, FCollisionShape::MakeSphere(AttackRadius), Params);
+	// Forward와 Left를 섞어서 대각선 방향 생성 (45도 방향)
+	FVector DiagonalDir = (Forward + Left).GetSafeNormal();
+
+	// 트레이스 시작/끝점 설정
+	const FVector Start = Character->GetActorLocation() + DiagonalDir * Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const FVector End = Start + DiagonalDir * AttackRange;
+
+	bool HitDetected = GetWorld()->SweepSingleByChannel(
+		OutHitResult,
+		Start,
+		End,
+		FQuat::FindBetweenNormals(FVector::ForwardVector, DiagonalDir), // 방향 회전 적용
+		CCHANNEL_FRMONSTERACTION,
+		FCollisionShape::MakeBox(FVector(AttackRange * 0.5f, AttackRadius, AttackRadius)), // 박스 크기
+		Params
+	);
 
 	FGameplayAbilityTargetDataHandle DataHandle;
 	if (HitDetected)
@@ -78,18 +90,20 @@ FGameplayAbilityTargetDataHandle AFRTA_BossTrace::MakeTargetData() const
 #if ENABLE_DRAW_DEBUG
 	if (bShowDebug)
 	{
-		FVector CapsuleOrigin = Start + (End - Start) * 0.5f;
-		float CapsuleHalfHeight = AttackRange * 0.5f;
+		FVector BoxCenter = Start + (End - Start) * 0.5f;
 		FColor DrawColor = HitDetected ? FColor::Green : FColor::Red;
-		DrawDebugCapsule(GetWorld(),
-			CapsuleOrigin,
-			CapsuleHalfHeight,
-			AttackRadius,
-			FRotationMatrix::MakeFromZ(Forward).ToQuat(),
+
+		DrawDebugBox(
+			GetWorld(),
+			BoxCenter,
+			FVector(AttackRange * 0.5f, AttackRadius, AttackRadius),
+			FQuat::FindBetweenNormals(FVector::ForwardVector, DiagonalDir),
 			DrawColor,
 			false,
-			4.0f);
+			4.0f
+		);
 	}
 #endif
+
 	return DataHandle;
 }

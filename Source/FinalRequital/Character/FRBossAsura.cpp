@@ -2,7 +2,6 @@
 
 
 #include "Character/FRBossAsura.h"
-
 #include "AbilitySystemComponent.h"
 #include "FRCharacterBase.h"
 #include "Components/CapsuleComponent.h"
@@ -12,7 +11,7 @@
 
 AFRBossAsura::AFRBossAsura()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	// Capsule
 	GetCapsuleComponent()->InitCapsuleSize(28.f, 60.0f);
@@ -64,14 +63,40 @@ void AFRBossAsura::BeginPlay()
 	GetWorldTimerManager().SetTimer(
 		LookAtTimerHandle,
 		this,
-		&AFRBossAsura::LookAtTargetPlayer,
-		0.025f,      
-		true      
+		&AFRBossAsura::UpdateTargetRotation,
+		1.5f,
+		true
 	);
 
 }
+void AFRBossAsura::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
 
-void AFRBossAsura::LookAtTargetPlayer()
+	// 자연스럽게 회전 (보간)
+	if (!bShouldRotate || !TargetPlayer) return;
+
+	const FRotator CurrentRot = GetActorRotation();
+	const FRotator InterpRot = FMath::RInterpTo(CurrentRot, TargetRotation, DeltaSeconds, 3.5f); 
+	SetActorRotation(InterpRot);
+}
+void AFRBossAsura::UpdateTargetRotation()
+{
+	if (!TargetPlayer) return;
+
+	const FVector MyLoc = GetActorLocation();
+	const FVector TargetLoc = TargetPlayer->GetActorLocation();
+	const FVector FlatTargetLoc(TargetLoc.X, TargetLoc.Y, MyLoc.Z);
+
+	TargetRotation = (FlatTargetLoc - MyLoc).Rotation();
+	bShouldRotate = true;
+}
+
+void AFRBossAsura::OnOutOfHealth()
+{
+}
+
+/*void AFRBossAsura::LookAtTargetPlayer()
 {
 	if (!TargetPlayer) return;
 
@@ -82,9 +107,4 @@ void AFRBossAsura::LookAtTargetPlayer()
 
 	const FRotator LookAtRot = (FlatTargetLocation - MyLocation).Rotation();
 	SetActorRotation(LookAtRot);
-}
-
-void AFRBossAsura::OnOutOfHealth()
-{
-}
-
+}*/

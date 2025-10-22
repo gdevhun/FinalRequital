@@ -21,6 +21,7 @@ protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TObjectPtr<class UAbilitySystemComponent> ASC;
@@ -42,11 +43,16 @@ public:
 	UPROPERTY()
 	TObjectPtr<class AFRCharacterBase> TargetPlayer;
 
-	UFUNCTION()
-	void LookAtTargetPlayer();
+	//UFUNCTION()
+	//void LookAtTargetPlayer();
 
 	UFUNCTION()
 	virtual void OnOutOfHealth();
 private:
 	FTimerHandle LookAtTimerHandle;
+	FRotator TargetRotation;
+	bool bShouldRotate = false;
+
+	UFUNCTION()
+	void UpdateTargetRotation();
 };
