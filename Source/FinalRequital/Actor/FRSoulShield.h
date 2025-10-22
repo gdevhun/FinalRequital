@@ -51,7 +51,10 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<class USphereComponent> DamageDetectSphere;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    UFUNCTION(BlueprintNativeEvent)
+    void OnOutOfHealth();
+    virtual void OnOutOfHealth_Implementation();
+
     bool IsShieldDestroyed = false;
 
     UFUNCTION()

@@ -45,7 +45,7 @@ void AFRSoulShield::BeginPlay()
 	}
 
 	AttributeSet->OnOutOfShield.AddDynamic(this, &AFRSoulShield::DestroyShield);
-
+	AttributeSet->OnOutOfHealth.AddDynamic(this, &AFRSoulShield::OnOutOfHealth);
 }
 
 void AFRSoulShield::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -92,5 +92,9 @@ void AFRSoulShield::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 	{
 		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
 	}
+}
+
+void AFRSoulShield::OnOutOfHealth_Implementation()
+{
 }
 
