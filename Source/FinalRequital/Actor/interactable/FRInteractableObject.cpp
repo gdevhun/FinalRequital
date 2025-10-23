@@ -4,6 +4,7 @@
 #include "Actor/Interactable/FRInteractableObject.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/AudioComponent.h"
+#include "Player/FRPlayerController.h"
 
 AFRInteractableObject::AFRInteractableObject()
 {
@@ -24,6 +25,8 @@ void AFRInteractableObject::ShowSelectionWidget()
 			APlayerController* PC = GetWorld()->GetFirstPlayerController();
 			if (PC)
 			{
+				AFRPlayerController* FRPC = Cast<AFRPlayerController>(PC);
+				FRPC->bIsInteracting = true;
 				PC->SetInputMode(FInputModeGameAndUI());
 				PC->bShowMouseCursor = true; 
 			}
@@ -41,6 +44,8 @@ void AFRInteractableObject::HideSelectionWidget()
 			APlayerController* PC = GetWorld()->GetFirstPlayerController();
 			if (PC)
 			{
+				AFRPlayerController* FRPC = Cast<AFRPlayerController>(PC);
+				FRPC->bIsInteracting = false;
 				PC->SetInputMode(FInputModeGameOnly());
 				PC->bShowMouseCursor = false;
 			}

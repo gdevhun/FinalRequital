@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ESCKeyAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MainMenu")
+	bool bIsInteracting;
+
 	UFUNCTION(BlueprintCallable)
 	void SwitchToInspectCamera(AActor* TargetActor, float BlendTime, float ForwardOffset, float UpOffset);
 	UFUNCTION(BlueprintCallable)
