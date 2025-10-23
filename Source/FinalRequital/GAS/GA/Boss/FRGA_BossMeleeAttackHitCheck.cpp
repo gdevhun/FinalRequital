@@ -65,6 +65,7 @@ void UFRGA_BossMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbility
 	}
 
 	bool bReplicatedEndAbility = true;
+
 	bool bWasCancelled = false;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
 }
