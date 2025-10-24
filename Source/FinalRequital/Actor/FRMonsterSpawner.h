@@ -44,7 +44,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnMonster();
-
+	void HandleFirstSpawn();
 	void HandleSpawnTimer();
 
 public:

@@ -14,6 +14,7 @@ AFRMonsterSpawner::AFRMonsterSpawner()
 	RandomDeviation = 1.0f;
 	FirstSpawnDelay = 0.0f;
 }
+
 void AFRMonsterSpawner::BeginPlay()
 {
 	Super::BeginPlay();
@@ -21,14 +22,55 @@ void AFRMonsterSpawner::BeginPlay()
 
 void AFRMonsterSpawner::StartSpawn()
 {
-	if (!GetWorld()) return;
+	if (!GetWorld())
+	{
+		return;
+	}
 
-	// 첫 스폰을 FirstSpawnDelay 후에 실행
+	// 첫 스폰은 FirstSpawnDelay 후에 딱 한 번만 실행
+	GetWorld()->GetTimerManager().SetTimer(
+		SpawnTimerHandle,
+		this,
+		&AFRMonsterSpawner::HandleFirstSpawn, // 첫 스폰 전용 함수
+		FMath::Max(0.1f, FirstSpawnDelay),
+		false
+	);
+}
+
+void AFRMonsterSpawner::HandleFirstSpawn()
+{
+	// 첫 스폰 실행
+	SpawnMonster();
+
+	// 그 후 반복 타이머 등록
+	const float NextInterval = UKismetMathLibrary::RandomFloatInRange(
+		SpawnInterval - RandomDeviation,
+		SpawnInterval + RandomDeviation
+	);
+
 	GetWorld()->GetTimerManager().SetTimer(
 		SpawnTimerHandle,
 		this,
 		&AFRMonsterSpawner::HandleSpawnTimer,
-		FMath::Max(0.0f, FirstSpawnDelay),
+		FMath::Max(0.1f, NextInterval),
+		false
+	);
+}
+
+void AFRMonsterSpawner::HandleSpawnTimer()
+{
+	SpawnMonster();
+
+	const float NextInterval = UKismetMathLibrary::RandomFloatInRange(
+		SpawnInterval - RandomDeviation,
+		SpawnInterval + RandomDeviation
+	);
+
+	GetWorld()->GetTimerManager().SetTimer(
+		SpawnTimerHandle,
+		this,
+		&AFRMonsterSpawner::HandleSpawnTimer,
+		FMath::Max(0.1f, NextInterval),
 		false
 	);
 }
@@ -41,29 +83,12 @@ void AFRMonsterSpawner::StopSpawn()
 	}
 }
 
-void AFRMonsterSpawner::HandleSpawnTimer()
-{
-	// 몬스터 스폰 실행
-	SpawnMonster();
-
-	// 다음 스폰 간격 랜덤 적용
-	const float NextInterval = UKismetMathLibrary::RandomFloatInRange(
-		SpawnInterval - RandomDeviation,
-		SpawnInterval + RandomDeviation
-	);
-
-	GetWorld()->GetTimerManager().SetTimer(
-		SpawnTimerHandle,
-		this,
-		&AFRMonsterSpawner::HandleSpawnTimer,
-		FMath::Max(0.1f, NextInterval), // 최소 간격 보장
-		false
-	);
-}
-
 void AFRMonsterSpawner::SpawnMonster()
 {
-	if (!GetWorld()) return;
+	if (!GetWorld())
+	{
+		return;
+	}
 
 	TSubclassOf<AFRMonsterBase> MonsterToSpawn = nullptr;
 	const float RandomValue = UKismetMathLibrary::RandomFloatInRange(0.f, 100.f);
@@ -83,14 +108,22 @@ void AFRMonsterSpawner::SpawnMonster()
 		MonsterToSpawn = BaseMonsterClass;
 	}
 
-	if (MonsterToSpawn)
+	if (!MonsterToSpawn)
 	{
-		FActorSpawnParameters SpawnParams;
-		GetWorld()->SpawnActor<AFRMonsterBase>(
-			MonsterToSpawn,
-			GetActorLocation(),
-			GetActorRotation(),
-			SpawnParams
-		);
+		return;
 	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	const FVector SpawnLoc = GetActorLocation() + FVector(0, 0, 80);
+	const FRotator SpawnRot = GetActorRotation();
+
+	AFRMonsterBase* SpawnedMonster = GetWorld()->SpawnActor<AFRMonsterBase>(
+		MonsterToSpawn,
+		SpawnLoc,
+		SpawnRot,
+		SpawnParams
+	);
+
 }
