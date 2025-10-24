@@ -6,6 +6,7 @@
 #include "Character/FRMonsterBase.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Player/FRGASCharacterPlayer.h"
 
@@ -159,6 +160,11 @@ void AFRFireHydrantTrap::ApplyDamageEffect()
             if (AbilityClass)
             {
                 TargetASC->TryActivateAbilityByClass(AbilityClass);
+            }
+
+            if (HitSound)
+            {
+                UGameplayStatics::PlaySoundAtLocation(this, HitSound, Character->GetActorLocation());
             }
         }
     }
