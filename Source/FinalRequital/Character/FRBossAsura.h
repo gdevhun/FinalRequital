@@ -29,22 +29,20 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UFRBossAttributeSet> AttributeSet;
 
+	UPROPERTY(EditDefaultsOnly, Category = GAS)
+	TSubclassOf<class UFRBossHpWidget> BossHpWidgetClass;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS)
 	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase1StatEffect;
-	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase2StatEffect;
-	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase3StatEffect;
+	TSubclassOf<class UGameplayEffect> PhaseStatEffect;
+
+	UFUNCTION()
+	void ApplyPhaseStat(int InPhaseLevel);
 
 	UPROPERTY()
 	TObjectPtr<class AFRCharacterBase> TargetPlayer;
-
-	//UFUNCTION()
-	//void LookAtTargetPlayer();
 
 	UFUNCTION()
 	virtual void OnOutOfHealth();

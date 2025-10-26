@@ -8,6 +8,7 @@
 #include "GAS/Attribute/FRBossAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 #include "Physics/FRCollision.h"
+#include "UI/FRBossHpWidget.h"
 
 AFRBossAsura::AFRBossAsura()
 {
@@ -58,8 +59,20 @@ void AFRBossAsura::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// player find
 	TargetPlayer = Cast<AFRCharacterBase>(UGameplayStatics::GetPlayerCharacter(this, 0));
 
+	// UI Set Timer
+	if (UFRBossHpWidget* BossHpWidget = CreateWidget<UFRBossHpWidget>(
+		GetWorld(),
+		BossHpWidgetClass 
+	))
+	{
+		BossHpWidget->SetAbilitySystemComponent(this);
+		BossHpWidget->AddToViewport();
+	}
+
+	// Set Timer
 	GetWorldTimerManager().SetTimer(
 		LookAtTimerHandle,
 		this,
@@ -67,13 +80,12 @@ void AFRBossAsura::BeginPlay()
 		1.5f,
 		true
 	);
-
 }
 void AFRBossAsura::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// 자연스럽게 회전 (보간)
+	// LookPlayer Rotate Lerp
 	if (!bShouldRotate || !TargetPlayer) return;
 
 	const FRotator CurrentRot = GetActorRotation();
@@ -90,6 +102,22 @@ void AFRBossAsura::UpdateTargetRotation()
 
 	TargetRotation = (FlatTargetLoc - MyLoc).Rotation();
 	bShouldRotate = true;
+}
+
+void AFRBossAsura::ApplyPhaseStat(int InPhaseLevel)
+{
+	if (!ASC || !PhaseStatEffect) return;
+
+	FGameplayEffectContextHandle Context = ASC->MakeEffectContext();
+	Context.AddSourceObject(this);
+
+	// InPhaseLevel GE Level 
+	FGameplayEffectSpecHandle Spec = ASC->MakeOutgoingSpec(PhaseStatEffect, InPhaseLevel, Context);
+
+	if (Spec.IsValid())
+	{
+		ASC->ApplyGameplayEffectSpecToSelf(*Spec.Data.Get());
+	}
 }
 
 void AFRBossAsura::OnOutOfHealth()

@@ -2,7 +2,6 @@
 
 
 #include "UI/FRBossHpWidget.h"
-
 #include "Components/ProgressBar.h"
 #include "GAS/Attribute/FRBossAttributeSet.h"
 
