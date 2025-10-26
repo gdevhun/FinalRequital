@@ -52,6 +52,42 @@ void UFRGA_BossMeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbility
 			FR_LOG(FRLOG, Error, TEXT("ASC Not Found!"));
 			return;
 		}
+
+		if (bIsBossPullAttack)
+		{
+			AActor* BossActor = GetAvatarActorFromActorInfo();
+			float PullDuration = 0.35f;
+			float PullSpeed = 2000.0f;
+
+			// 공유 포인터로 변수들 관리
+			TSharedPtr<FTimerHandle> PullTimerHandle = MakeShared<FTimerHandle>();
+			TSharedPtr<float> ElapsedTime = MakeShared<float>(0.0f);
+
+			FTimerDelegate PullDelegate;
+			PullDelegate.BindLambda([TargetPlayer, BossActor, ElapsedTime, PullDuration, PullSpeed, PullTimerHandle, this]()
+				{
+					*ElapsedTime += 0.016f;
+
+					if (*ElapsedTime >= PullDuration || !TargetPlayer || !BossActor)
+					{
+						if (PullTimerHandle.IsValid() && PullTimerHandle->IsValid())
+						{
+							GetWorld()->GetTimerManager().ClearTimer(*PullTimerHandle);
+						}
+						return;
+					}
+
+					// 시간에 따라 속도 증가 (가속도 효과)
+					float SpeedMultiplier = FMath::Lerp(0.5f, 2.0f, *ElapsedTime / PullDuration);
+
+					FVector Direction = (BossActor->GetActorLocation() - TargetPlayer->GetActorLocation()).GetSafeNormal();
+					FVector NewLocation = TargetPlayer->GetActorLocation() + Direction * PullSpeed * SpeedMultiplier * 0.016f;
+					TargetPlayer->SetActorLocation(NewLocation, true);
+				});
+
+			GetWorld()->GetTimerManager().SetTimer(*PullTimerHandle, PullDelegate, 0.016f, true);
+		}
+
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, 1);
 		if (EffectSpecHandle.IsValid())
 		{
