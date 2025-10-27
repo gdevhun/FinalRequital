@@ -19,7 +19,6 @@ UFRBossAttributeSet::UFRBossAttributeSet() :
 	InitHealth(GetMaxHealth());
 }
 
-
 void UFRBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
@@ -28,7 +27,6 @@ void UFRBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	{
 		NewValue = NewValue < 0.0f ? 0.0f : NewValue;
 	}
-	D(FString::Printf(TEXT("damageeeed!d!d!e")));
 }
 
 bool UFRBossAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data)
@@ -55,14 +53,13 @@ bool UFRBossAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectModCall
 			}
 		}
 	}
-	D(FString::Printf(TEXT("damageeeed!d!d!e")));
 	return true;
 }
 
 void UFRBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
-	D(FString::Printf(TEXT("damageeed!")));
+
 	float MinimumHealth = 0.0f;
 
 	if (Data.EvaluatedData.Attribute == GetReceivedBossDamageAttribute())
@@ -70,15 +67,12 @@ void UFRBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 		SetHealth(FMath::Clamp(GetHealth() - GetReceivedBossDamage(), MinimumHealth, GetMaxHealth()));
 		OnBossTakeDamage.Broadcast();
 		SetReceivedBossDamage(0.0f);
-		D(FString::Printf(TEXT("damaged!")));
 	}
 	// 죽는 기능 구현
 	if (GetHealth() <= 0.0f && !bOutOfHealth)
 	{
 		Data.Target.AddLooseGameplayTag(FRTAG_CHARACTER_ISDEAD);
 		OnBossOutOfHealth.Broadcast();
-		D(FString::Printf(TEXT("dead!")));
 	}
 	bOutOfHealth = (GetHealth() <= 0.0f);
-	D(FString::Printf(TEXT("dead2!")));
 }
