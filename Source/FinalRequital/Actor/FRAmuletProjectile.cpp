@@ -11,6 +11,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameplayCueManager.h" 
+#include "Character/FRBossAsura.h"
 #include "Kismet/GameplayStatics.h"
 
 AFRAmuletProjectile::AFRAmuletProjectile()
@@ -75,7 +76,8 @@ void AFRAmuletProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
 	AFRMonsterBase* Monster = Cast<AFRMonsterBase>(OtherActor);
-	if (Monster && SourceASC && TargetASC && DamageEffectClass)
+	AFRBossAsura* Boss = Cast<AFRBossAsura>(OtherActor);
+	if ((Monster || Boss) && SourceASC && TargetASC && DamageEffectClass)
 	{
 		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
 		EffectContext.AddHitResult(Hit);

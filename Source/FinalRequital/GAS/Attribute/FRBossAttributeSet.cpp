@@ -2,6 +2,9 @@
 
 
 #include "GAS/Attribute/FRBossAttributeSet.h"
+#include "FRDebugHelper.h"
+#include "FRGameplayTag.h"
+#include "GameplayEffectExtension.h"
 
 UFRBossAttributeSet::UFRBossAttributeSet() :
 	AttackRadius(50.f),
@@ -25,14 +28,57 @@ void UFRBossAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	{
 		NewValue = NewValue < 0.0f ? 0.0f : NewValue;
 	}
+	D(FString::Printf(TEXT("damageeeed!d!d!e")));
 }
 
 bool UFRBossAttributeSet::PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data)
 {
-	return Super::PreGameplayEffectExecute(Data);
+	// 게임플레이 이펙트가 적용되기전 사전 처리용 함수
+	if (!Super::PreGameplayEffectExecute(Data))
+	{
+		return false;
+	}
+
+	if (Data.EvaluatedData.Attribute == GetReceivedBossDamageAttribute())
+	{
+		if (Data.EvaluatedData.Magnitude > 0.0f)
+		{
+			if (Data.Target.HasMatchingGameplayTag(FRTAG_CHARACTER_INVISIBLE))
+			{
+				Data.EvaluatedData.Magnitude = 0.0f;
+				return false;
+			}
+			if (bOutOfHealth || Data.Target.HasMatchingGameplayTag(FRTAG_CHARACTER_ISDEAD))
+			{
+				Data.EvaluatedData.Magnitude = 0.0f;
+				return false;
+			}
+		}
+	}
+	D(FString::Printf(TEXT("damageeeed!d!d!e")));
+	return true;
 }
 
 void UFRBossAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+	D(FString::Printf(TEXT("damageeed!")));
+	float MinimumHealth = 0.0f;
+
+	if (Data.EvaluatedData.Attribute == GetReceivedBossDamageAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth() - GetReceivedBossDamage(), MinimumHealth, GetMaxHealth()));
+		OnBossTakeDamage.Broadcast();
+		SetReceivedBossDamage(0.0f);
+		D(FString::Printf(TEXT("damaged!")));
+	}
+	// 죽는 기능 구현
+	if (GetHealth() <= 0.0f && !bOutOfHealth)
+	{
+		Data.Target.AddLooseGameplayTag(FRTAG_CHARACTER_ISDEAD);
+		OnBossOutOfHealth.Broadcast();
+		D(FString::Printf(TEXT("dead!")));
+	}
+	bOutOfHealth = (GetHealth() <= 0.0f);
+	D(FString::Printf(TEXT("dead2!")));
 }

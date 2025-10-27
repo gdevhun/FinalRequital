@@ -15,14 +15,18 @@ AFRBossAsura::AFRBossAsura()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Capsule
-	GetCapsuleComponent()->InitCapsuleSize(28.f, 60.0f);
+	GetCapsuleComponent()->InitCapsuleSize(600.f, 700.0f);
 	GetCapsuleComponent()->SetCollisionProfileName(CPROFILE_FRMONSTER);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(CCHANNEL_FRACTION, ECR_Block);
 
+	// Mesh
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
+
 	// ASC
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ASC"));
-	AttributeSet = CreateDefaultSubobject<UFRBossAttributeSet>(TEXT("MonsterAttributeSet"));
+	AttributeSet = CreateDefaultSubobject<UFRBossAttributeSet>(TEXT("BossAttributeSet"));
 
 }
 
@@ -47,11 +51,11 @@ void AFRBossAsura::PossessedBy(AController* NewController)
 	}
 
 	// 체력 관련 DELEGATE 연결 처리
-	// if (AttributeSet)
-	// {
-	// 	AttributeSet->OnMonsterOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
-	// 	AttributeSet->OnMonsterTakeDamage.AddDynamic(this, &ThisClass::HitReact);
-	// }
+	 if (AttributeSet)
+	 {
+	 	AttributeSet->OnBossOutOfHealth.AddDynamic(this, &ThisClass::OnOutOfHealth);
+	 	//AttributeSet->OnBossTakeDamage.AddDynamic(this, &ThisClass::HitReact);
+	 }
 
 }
 
@@ -59,7 +63,7 @@ void AFRBossAsura::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// player find
+	// Find Player
 	TargetPlayer = Cast<AFRCharacterBase>(UGameplayStatics::GetPlayerCharacter(this, 0));
 
 	// UI Set Timer

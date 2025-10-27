@@ -70,7 +70,6 @@ FGameplayAbilityTargetDataHandle AFRTA_MultiTrace::MakeTargetData() const
 				TargetData->TargetActorArray.Add(HitActor);
 			}
 		}
-
 		DataHandle.Add(TargetData);
 	}
 
