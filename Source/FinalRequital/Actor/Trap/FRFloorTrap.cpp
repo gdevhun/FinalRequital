@@ -8,6 +8,7 @@
 #include "Player/FRGASCharacterPlayer.h"
 #include "FRDebugHelper.h"
 #include "Character/FRMonsterBase.h"
+#include "Kismet/GameplayStatics.h"
 
 AFRFloorTrap::AFRFloorTrap()
 {
@@ -117,6 +118,7 @@ void AFRFloorTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
             if (EffectSpec.IsValid())
             {
                 ASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
+                
             }
         }
 
@@ -124,6 +126,11 @@ void AFRFloorTrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
         if (AbilityClass)
         {
             TargetASC->TryActivateAbilityByClass(AbilityClass);
+        }
+
+        if (HitSound)
+        {
+            UGameplayStatics::PlaySoundAtLocation(this, HitSound, Character->GetActorLocation());
         }
     }
 }

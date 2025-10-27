@@ -58,6 +58,10 @@ public:
 	// Pitch rotation 각도는 -90이 아래를 보는 기준각임.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float MaxPitch = -120.0f;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	TObjectPtr<USoundBase> HitSound;
 private:
 	void DetectByLineTrace();
 	FTimerHandle TraceTimerHandle;

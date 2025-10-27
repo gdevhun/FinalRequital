@@ -8,6 +8,7 @@
 #include "AbilitySystemComponent.h"
 #include "Player/FRGASCharacterPlayer.h"
 #include "FRGameplayTag.h"
+#include "Kismet/GameplayStatics.h"
 
 AFRCCTVTrap::AFRCCTVTrap()
 {
@@ -119,6 +120,10 @@ void AFRCCTVTrap::DetectByLineTrace()
 			if (SpecHandle.IsValid())
 			{
 				ASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+				if (HitSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(this, HitSound, Player->GetActorLocation());
+				}
 			}
 
 #if WITH_EDITOR

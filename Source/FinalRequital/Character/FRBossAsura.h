@@ -21,6 +21,7 @@ protected:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TObjectPtr<class UAbilitySystemComponent> ASC;
@@ -28,25 +29,28 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UFRBossAttributeSet> AttributeSet;
 
+	UPROPERTY(EditDefaultsOnly, Category = GAS)
+	TSubclassOf<class UFRBossHpWidget> BossHpWidgetClass;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GAS)
 	TArray<TSubclassOf<class UGameplayAbility>> StartAbilities;
 
 	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase1StatEffect;
-	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase2StatEffect;
-	UPROPERTY(EditAnywhere, Category = GAS)
-	TSubclassOf<class UGameplayEffect> Phase3StatEffect;
+	TSubclassOf<class UGameplayEffect> PhaseStatEffect;
+
+	UFUNCTION()
+	void ApplyPhaseStat(int InPhaseLevel);
 
 	UPROPERTY()
 	TObjectPtr<class AFRCharacterBase> TargetPlayer;
 
 	UFUNCTION()
-	void LookAtTargetPlayer();
-
-	UFUNCTION()
 	virtual void OnOutOfHealth();
 private:
 	FTimerHandle LookAtTimerHandle;
+	FRotator TargetRotation;
+	bool bShouldRotate = false;
+
+	UFUNCTION()
+	void UpdateTargetRotation();
 };

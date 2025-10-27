@@ -28,4 +28,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = GAS)
 	TSubclassOf<class AFRTA_BossTrace> TargetActorClass;
+
+	UPROPERTY(EditAnywhere, Category = GAS)
+	bool bIsBossPullAttack = false;
 };

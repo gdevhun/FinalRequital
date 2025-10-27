@@ -63,6 +63,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
 	float StartDelay = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setting")
+	TObjectPtr<USoundBase> HitSound;
+
 private:
 	void ToggleTrapActive();
 

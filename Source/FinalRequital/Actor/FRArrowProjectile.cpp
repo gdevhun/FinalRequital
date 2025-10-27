@@ -10,6 +10,7 @@
 #include "AbilitySystemGlobals.h"
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
+#include "Character/FRBossAsura.h"
 #include "Character/FRMonsterBase.h"
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
@@ -77,7 +78,8 @@ void AFRArrowProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherA
 	UAbilitySystemComponent* TargetASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor);
 
 	AFRMonsterBase* Monster = Cast<AFRMonsterBase>(OtherActor);
-	if (Monster && SourceASC && TargetASC && DamageEffectClass)
+	AFRBossAsura* Boss = Cast<AFRBossAsura>(OtherActor);
+	if ((Monster || Boss) && SourceASC && TargetASC && DamageEffectClass)
 	{
 		// 몬스터 전용 처리 (GE + GC + 즉시 파괴)
 		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();

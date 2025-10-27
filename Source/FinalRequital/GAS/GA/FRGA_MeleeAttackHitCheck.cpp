@@ -7,6 +7,7 @@
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "Actor/FRHintBox.h"
+#include "Character/FRBossAsura.h"
 #include "Character/FRMonsterBase.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
 #include "Player/FRGASCharacterPlayer.h"
@@ -33,16 +34,16 @@ void UFRGA_MeleeAttackHitCheck::ActivateAbility(const FGameplayAbilitySpecHandle
 }
 void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataHandle& TargetDataHandle)
 {
-	// 무기 타입 확인
+	/* 무기 타입 확인
 	AActor* AvatarActor = GetAvatarActorFromActorInfo();
 	AFRGASCharacterPlayer* OwnerCharacter = Cast<AFRGASCharacterPlayer>(AvatarActor);
 	if (!OwnerCharacter)
 		return;
 	
-	// 캐릭터가 가지고 있는 무기 컴포넌트에서 현재 무기 타입 가져오기
+	 //캐릭터가 가지고 있는 무기 컴포넌트에서 현재 무기 타입 가져오기
 	EWeaponType CurrentWeaponType = OwnerCharacter->GetWeaponComponent()->GetCurrentWeaponType();
 	bool bIsMace = (CurrentWeaponType == EWeaponType::IronMace);
-	bool bIsSword = (CurrentWeaponType == EWeaponType::Sword);
+	bool bIsSword = (CurrentWeaponType == EWeaponType::Sword);*/
 
 	// ===========================
 	// 단일 대상 감지
@@ -58,9 +59,9 @@ void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTarg
 		// 몬스터 or HintBox 필터링
 		bool bIsMonster = HitActor->IsA(AFRMonsterBase::StaticClass());
 		bool bIsHintBox = HitActor->IsA(AFRHintBox::StaticClass());
-
-		// 검: 몬스터만 / 철퇴: 몬스터 + HintBox
-		if (!bIsMonster && !(bIsHintBox && bIsMace))
+		bool bIsBoss = HitActor->IsA(AFRBossAsura::StaticClass());
+		
+		if (!bIsMonster && !bIsHintBox && !bIsBoss)
 		{
 			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 			return;
@@ -92,23 +93,22 @@ void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTarg
 	{
 		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo_Checked();
 
-		// 몬스터만 필터링
+		//  필터링
 		TArray<TWeakObjectPtr<AActor>> FilteredActors;
 		TArray<TWeakObjectPtr<AActor>> AllActors = TargetDataHandle.Data[0].Get()->GetActors();
 
 		for (const TWeakObjectPtr<AActor>& ActorPtr : AllActors)
 		{
-			if (ActorPtr.IsValid())
+			if (!ActorPtr.IsValid())
+				continue;
+
+			AActor* Target = ActorPtr.Get();
+			if (Target->IsA(AFRMonsterBase::StaticClass()) || Target->IsA(AFRBossAsura::StaticClass()))
 			{
-				AFRMonsterBase* Monster = Cast<AFRMonsterBase>(ActorPtr.Get());
-				if (Monster)
-				{
-					FilteredActors.Add(ActorPtr);
-				}
+				FilteredActors.Add(ActorPtr);
 			}
 		}
 
-		// 몬스터가 하나도 없으면 처리하지 않음
 		if (FilteredActors.Num() == 0)
 		{
 			bool bReplicatedEndAbility = true;
@@ -120,7 +120,7 @@ void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTarg
 		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffect, CurrentLevel);
 		if (EffectSpecHandle.IsValid())
 		{
-			// 필터링된 몬스터들에게만 이펙트 적용
+			// 이펙트 적용
 			FGameplayAbilityTargetData_ActorArray* FilteredTargetData = new FGameplayAbilityTargetData_ActorArray();
 			FilteredTargetData->SetActors(FilteredActors);
 			FGameplayAbilityTargetDataHandle FilteredTargetDataHandle(FilteredTargetData);

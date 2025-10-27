@@ -15,7 +15,7 @@
 AFRPlayerController::AFRPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
-
+	bIsInteracting = false;
 }
 void AFRPlayerController::BeginPlay()
 {
@@ -123,6 +123,8 @@ void AFRPlayerController::ReturnToPlayerCamera(float BlendTime)
 
 void AFRPlayerController::HandleESCKeyPressed()
 {
+	// 상호작용중이라면 return
+	if (bIsInteracting) return;
 
 	// 스택이 비어있다면 → 메인메뉴 열기
 	if (UIWidgetStack.Num() == 0)
