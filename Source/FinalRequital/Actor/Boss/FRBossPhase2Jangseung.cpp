@@ -30,7 +30,7 @@ AFRBossPhase2Jangseung::AFRBossPhase2Jangseung()
 	HpBar->SetupAttachment(RootComponent);
 	HpBar->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> HpWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_JangseungHpBar.WBP_JangseungHpBar_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> HpWidgetRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Boss/WBP_Phase2JangseungHpBar.WBP_Phase2JangseungHpBar_C'"));
 	if (HpWidgetRef.Succeeded())
 	{
 		HpBar->SetWidgetClass(HpWidgetRef.Class);

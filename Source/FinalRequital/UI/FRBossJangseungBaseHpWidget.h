@@ -10,6 +10,7 @@
 /**
  * 
  */
+
 UCLASS()
 class FINALREQUITAL_API UFRBossJangseungBaseHpWidget : public UFRUserWidget
 {
@@ -23,7 +24,13 @@ protected:
 
 	void UpdateHpBar();
 
+	template<typename TAttributeSet>
+	void BindAttributeSet();
+
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int32 PhaseNum;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> PB_JangseungHp;
 

@@ -66,7 +66,7 @@ void AFRBossAsura::BeginPlay()
 	// Find Player
 	TargetPlayer = Cast<AFRCharacterBase>(UGameplayStatics::GetPlayerCharacter(this, 0));
 
-	// UI Set Timer
+	// UI
 	if (UFRBossHpWidget* BossHpWidget = CreateWidget<UFRBossHpWidget>(
 		GetWorld(),
 		BossHpWidgetClass 
