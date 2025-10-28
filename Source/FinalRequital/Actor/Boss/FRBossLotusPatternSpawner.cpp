@@ -1,8 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actor/FRBossLotusPatternSpawner.h"
-
+#include "Actor/Boss/FRBossLotusPatternSpawner.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 AFRBossLotusPatternSpawner::AFRBossLotusPatternSpawner()
@@ -34,7 +33,7 @@ void AFRBossLotusPatternSpawner::ActivateLotusPattern(AActor* TargetPlayer)
 
 	if (bIsHealing)
 	{
-		// ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸´Â ¹æÇâ ±âÁØÀ¸·Î »ìÂ¦ ¾ÕÀ¸·Î
+		// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FinalSpawnLocation += Direction * 400.f;
 	}
 
@@ -51,7 +50,7 @@ void AFRBossLotusPatternSpawner::ActivateLotusPattern(AActor* TargetPlayer)
 
 	if (!SpawnedActor) return;
 
-	// ¹ß»çÃ¼ ÀÌµ¿ Ã³¸® (Èú¸µÀº °íÁ¤, ÀÏ¹ÝÀº ³¯¾Æ°¨)
+	// ï¿½ß»ï¿½Ã¼ ï¿½Ìµï¿½ Ã³ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½Ï¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½)
 	if (!bIsHealing)
 	{
 		if (auto* ProjectileComp = SpawnedActor->FindComponentByClass<UProjectileMovementComponent>())

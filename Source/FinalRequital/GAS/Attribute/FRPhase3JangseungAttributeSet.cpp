@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GAS/Attribute/FRHintBoxAttributeSet.h"
+#include "GAS/Attribute/FRPhase3JangseungAttributeSet.h"
 #include "GameplayEffectExtension.h"
 
-UFRHintBoxAttributeSet::UFRHintBoxAttributeSet()
+UFRPhase3JangseungAttributeSet::UFRPhase3JangseungAttributeSet()
 {
 	InitMaxHealth(4.0f);
 	InitHealth(GetMaxHealth());
 }
 
-void UFRHintBoxAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
+void UFRPhase3JangseungAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
 

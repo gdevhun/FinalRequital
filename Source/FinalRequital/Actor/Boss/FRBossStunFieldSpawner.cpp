@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actor/FRBossStunFieldSpawner.h"
+#include "Actor/Boss/FRBossStunFieldSpawner.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -31,7 +31,7 @@ void AFRBossStunFieldSpawner::SpawnStunFields(AActor* TargetPlayer)
 		return;
 	}
 
-	// ±âÁ¸ ÀåÆÇ Á¦°Å
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	for (AActor* Field : ActiveFields)
 	{
 		if (Field && IsValid(Field))
@@ -43,7 +43,7 @@ void AFRBossStunFieldSpawner::SpawnStunFields(AActor* TargetPlayer)
 
 	FVector PlayerLocation = TargetPlayer->GetActorLocation();
 
-	// ÁöÁ¤µÈ °³¼ö¸¸Å­ ÀåÆÇ »ý¼º
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	for (int32 i = 0; i < FieldCount; ++i)
 	{
 		FVector SpawnLocation = GetRandomLocationAroundPlayer(PlayerLocation);
@@ -53,11 +53,11 @@ void AFRBossStunFieldSpawner::SpawnStunFields(AActor* TargetPlayer)
 
 FVector AFRBossStunFieldSpawner::GetRandomLocationAroundPlayer(const FVector& PlayerLocation)
 {
-	// ·£´ý °¢µµ¿Í °Å¸® »ý¼º
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	float RandomAngle = FMath::RandRange(0.0f, 360.0f);
 	float RandomDistance = FMath::RandRange(MinDistanceFromPlayer, MaxDistanceFromPlayer);
 
-	// 2D ¿øÇü ¹üÀ§¿¡¼­ ·£´ý À§Ä¡ °è»ê
+	// 2D ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
 	float RadianAngle = FMath::DegreesToRadians(RandomAngle);
 	FVector Offset = FVector(
 		FMath::Cos(RadianAngle) * RandomDistance,
@@ -67,7 +67,7 @@ FVector AFRBossStunFieldSpawner::GetRandomLocationAroundPlayer(const FVector& Pl
 
 	FVector TargetLocation = PlayerLocation + Offset;
 
-	// ¹Ù´Ú¿¡ ¸ÂÃß±â À§ÇÑ LineTrace
+	// ï¿½Ù´Ú¿ï¿½ ï¿½ï¿½ï¿½ß±ï¿½ ï¿½ï¿½ï¿½ï¿½ LineTrace
 	FHitResult HitResult;
 	FVector TraceStart = TargetLocation + FVector(0.0f, 0.0f, 500.0f);
 	FVector TraceEnd = TargetLocation - FVector(0.0f, 0.0f, 500.0f);
@@ -77,11 +77,11 @@ FVector AFRBossStunFieldSpawner::GetRandomLocationAroundPlayer(const FVector& Pl
 
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams))
 	{
-		// ¹Ù´ÚÀ» Ã£¾ÒÀ¸¸é ±× À§Ä¡ »ç¿ë
+		// ï¿½Ù´ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
 		return HitResult.Location;
 	}
 
-	// ¹Ù´ÚÀ» ¸ø Ã£¾ÒÀ¸¸é ÇÃ·¹ÀÌ¾î¿Í °°Àº Z ³ôÀÌ »ç¿ë
+	// ï¿½Ù´ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Z ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	TargetLocation.Z = PlayerLocation.Z;
 	return TargetLocation;
 }
@@ -93,7 +93,7 @@ void AFRBossStunFieldSpawner::SpawnSingleField(const FVector& Location)
 		return;
 	}
 
-	// °æ°í ÆÄÆ¼Å¬ ¸ÕÀú »ý¼º (ÀÖÀ¸¸é)
+	// ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 	if (WarningEffect)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(
@@ -108,13 +108,13 @@ void AFRBossStunFieldSpawner::SpawnSingleField(const FVector& Location)
 		);
 	}
 
-	// SpawnDelay ÈÄ ½ÇÁ¦ ÀåÆÇ »ý¼º
+	// SpawnDelay ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	FTimerHandle SpawnTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(
 		SpawnTimerHandle,
 		[this, Location]()
 		{
-			// ºí·çÇÁ¸°Æ® ¾×ÅÍ »ý¼º
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.Owner = this;
 			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -130,7 +130,7 @@ void AFRBossStunFieldSpawner::SpawnSingleField(const FVector& Location)
 			{
 				ActiveFields.Add(FieldActor);
 
-				// ÀÏÁ¤ ½Ã°£ ÈÄ ÀÚµ¿ Á¦°Å
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
 				if (FieldLifetime > 0.0f)
 				{
 					FTimerHandle DestroyTimerHandle;
