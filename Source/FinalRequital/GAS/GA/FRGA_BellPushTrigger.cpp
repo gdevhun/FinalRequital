@@ -2,6 +2,8 @@
 
 
 #include "GAS/GA/FRGA_BellPushTrigger.h"
+
+#include "FRGA_MeleeAttack.h"
 #include "Character/FRCharacterBase.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -36,6 +38,7 @@ void UFRGA_BellPushTrigger::ActivateAbility(const FGameplayAbilitySpecHandle Han
 	(this, TEXT("PlayBellPushTrigger"), BellPushTriggerMontage, 1.0f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_BellPushTrigger::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_BellPushTrigger::OnInterruptedCallback);
+	PlayAttackTask->OnCancelled.AddDynamic(this, &UFRGA_BellPushTrigger::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
 
 }

@@ -7,6 +7,8 @@
 #include "FRDebugHelper.h"
 #include "FRGameplayTag.h"
 #include "Actor/FRHintBox.h"
+#include "Actor/Boss/FRBossPhase1Jangseung.h"
+#include "Actor/Boss/FRBossPhase2Jangseung.h"
 #include "Character/FRBossAsura.h"
 #include "Character/FRMonsterBase.h"
 #include "GAS/Attribute/FRCharacterAttributeSet.h"
@@ -56,12 +58,14 @@ void UFRGA_MeleeAttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTarg
 		if (!HitActor)
 			return;
 
-		// 몬스터 or HintBox 필터링
+		// 유효 액터 체크
 		bool bIsMonster = HitActor->IsA(AFRMonsterBase::StaticClass());
 		bool bIsHintBox = HitActor->IsA(AFRHintBox::StaticClass());
 		bool bIsBoss = HitActor->IsA(AFRBossAsura::StaticClass());
-		
-		if (!bIsMonster && !bIsHintBox && !bIsBoss)
+		bool bIsBossPhase1Jangseung = HitActor->IsA(AFRBossPhase1Jangseung::StaticClass());
+		bool bIsBossPhase2Jangseung = HitActor->IsA(AFRBossPhase2Jangseung::StaticClass());
+
+		if (!bIsMonster && !bIsHintBox && !bIsBoss && !bIsBossPhase1Jangseung && !bIsBossPhase2Jangseung)
 		{
 			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 			return;

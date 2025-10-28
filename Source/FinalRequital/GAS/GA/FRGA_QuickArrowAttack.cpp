@@ -36,6 +36,7 @@ void UFRGA_QuickArrowAttack::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	(this, TEXT("PlayArrowAttack"), ArrowAttackMontage, 0.75f);
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_QuickArrowAttack::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_QuickArrowAttack::OnInterruptedCallback);
+	
 	PlayAttackTask->ReadyForActivation();
 
 }

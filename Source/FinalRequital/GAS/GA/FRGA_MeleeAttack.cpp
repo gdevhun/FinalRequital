@@ -53,6 +53,7 @@ void UFRGA_MeleeAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	(this, TEXT("PlayMeleeAttack"), ComboActionMontage,1.0f,GetNextSection());
 	PlayAttackTask->OnCompleted.AddDynamic(this, &UFRGA_MeleeAttack::OnCompleteCallback);
 	PlayAttackTask->OnInterrupted.AddDynamic(this, &UFRGA_MeleeAttack::OnInterruptedCallback);
+	PlayAttackTask->OnCancelled.AddDynamic(this, &UFRGA_MeleeAttack::OnInterruptedCallback);
 	PlayAttackTask->ReadyForActivation();
 
 	StartComboTimer();

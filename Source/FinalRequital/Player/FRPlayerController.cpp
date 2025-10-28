@@ -21,7 +21,7 @@ void AFRPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//this->ConsoleCommand(TEXT("showdebug abilitysystem"));
+	this->ConsoleCommand(TEXT("showdebug abilitysystem"));
 
 	InitializePlayerStateStatus();
 	if (FRHUDWidgetClass) 
