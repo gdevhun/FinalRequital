@@ -103,9 +103,10 @@ void UFRHUDWidget::OnWeaponAcquiredFromState(EWeaponType WeaponType)
 	}
 }
 
-void UFRHUDWidget::SetStagePlayStatus()
+void UFRHUDWidget::SetStagePlayStatus(bool bVisible)
 {
-	IMG_MemoryCellAcquireStatus->SetVisibility(ESlateVisibility::Visible);
+	const ESlateVisibility NewVisibility = bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
+	IMG_MemoryCellAcquireStatus->SetVisibility(NewVisibility);
 }
 
 void UFRHUDWidget::AcquireMemoryCell()

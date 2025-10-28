@@ -41,7 +41,7 @@ public:
 	void OnWeaponAcquiredFromState(EWeaponType WeaponType);
 
 	UFUNCTION(BlueprintCallable)
-	void SetStagePlayStatus();
+	void SetStagePlayStatus(bool bVisible);
 
 	UFUNCTION(BlueprintCallable)
 	void AcquireMemoryCell();
