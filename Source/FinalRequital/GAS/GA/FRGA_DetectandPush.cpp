@@ -131,7 +131,7 @@ void UFRGA_DetectandPush::ActivateAbility(
                             Soul->bIsPushing = false;
                         }
                     }),
-                0.2f,  // 지속시간 (튕겨나는 순간만 유지)
+                1.0f,  // 지속시간 (튕겨나는 순간만 유지)
                 false
             );
         }

@@ -11,6 +11,10 @@ AFRSoul::AFRSoul()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+    GetCapsuleComponent()->BodyInstance.bNotifyRigidBodyCollision = true;
+    GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualMesh"));
 	VisualMesh->SetupAttachment(GetCapsuleComponent());
 	VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -77,9 +81,13 @@ void AFRSoul::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class 
 
     FVector Velocity = GetCharacterMovement()->Velocity;
     FVector Reflected = FMath::GetReflectionVector(Velocity, HitNormal);
-    LaunchCharacter(Reflected * 0.6f, true, true);
 
-    // 나중에 다시 튕길 수 있도록 약간의 시간 뒤 초기화
+    float Speed = Velocity.Size();
+    FVector BounceDir = Reflected.GetSafeNormal();
+
+    LaunchCharacter(BounceDir * Speed * 2.0f, true, true);
+
+    // 반사 1회 후 리셋
     GetWorldTimerManager().SetTimerForNextTick([this]()
         {
             bIsPushing = false;

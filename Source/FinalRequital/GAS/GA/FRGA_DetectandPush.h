@@ -25,5 +25,5 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere)
-	float PushStrength = 1000.f;
+	float PushStrength = 1200.f;
 };
