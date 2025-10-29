@@ -37,8 +37,8 @@ void AFRPlayerController::BeginPlay()
 			}
 		}
 	}
-	
-	//SetInputMode(FInputModeGameAndUI()); // UI와 게임 모드 둘 다 활성화
+	SetInputMode(FInputModeGameOnly());
+	// UI와 게임 모드 둘 다 활성화
 	//bShowMouseCursor = true;              // 마우스 커서 표시
 
 }
