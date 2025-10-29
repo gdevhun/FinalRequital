@@ -51,3 +51,14 @@ void UFRGameInstance::ApplyMouseSensitivityValue(float Value)
 	CurrentSettingValue.MouseSensitivityValue = Value;
 }
 
+void UFRGameInstance::ResetPlayerPersistentData()
+{
+	// Initialize All Data
+	PersistentPlayerData = FPlayerPersistentData();
+
+	RemainingStats = 0;
+
+	CurrentLevel = NAME_None;
+	LevelSavePoint = 0;
+}
+

@@ -111,4 +111,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	TObjectPtr<class USoundClass> SFXClass;
 
+	UFUNCTION(BlueprintCallable, Category = "PlayerData")
+	void ResetPlayerPersistentData();
 };

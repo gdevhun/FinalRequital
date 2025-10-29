@@ -60,4 +60,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TObjectPtr<UFRStackBaseWidget>> UIWidgetStack;
+
 };

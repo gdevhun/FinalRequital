@@ -152,6 +152,11 @@ void AFRPlayerController::PushUIWidgetToStack(UFRStackBaseWidget* NewWidget)
 {
 	if (!NewWidget) return;
 
+	if (HUDWidget)
+	{
+		HUDWidget->SetHUDVisibility(false);
+	}
+
 	// 이전 Top 위젯 숨기기
 	if (UIWidgetStack.Num() > 0)
 	{
@@ -188,7 +193,13 @@ void AFRPlayerController::PopUIWidgetFromStack()
 	}
 	else
 	{
-		// 스택이 완전히 비면 게임 재개
+		// 스택이 완전히 비면 HUD 다시 보이기
+		if (HUDWidget)
+		{
+			HUDWidget->SetHUDVisibility(true);
+			HUDWidget->SetStagePlayStatus(false);
+		}
+
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		bShowMouseCursor = false;
 		SetInputMode(FInputModeGameOnly());
