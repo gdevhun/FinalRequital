@@ -43,7 +43,7 @@ public:
 	TObjectPtr<class UInputAction> ESCKeyAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MainMenu")
-	bool bIsInteracting;
+	bool bIsInteracting = false;
 
 	UFUNCTION(BlueprintCallable)
 	void SwitchToInspectCamera(AActor* TargetActor, float BlendTime, float ForwardOffset, float UpOffset);
