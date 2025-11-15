@@ -44,7 +44,7 @@
 ## 출시 링크 🔗 
 
 ## 유튜브 시연 영상 ▶️
-[![풀 플레이 시연](https://img.shields.io/badge/Youtube-풀_게임_플레이-ff0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=6eYcyyJUDQQ)
+[![풀 플레이 시연](https://img.shields.io/badge/Youtube-풀_게임_플레이-ff0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Ixv_3zEEVdQ)
 
 ## 기술 스택 💻
 <img src="https://img.shields.io/badge/unrealengine-%23313131.svg?style=for-the-badge&logo=unrealengine&logoColor=white&color=blue">  
